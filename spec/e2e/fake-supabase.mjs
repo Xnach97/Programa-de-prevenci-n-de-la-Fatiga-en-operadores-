@@ -19,7 +19,7 @@ const db = {
     { empresa_id: EMPRESA_A, marca: { color_primario: '#ff0000', logo_url: 'https://cdn.example.co/a.png' } },
     { empresa_id: EMPRESA_B, marca: { color_primario: 'red;background:url(x)', logo_url: "https://x.co/a')" } },
   ],
-  pruebas: [], ico_configuraciones: [], baremos: [], reglas: [], recomendaciones_plantillas: [], alertas: [], recomendaciones_generadas: [], auditoria: [], evaluaciones: [], resultados_pruebas: [], indicadores_valores: [],
+  pruebas: [], ico_configuraciones: [], baremos: [], reglas: [], recomendaciones_plantillas: [], alertas: [], recomendaciones_generadas: [], auditoria: [], cohortes: [], cohortes_operadores: [], consentimientos: [], evaluaciones: [], resultados_pruebas: [], indicadores_valores: [],
   indicadores_definiciones: ['ico_trabajador','ico_area','ico_cargo','ico_empresa','indice_atencion','indice_memoria','indice_velocidad','indice_inhibicion','indice_fatiga','indice_fatiga_empresa','indice_riesgo','indice_riesgo_area','indice_riesgo_empresa'].map((codigo) => ({ id: 'def-' + codigo, codigo, nombre: codigo, ambito: 'x', formula_ref: 'x' })),
   areas: [], procesos: [], centros_trabajo: [], cargos: [], lineas_operacionales: [], operadores: [],
 };
@@ -35,7 +35,8 @@ class Query {
   update(p) { this.op = 'update'; this.payload = p; return this; }
   eq(c, v) { this.filtros.push([c, v]); return this; }
   or(expr) { this.orFiltro = expr; return this; }
-  order() { return this; }
+  order(c, o) { this.orden = [c, !(o && o.ascending === false)]; return this; }
+  delete() { this.op = 'delete'; return this; }
   gte(c, v) { this.filtros.push([c, v, 'gte']); return this; }
   lte(c, v) { this.filtros.push([c, v, 'lte']); return this; }
   not(c, op, v) { this.filtros.push([c, v, 'not']); return this; }
@@ -86,12 +87,19 @@ class Query {
       return { data: [EMPRESA_A, EMPRESA_B].map((e) => ({ empresa_id: e, empresas: { nombre: e === EMPRESA_A ? 'Empresa A' : 'Empresa B' }, roles: { id: 'r', nombre: 'Administrador', roles_permisos: PERMISOS.map((codigo) => ({ permisos: { codigo } })) } })), error: null };
     }
     if (this.op === 'insert') {
-      const fila = { id: uuid(), estado: this.tabla === 'reglas' ? 'activa' : 'activo', ...this.payload };
-      const unicos = this.tabla === 'operadores' ? ['cedula'] : ['nombre'];
-      const choca = db[this.tabla].some((f) => f.empresa_id === fila.empresa_id && unicos.every((k) => lc(f[k]) === lc(fila[k])));
+      window.__seq = (window.__seq || 0) + 1;
+      const fila = { id: uuid(), estado: this.tabla === 'reglas' ? 'activa' : 'activo', ...(this.tabla === 'consentimientos' ? { fecha: window.__seq } : {}), ...this.payload };
+      const unicos = this.tabla === 'operadores' ? ['cedula'] : this.tabla === 'consentimientos' ? null : ['nombre'];
+      const choca = unicos && db[this.tabla].some((f) => f.empresa_id === fila.empresa_id && unicos.every((k) => lc(f[k]) === lc(fila[k])));
       if (choca) return this.error('23505');
       db[this.tabla].push(fila);
       return { data: this.unico ? fila : [fila], error: null };
+    }
+    if (this.op === 'delete') {
+      const quitar = new Set(this.filas());
+      db[this.tabla] = db[this.tabla].filter((f) => !quitar.has(f));
+      if (this.tabla === 'cohortes') db.cohortes_operadores = db.cohortes_operadores.filter((m) => db.cohortes.some((c) => c.id === m.cohorte_id));
+      return { data: null, error: null };
     }
     if (this.op === 'update') {
       const objetivo = this.filas()[0];
@@ -102,6 +110,7 @@ class Query {
       return { data: objetivo, error: null };
     }
     let filas = this.filas();
+    if (this.orden && this.tabla === 'consentimientos') { const [c, asc] = this.orden; filas = [...filas].sort((a, b) => (a[c] < b[c] ? -1 : a[c] > b[c] ? 1 : 0) * (asc ? 1 : -1)); }
     const total = filas.length;
     if (this.rango) filas = filas.slice(this.rango[0], this.rango[1] + 1);
     filas = filas.map((f) => this.conEmbeds(f));
@@ -131,6 +140,26 @@ export function createClient() {
         const id = uuid();
         db.baremos.push({ id, empresa_id: args.p_empresa_id, prueba_id: args.p_prueba_id, modalidad: args.p_modalidad, parametros: args.p_parametros, fuente: args.p_fuente, vigente_desde: new Date().toISOString(), vigente_hasta: null });
         return { data: id, error: null };
+      }
+      if (nombre === 'poblar_cohorte') {
+        const c = db.cohortes.find((x) => x.id === args.p_cohorte);
+        let n = 0;
+        for (const o of db.operadores) {
+          const cr = c.criterio || {};
+          if (o.estado !== 'activo' || (cr.area_id && o.area_id !== cr.area_id) || (cr.cargo_id && o.cargo_id !== cr.cargo_id)) continue;
+          const ult = db.consentimientos.filter((x) => x.operador_id === o.id).at(-1);
+          if (!ult || !ult.otorgado || db.cohortes_operadores.some((m) => m.cohorte_id === c.id && m.operador_id === o.id)) continue;
+          db.cohortes_operadores.push({ cohorte_id: c.id, empresa_id: c.empresa_id, operador_id: o.id }); n += 1;
+        }
+        return { data: n, error: null };
+      }
+      if (nombre === 'exportar_dataset') {
+        const miembros = db.cohortes_operadores.filter((m) => m.cohorte_id === args.p_cohorte);
+        if (miembros.length < 5) return { data: null, error: { code: '23514', message: 'el mínimo para anonimizar es 5' } };
+        const id = uuid();
+        const filas = miembros.map((m, i) => ({ participante: 'p' + i + id.slice(0, 4), fecha: '2026-10-15', turno: 'Diurno', prueba: 'reaccion_simple', intento: 1, valido_para_analisis: true, tiempo_total_ms: 300 + i, errores_totales: 0, puntaje_normalizado: 80, ico_valor: 70, ico_nivel: 'aceptable' }));
+        db.auditoria.push({ id: uuid(), empresa_id: args.p_empresa, accion: 'dataset.exportar', entidad: 'datasets_exportados', created_at: new Date().toISOString() });
+        return { data: { dataset_id: id, participantes: miembros.length, filas }, error: null };
       }
       if (nombre === 'publicar_resultado_reglas') {
         let na = 0; let nr = 0;

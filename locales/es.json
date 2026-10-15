@@ -443,5 +443,63 @@
     "reintentar": "Reintentar",
     "descartar": "Descartar rechazadas",
     "menosDeUnMinuto": "menos de 1 min"
+  },
+  "research": {
+    "title": "Investigación",
+    "menu": "Investigación",
+    "aviso": "Los datos de investigación se usan solo con el consentimiento voluntario y revocable de cada operador (distinto del consentimiento laboral para la evaluación SST). Los exportes son anónimos, exigen una cohorte de al menos 5 participantes y quedan auditados.",
+    "cohortes": {
+      "title": "Cohortes",
+      "nueva": "Nueva cohorte",
+      "crear": "Crear cohorte",
+      "creada": "Cohorte creada.",
+      "vacio": "Aún no hay cohortes.",
+      "nombre": "Nombre",
+      "area": "Área",
+      "cargo": "Cargo",
+      "cualquiera": "Cualquiera",
+      "sinCriterio": "Sin criterio (manual)",
+      "criterioAyuda": "El criterio documenta quién puede incorporarse; solo entran operadores activos con consentimiento de investigación vigente.",
+      "col": {
+        "nombre": "Nombre",
+        "criterio": "Criterio",
+        "miembros": "Participantes",
+        "acciones": "Acciones"
+      },
+      "poblar": "Incorporar con consentimiento",
+      "poblada": "{{n}} operador(es) incorporado(s).",
+      "exportar": "Exportar CSV",
+      "eliminar": "Eliminar",
+      "eliminarConfirmar": "Se eliminará la cohorte «{{nombre}}» (no se borran evaluaciones ni consentimientos)."
+    },
+    "exportar": {
+      "title": "Exportar «{{nombre}}»",
+      "ayuda": "CSV anónimo: sin cédula, nombre, área ni cargo; los pseudónimos cambian en cada exportación. Requiere al menos 5 participantes.",
+      "desde": "Desde (opcional)",
+      "hasta": "Hasta (opcional)",
+      "descargar": "Descargar CSV",
+      "listo": "Exportación lista: {{filas}} filas de {{participantes}} participantes."
+    },
+    "consentimientos": {
+      "title": "Consentimientos de investigación",
+      "ayuda": "Voluntario y revocable. Al revocar, el operador sale de todas las cohortes. El historial se conserva.",
+      "vacio": "No hay operadores activos.",
+      "col": {
+        "operador": "Operador",
+        "estado": "Consentimiento",
+        "acciones": "Acciones"
+      },
+      "otorgado": "Otorgado",
+      "revocado": "Revocado",
+      "sinRegistro": "Sin registro",
+      "otorgar": "Registrar consentimiento",
+      "revocar": "Revocar consentimiento",
+      "documento": "Enlace al documento firmado (https, opcional)",
+      "otorgarConfirmar": "Confirme que el operador firmó el consentimiento para uso de sus resultados en investigación.",
+      "revocarConfirmar": "El operador saldrá de todas las cohortes y sus datos no se incluirán en nuevos exportes.",
+      "registradoOtorgado": "Consentimiento registrado.",
+      "registradoRevocado": "Consentimiento revocado.",
+      "paginaDe": "Página {{actual}} de {{total}} ({{filas}} operadores)"
+    }
   }
 }

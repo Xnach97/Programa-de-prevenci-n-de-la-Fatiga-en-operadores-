@@ -35,6 +35,7 @@ import { initEvaluationModule } from './evaluation-module.js';
 import { initAdminModule } from './admin-module.js';
 import { initDashboardModule } from './dashboard-module.js';
 import { initOfflineModule } from './offline-status.js';
+import { initResearchModule } from './research-module.js';
 
 const logger = createLogger('app');
 
@@ -185,6 +186,7 @@ export async function bootstrap() {
     initEvaluationModule({ router, authService });
     initAdminModule({ router, authService });
     initDashboardModule({ router, authService });
+    initResearchModule({ router, authService });
     initOfflineModule();
     await router.start(APP_CONFIG.dom.appViewSelector);
 

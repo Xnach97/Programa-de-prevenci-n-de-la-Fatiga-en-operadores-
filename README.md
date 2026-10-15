@@ -26,7 +26,7 @@ Abrir `http://localhost:8000`.
 - [x] Módulo 7 — Rules Engine, Alertas, Auditoría y Configuración de empresa
 - [x] Módulo 8 — Dashboard Framework (4 dashboards SVG, lectura solo de indicadores_valores)
 - [x] Módulo 9 — Offline Engine (cola IndexedDB idempotente, reintento con retroceso, caché de lectura, aviso a supervisor)
-- [ ] Módulo 10 — Research Platform
+- [x] Módulo 10 — Research Platform (cohortes, consentimientos separados, exportación CSV anónima y auditada)
 - [ ] Módulo 11 — Optimización final
 
 ## Pruebas
@@ -38,6 +38,7 @@ node spec/e2e/organization.e2e.mjs # navegador
 node spec/e2e/testing.e2e.mjs      # evaluación completa (4 pruebas) en navegador
 node spec/e2e/admin.e2e.mjs        # configuración, reglas, alertas y auditoría real (Chromium) con Supabase simulado; requiere `playwright`
 node spec/e2e/dashboard.e2e.mjs    # dashboards operativo/clínico/ejecutivo/científico (Chromium) con Supabase simulado
+node spec/e2e/research.e2e.mjs     # investigación: consentimientos, cohortes y exportación CSV (Chromium) con Supabase simulado
 ```
 
 La prueba de navegador usa un Supabase en memoria (`spec/e2e/fake-supabase.mjs`):

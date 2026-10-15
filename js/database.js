@@ -20,15 +20,16 @@ import { TestingRepository } from './repositories/testing-repository.js';
 import { IndicadoresRepository } from './repositories/indicadores-repository.js';
 import { ReglasRepository } from './repositories/rules-repository.js';
 import { AuditRepository } from './repositories/audit-repository.js';
+import { ResearchRepository } from './repositories/research-repository.js';
 import { conCacheLectura } from '../services/read-cache.js';
 import { getAlmacenes } from './offline-storage.js';
 
-/** @type {Promise<{usuarios: UsuariosRepository, empresas: EmpresasRepository, catalogos: CatalogosRepository, operadores: OperadoresRepository, ico: IcoConfiguracionesRepository, baremos: BaremosRepository, testing: TestingRepository, indicadores: IndicadoresRepository, reglas: ReglasRepository, auditoria: AuditRepository}> | null} */
+/** @type {Promise<{usuarios: UsuariosRepository, empresas: EmpresasRepository, catalogos: CatalogosRepository, operadores: OperadoresRepository, ico: IcoConfiguracionesRepository, baremos: BaremosRepository, testing: TestingRepository, indicadores: IndicadoresRepository, reglas: ReglasRepository, auditoria: AuditRepository, research: ResearchRepository}> | null} */
 let databasePromise = null;
 
 /**
  * Instancia única de la capa de datos, con repositorios ya conectados.
- * @returns {Promise<{usuarios: UsuariosRepository, empresas: EmpresasRepository, catalogos: CatalogosRepository, operadores: OperadoresRepository, ico: IcoConfiguracionesRepository, baremos: BaremosRepository, testing: TestingRepository, indicadores: IndicadoresRepository, reglas: ReglasRepository, auditoria: AuditRepository}>}
+ * @returns {Promise<{usuarios: UsuariosRepository, empresas: EmpresasRepository, catalogos: CatalogosRepository, operadores: OperadoresRepository, ico: IcoConfiguracionesRepository, baremos: BaremosRepository, testing: TestingRepository, indicadores: IndicadoresRepository, reglas: ReglasRepository, auditoria: AuditRepository, research: ResearchRepository}>}
  */
 export async function getDatabase() {
   if (!databasePromise) {
@@ -52,6 +53,7 @@ export async function getDatabase() {
           indicadores: new IndicadoresRepository(client),
           reglas: new ReglasRepository(client),
           auditoria: new AuditRepository(client),
+          research: new ResearchRepository(client),
         };
       })
       .catch((error) => {

@@ -247,3 +247,5 @@ button {
 .offline-banner[data-vencida="true"] { border-bottom-color: var(--color-critico); }
 .offline-banner__alerta { color: var(--color-critico); }
 .offline-banner[hidden] { display: none; }
+.form-ok { padding: var(--espacio-2) var(--espacio-3); border: 1px solid var(--color-exito); border-radius: 6px; color: var(--color-texto-primario); }
+.form-ok[hidden] { display: none; }
