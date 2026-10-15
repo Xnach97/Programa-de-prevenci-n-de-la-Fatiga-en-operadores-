@@ -42,13 +42,13 @@ grant usage on schema public to app_user;
 grant select, insert, update, delete on all tables in schema public to app_user;
 
 -- ---------------------------------------------------------------------------
--- Seed: 5 roles de plantilla, 14 permisos, y asignaciones esperadas
+-- Seed: 5 roles de plantilla, 15 permisos, y asignaciones esperadas
 -- ---------------------------------------------------------------------------
 do $$
 begin
-  assert (select count(*) from permisos) = 14, 'seed: deben existir 14 permisos';
+  assert (select count(*) from permisos) = 15, 'seed: deben existir 15 permisos';
   assert (select count(*) from roles where es_plantilla and empresa_id is null) = 5, 'seed: deben existir 5 roles de plantilla';
-  assert (select count(*) from roles_permisos rp join roles r on r.id = rp.role_id where r.nombre = 'Super Administrador') = 14, 'seed: Super Administrador debe tener los 14 permisos';
+  assert (select count(*) from roles_permisos rp join roles r on r.id = rp.role_id where r.nombre = 'Super Administrador') = 15, 'seed: Super Administrador debe tener los 15 permisos';
   assert exists (
     select 1 from roles_permisos rp join roles r on r.id = rp.role_id join permisos p on p.id = rp.permiso_id
     where r.nombre = 'Operador' and r.es_plantilla and p.codigo = 'evaluaciones.registrar'

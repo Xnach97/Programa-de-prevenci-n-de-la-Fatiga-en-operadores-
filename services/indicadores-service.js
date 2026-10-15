@@ -42,16 +42,20 @@ export class IndicadoresService {
 
   /**
    * @param {{empresaId: string, operadorId: string, fecha: Date|string}} datos
-   * @returns {Promise<{publicados: number}>}
+   * @returns {Promise<{publicados: number, valoresDia: Record<string, number>}>} `valoresDia`: indicadores
+   *   del operador en la ventana diaria (insumo del motor de reglas).
    */
   async recalcularTrasEvaluacion({ empresaId, operadorId, fecha }) {
     const dia = fechaLocal(fecha);
     const mapa = await this._mapa(empresaId);
     let publicados = 0;
-    for (const ventana of Object.values(ventanas(dia))) {
-      publicados += await this._recalcularVentana({ empresaId, operadorId, ventana, mapa });
+    let valoresDia = {};
+    for (const [nombre, ventana] of Object.entries(ventanas(dia))) {
+      const r = await this._recalcularVentana({ empresaId, operadorId, ventana, mapa });
+      publicados += r.publicados;
+      if (nombre === 'diario') valoresDia = r.valoresOperador;
     }
-    return { publicados };
+    return { publicados, valoresDia };
   }
 
   async _recalcularVentana({ empresaId, operadorId, ventana, mapa }) {
@@ -59,7 +63,8 @@ export class IndicadoresService {
     const evaluaciones = await this._repo.evaluacionesDeOperador(operadorId, inicioDiaLocalISO(desde), inicioDiaLocalISO(hasta));
     const delOperador = calcularIndicadoresOperador(evaluaciones);
     const filas = delOperador.map((i) => ({ codigo: i.codigo, ambito_id: operadorId, desde, hasta, valor: i.valor, detalle: i.detalle }));
-    if (filas.length === 0) return 0; // sin evaluaciones válidas en la ventana: nada que agregar
+    const valoresOperador = Object.fromEntries(delOperador.map((i) => [i.codigo, i.valor]));
+    if (filas.length === 0) return { publicados: 0, valoresOperador }; // sin evaluaciones válidas en la ventana
 
     let publicados = await this._repo.publicar(empresaId, filas);
 
@@ -78,7 +83,7 @@ export class IndicadoresService {
       empresaId,
       grupo.map((i) => ({ codigo: i.codigo, ambito_id: i.ambitoId, desde, hasta, valor: i.valor, detalle: i.detalle })),
     );
-    return publicados;
+    return { publicados, valoresOperador };
   }
 }
 

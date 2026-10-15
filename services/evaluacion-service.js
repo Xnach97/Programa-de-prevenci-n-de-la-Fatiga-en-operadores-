@@ -56,6 +56,8 @@ export class EvaluacionService {
     this._alRegistrar = alRegistrar;
     this._generarId = generarId;
     this._dispositivoId = dispositivoId;
+    /** @type {Record<string, string>} prueba_version_id → código (para reglas). */
+    this._codigosPorVersion = {};
   }
 
   /**
@@ -67,8 +69,9 @@ export class EvaluacionService {
   async cargarPruebas(configuracion) {
     const filas = await this._testing.listarActivas();
     const habilitadas = Array.isArray(configuracion?.pruebas_activas) ? configuracion.pruebas_activas : [];
-    return filas
-      .filter((f) => f.version_actual && this._registro.has(f.codigo))
+    const disponibles = filas.filter((f) => f.version_actual && this._registro.has(f.codigo));
+    for (const f of disponibles) this._codigosPorVersion[f.version_actual.id] = f.codigo;
+    return disponibles
       .filter((f) => habilitadas.length === 0 || habilitadas.includes(f.codigo))
       .map((f) => ({ prueba: f, version: f.version_actual, definicion: this._registro.get(f.codigo) }));
   }
@@ -151,15 +154,23 @@ export class EvaluacionService {
   /**
    * Envía el payload. Idempotente en servidor: reenviar el mismo payload no duplica.
    * @param {object} payload
+   * @param {{operadorNombre?: string|null}} [contexto] Datos para mensajes (no se envían al servidor).
    * @returns {Promise<{evaluacion_id: string, duplicada: boolean}>}
    */
-  async guardar(payload) {
+  async guardar(payload, contexto = {}) {
     const respuesta = await this._guardar(payload);
     // Los indicadores son DERIVADOS: si su recálculo falla, la evaluación ya está
     // guardada y el fallo no debe reportarse al operador como fallo de guardado.
     if (this._alRegistrar && !respuesta?.encolada) {
       try {
-        await this._alRegistrar({ empresaId: payload.empresa_id, operadorId: payload.operador_id, fecha: payload.fecha });
+        await this._alRegistrar({
+          empresaId: payload.empresa_id,
+          operadorId: payload.operador_id,
+          fecha: payload.fecha,
+          payload,
+          codigosPorVersion: { ...this._codigosPorVersion },
+          contexto,
+        });
       } catch (error) {
         logger.warn('No se pudieron recalcular los indicadores', { error: String(error) });
       }

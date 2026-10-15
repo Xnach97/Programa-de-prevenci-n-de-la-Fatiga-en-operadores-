@@ -15,6 +15,7 @@ import { getDatabase } from './database.js';
 import { getScientificServices } from './scientific.js';
 import { EvaluacionService, turnosDeEmpresa } from '../services/evaluacion-service.js';
 import { IndicadoresService } from '../services/indicadores-service.js';
+import { ReglasService } from '../services/reglas-service.js';
 import { testRegistry } from '../tests/index.js';
 import { mostrarTutorial } from '../tests/tutorial.js';
 import { PERMISOS } from '../services/permissions-catalog.js';
@@ -46,6 +47,7 @@ function dependencias() {
     dependenciasPromise = Promise.all([getDatabase(), getScientificServices()])
       .then(([db, { motor }]) => {
         const indicadores = new IndicadoresService({ indicadores: db.indicadores });
+        const reglas = new ReglasService({ reglas: db.reglas });
         return {
           db,
           servicio: new EvaluacionService({
@@ -53,7 +55,23 @@ function dependencias() {
             motor,
             registro: testRegistry,
             dispositivoId: dispositivoId(),
-            alRegistrar: (datos) => indicadores.recalcularTrasEvaluacion(datos),
+            alRegistrar: async (datos) => {
+              // Los indicadores alimentan las reglas, pero un fallo de uno no debe anular el otro.
+              let valoresDia = {};
+              try {
+                ({ valoresDia } = await indicadores.recalcularTrasEvaluacion(datos));
+              } catch (error) {
+                logger.warn('Indicadores no recalculados', { error: String(error) });
+              }
+              await reglas.evaluarTrasEvaluacion({
+                empresaId: datos.empresaId,
+                operadorId: datos.operadorId,
+                operadorNombre: datos.contexto?.operadorNombre ?? null,
+                payload: datos.payload,
+                codigosPorVersion: datos.codigosPorVersion,
+                indicadoresDia: valoresDia,
+              });
+            },
           }),
         };
       })
@@ -172,6 +190,12 @@ function mostrarSeleccion({ escenario, ctx, empresaId, configuracion, pruebas, p
   }
 }
 
+/** Nombre para mensajes de alerta; sin nombre (anonimizado) → null. */
+function nombreDe(operador) {
+  const n = `${operador.nombre ?? ''} ${operador.apellido ?? ''}`.trim();
+  return n || null;
+}
+
 async function correrEvaluacion({ escenario, ctx, empresaId, operador, turno, pruebas, alTerminar }) {
   const ejecuciones = [];
   try {
@@ -185,14 +209,14 @@ async function correrEvaluacion({ escenario, ctx, empresaId, operador, turno, pr
       ejecuciones.push({ prueba, version, definicion, resultado });
     }
     const { payload, resumen } = await ctx.servicio.cerrar({ empresaId, operador, turno, ejecuciones });
-    mostrarResultado({ escenario, ctx, payload, resumen, pruebas, alTerminar });
+    mostrarResultado({ escenario, ctx, payload, resumen, pruebas, operadorNombre: nombreDe(operador), alTerminar });
   } catch (error) {
     logger.error('La evaluación falló', { error: String(error) });
     escenario.replaceChildren(mensajeError(t('testing.errorGuardar')), h('button', { type: 'button', class: 'button-secondary', on: { click: alTerminar } }, t('testing.nueva')));
   }
 }
 
-function mostrarResultado({ escenario, ctx, payload, resumen, pruebas, alTerminar }) {
+function mostrarResultado({ escenario, ctx, payload, resumen, pruebas, operadorNombre, alTerminar }) {
   const nombres = Object.fromEntries(pruebas.map((p) => [p.prueba.codigo, p.prueba.nombre]));
   const estado = h('p', { class: 'test-feedback', role: 'status', 'aria-live': 'polite' }, t('testing.guardando'));
   const reintentar = h('button', { type: 'button', class: 'button-secondary', hidden: true, on: { click: () => guardar() } }, t('testing.reintentar'));
@@ -202,7 +226,7 @@ function mostrarResultado({ escenario, ctx, payload, resumen, pruebas, alTermina
     reintentar.hidden = true;
     estado.textContent = t('testing.guardando');
     try {
-      const r = await ctx.servicio.guardar(payload);
+      const r = await ctx.servicio.guardar(payload, { operadorNombre });
       estado.textContent = r?.encolada ? t('testing.pendiente') : t('testing.guardado');
       nueva.hidden = false;
     } catch (error) {

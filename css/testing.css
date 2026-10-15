@@ -36,3 +36,13 @@
 .eval-tabla th, .eval-tabla td { text-align: left; padding: .4rem .5rem; border-bottom: 1px solid var(--color-borde, currentColor); }
 @media (max-width: 480px) { .sym-grid { grid-template-columns: repeat(6, 1fr); } }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+
+/* ---- Módulo 7: configuración, reglas, alertas, auditoría ---- */
+.config-form { display: grid; gap: var(--espacio-3, .75rem); max-width: 40rem; margin-bottom: 2rem; }
+.config-form h2, .config-form h3 { margin: .5rem 0 0; }
+.turno, .condicion { display: grid; gap: .5rem; border: 1px solid var(--color-borde, currentColor); border-radius: .5rem; padding: .75rem; }
+.audit-json { max-height: 14rem; overflow: auto; white-space: pre-wrap; word-break: break-word; font-family: var(--tipografia-mono); font-size: var(--tamano-texto-xs); }
+.badge--sev-info { color: var(--color-info); }
+.badge--sev-amarilla { color: var(--color-advertencia); }
+.badge--sev-naranja { color: var(--color-advertencia); font-weight: 700; }
+.badge--sev-roja { color: var(--color-critico); font-weight: 700; }

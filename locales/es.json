@@ -62,7 +62,10 @@
       "save": "Guardar"
     },
     "loading": "Cargando…",
-    "prueba": "Prueba"
+    "prueba": "Prueba",
+    "previous": "Anterior",
+    "next": "Siguiente",
+    "pagination": "Paginación"
   },
   "organization": {
     "menu": {
@@ -215,5 +218,136 @@
       "tutorial1": "Espere a que el recuadro cambie a verde.",
       "tutorial2": "En cuanto cambie, toque lo más rápido posible. Si toca antes, cuenta como error."
     }
+  },
+  "admin": {
+    "menu": {
+      "configuracion": "Configuración",
+      "reglas": "Reglas",
+      "auditoria": "Auditoría"
+    },
+    "guardado": "Cambios guardados.",
+    "configuracion": {
+      "title": "Configuración de la empresa",
+      "general": "General",
+      "marca": "Marca",
+      "colorPrimario": "Color primario (#RRGGBB)",
+      "colorSecundario": "Color secundario (#RRGGBB)",
+      "colorAcento": "Color de acento (#RRGGBB)",
+      "logoUrl": "URL del logo (https)",
+      "turnos": "Turnos",
+      "turnoNombre": "Nombre",
+      "turnoInicio": "Inicio",
+      "turnoFin": "Fin",
+      "agregarTurno": "Agregar turno",
+      "quitarTurno": "Quitar turno",
+      "pruebasActivas": "Pruebas activas",
+      "pruebasAyuda": "Sin selección = se usan todas las pruebas disponibles.",
+      "modalidad": "Modalidad de baremo",
+      "modalidades": {
+        "dinamico": "Dinámico (histórico de la empresa)",
+        "institucional": "Institucional (umbrales propios)",
+        "cientifico": "Científico (referencia bibliográfica)"
+      },
+      "guardar": "Guardar configuración",
+      "ico": "Índice de capacidad operativa (ICO)",
+      "pesos": "Peso de cada prueba en el ICO",
+      "pesosAyuda": "Valores ≥ 0; el motor los normaliza entre las pruebas realizadas.",
+      "guardarPesos": "Publicar pesos",
+      "baremo": "Baremo del ICO",
+      "umbralExcelente": "Excelente desde (ICO ≥)",
+      "umbralAtencion": "Requiere atención por debajo de (ICO <)",
+      "ventana": "Ventana (días)",
+      "minimo": "Mínimo de registros",
+      "guardarBaremo": "Publicar baremo",
+      "versionVigente": "Versión vigente desde {{fecha}}",
+      "sinVersion": "Sin versión vigente.",
+      "baremoCientifico": "Los baremos científicos los publica el responsable científico con su fuente bibliográfica."
+    },
+    "reglas": {
+      "title": "Reglas de alerta",
+      "nueva": "Nueva regla",
+      "nombre": "Nombre",
+      "severidad": "Severidad",
+      "mensaje": "Mensaje",
+      "mensajeAyuda": "Puede usar {operador}, {ico}, {umbral}, {turno}, {fatiga}, {atencion}.",
+      "ambito": "Ámbito",
+      "global": "Global",
+      "empresa": "Empresa",
+      "estado": "Estado",
+      "acciones": "Acciones",
+      "activar": "Activar",
+      "desactivar": "Desactivar",
+      "vacio": "No hay reglas.",
+      "condiciones": "Condiciones",
+      "combinador": "Combinar con",
+      "y": "Todas (Y)",
+      "o": "Cualquiera (O)",
+      "indicador": "Indicador",
+      "operador": "Operador",
+      "referencia": "Comparar contra",
+      "valor": "Un valor",
+      "percentil": "Un percentil de la empresa",
+      "numero": "Número",
+      "crear": "Crear regla",
+      "estados": {
+        "activa": "Activa",
+        "inactiva": "Inactiva"
+      },
+      "severidades": {
+        "info": "Información",
+        "amarilla": "Amarilla",
+        "naranja": "Naranja",
+        "roja": "Roja"
+      },
+      "indicadores": {
+        "ico": "ICO de la evaluación",
+        "ico_trabajador": "ICO del trabajador (día)",
+        "indice_atencion": "Índice de atención (día)",
+        "indice_fatiga": "Índice de fatiga (día)",
+        "indice_riesgo": "Índice de riesgo (día)",
+        "tiempo": "tiempo",
+        "puntaje": "puntaje",
+        "errores": "errores"
+      }
+    },
+    "auditoria": {
+      "title": "Auditoría",
+      "fecha": "Fecha",
+      "accion": "Acción",
+      "entidad": "Entidad",
+      "detalle": "Detalle",
+      "vacio": "No hay registros de auditoría.",
+      "anterior": "Anterior",
+      "nuevo": "Nuevo",
+      "ip": "Origen",
+      "paginaDe": "Página {{actual}} de {{total}} ({{filas}} registros)"
+    }
+  },
+  "alertas": {
+    "menu": "Alertas",
+    "title": "Alertas de operadores",
+    "filtroEstado": "Estado",
+    "todas": "Todas",
+    "estados": {
+      "abierta": "Abierta",
+      "atendida": "Atendida",
+      "descartada": "Descartada"
+    },
+    "severidades": {
+      "info": "Información",
+      "amarilla": "Amarilla",
+      "naranja": "Naranja",
+      "roja": "Roja"
+    },
+    "fecha": "Fecha",
+    "severidad": "Severidad",
+    "mensaje": "Mensaje",
+    "regla": "Regla",
+    "estado": "Estado",
+    "acciones": "Acciones",
+    "atender": "Atender",
+    "descartar": "Descartar",
+    "vacio": "No hay alertas.",
+    "paginaDe": "Página {{actual}} de {{total}} ({{filas}} alertas)"
   }
 }

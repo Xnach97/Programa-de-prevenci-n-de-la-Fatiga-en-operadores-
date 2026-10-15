@@ -1,0 +1,27 @@
+{
+  "validas": [
+    {"indicador":"ico","op":"<","valor":50},
+    {"indicador":"reaccion_simple.tiempo","op":">","percentil":90},
+    {"and":[{"indicador":"ico","op":">=","valor":50},{"indicador":"ico","op":"<","valor":70}]},
+    {"or":[{"indicador":"indice_fatiga","op":">=","valor":60},{"not":{"indicador":"ico","op":">","valor":80}}]},
+    {"and":[{"or":[{"indicador":"ico","op":"==","valor":1},{"indicador":"ico","op":"!=","valor":2}]}]}
+  ],
+  "invalidas": [
+    null, [], "ico < 50", 5, {},
+    {"indicador":"ico","op":"<"},
+    {"indicador":"ico","op":"<","valor":"50"},
+    {"indicador":"ico","op":"<","valor":50,"extra":1},
+    {"indicador":"ico","op":"~","valor":50},
+    {"indicador":"ICO","op":"<","valor":50},
+    {"indicador":"ico; drop table x","op":"<","valor":50},
+    {"indicador":"ico","op":"<","percentil":101},
+    {"indicador":"ico","op":"<","percentil":-1},
+    {"indicador":"ico","op":"<","valor":1,"percentil":2},
+    {"and":[]},
+    {"and":{"indicador":"ico","op":"<","valor":1}},
+    {"and":[{"indicador":"ico","op":"<","valor":1}],"or":[]},
+    {"not":[{"indicador":"ico","op":"<","valor":1}]},
+    {"not":{"indicador":"ico","op":"<","valor":1},"and":[]},
+    {"and":[{"and":[{"and":[{"and":[{"and":[{"and":[{"indicador":"ico","op":"<","valor":1}]}]}]}]}]}]}
+  ]
+}

@@ -50,6 +50,8 @@ function semilla(db) {
   db.configuracion_empresa[0].pruebas_activas = [];
   db.ico_configuraciones.push({ id: 'cfg1', empresa_id: A, cargo_id: null, pesos: { atencion_cancelacion: 0.25, stroop_adaptado: 0.25, memoria_secuencias: 0.25, reaccion_simple: 0.25 }, vigente_desde: '2020-01-01T00:00:00Z', vigente_hasta: null });
   db.baremos.push({ id: 'bar1', empresa_id: A, prueba_id: null, modalidad: 'institucional', parametros: { umbrales: { excelente: 75, atencion: 50 } }, fuente: null, vigente_desde: '2020-01-01T00:00:00Z', vigente_hasta: null });
+  db.reglas.push({ id: 'r1', empresa_id: null, nombre: 'ICO siempre', condicion: { indicador: 'ico', op: '<', valor: 101 }, severidad: 'roja', mensaje_plantilla: 'ICO de {operador} en {ico} (umbral {umbral}).', estado: 'activa' });
+  db.recomendaciones_plantillas.push({ id: 'pl1', empresa_id: null, codigo: 'pausa', titulo: 'Pausa', texto: 'Pausa para {operador}', condicion_activacion: { indicador: 'indice_fatiga', op: '>=', valor: 0 } });
   db.operadores.push({ id: 'b1000000-0000-4000-8000-000000000001', empresa_id: A, usuario_id: window.__E2E_VINCULAR__ ? 'a1000000-0000-4000-8000-000000000001' : null, cedula: '1090123456', nombre: 'Luis', apellido: 'Rojas', estado: 'activo', cargo_id: null });
 }
 
@@ -142,6 +144,15 @@ try {
   assert.ok(icoTrab.every((x) => x.v === guardadas[0].ico_valor));
   assert.ok(ind.some((x) => x.i === 'ico_empresa') && ind.some((x) => x.i === 'indice_fatiga'));
   paso('indicadores por operador y por empresa recalculados tras la evaluación');
+
+  // Reglas: alerta con mensaje resuelto y recomendación, una sola vez.
+  await A.waitForFunction(() => window.__fakeDb.alertas.length > 0 && window.__fakeDb.recomendaciones_generadas.length > 0);
+  const alertas = await A.evaluate(() => window.__fakeDb.alertas);
+  assert.equal(alertas.length, 1);
+  assert.equal(alertas[0].mensaje, `ICO de Luis Rojas en ${Math.round(guardadas[0].ico_valor * 10) / 10} (umbral 101).`);
+  assert.equal(alertas[0].operador_id, guardadas[0].operador_id);
+  assert.equal(await A.evaluate(() => window.__fakeDb.recomendaciones_generadas[0].texto), 'Pausa para Luis Rojas');
+  paso('reglas: alerta y recomendación generadas con el nombre del operador');
 
   await A.click('button:text("Nueva evaluación")');
   await A.waitForSelector('button:text("Comenzar evaluación")');

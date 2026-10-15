@@ -18,13 +18,15 @@ import { OperadoresRepository } from './repositories/operadores-repository.js';
 import { IcoConfiguracionesRepository, BaremosRepository } from './repositories/scientific-repository.js';
 import { TestingRepository } from './repositories/testing-repository.js';
 import { IndicadoresRepository } from './repositories/indicadores-repository.js';
+import { ReglasRepository } from './repositories/rules-repository.js';
+import { AuditRepository } from './repositories/audit-repository.js';
 
-/** @type {Promise<{usuarios: UsuariosRepository, empresas: EmpresasRepository, catalogos: CatalogosRepository, operadores: OperadoresRepository, ico: IcoConfiguracionesRepository, baremos: BaremosRepository, testing: TestingRepository, indicadores: IndicadoresRepository}> | null} */
+/** @type {Promise<{usuarios: UsuariosRepository, empresas: EmpresasRepository, catalogos: CatalogosRepository, operadores: OperadoresRepository, ico: IcoConfiguracionesRepository, baremos: BaremosRepository, testing: TestingRepository, indicadores: IndicadoresRepository, reglas: ReglasRepository, auditoria: AuditRepository}> | null} */
 let databasePromise = null;
 
 /**
  * Instancia única de la capa de datos, con repositorios ya conectados.
- * @returns {Promise<{usuarios: UsuariosRepository, empresas: EmpresasRepository, catalogos: CatalogosRepository, operadores: OperadoresRepository, ico: IcoConfiguracionesRepository, baremos: BaremosRepository, testing: TestingRepository, indicadores: IndicadoresRepository}>}
+ * @returns {Promise<{usuarios: UsuariosRepository, empresas: EmpresasRepository, catalogos: CatalogosRepository, operadores: OperadoresRepository, ico: IcoConfiguracionesRepository, baremos: BaremosRepository, testing: TestingRepository, indicadores: IndicadoresRepository, reglas: ReglasRepository, auditoria: AuditRepository}>}
  */
 export async function getDatabase() {
   if (!databasePromise) {
@@ -38,6 +40,8 @@ export async function getDatabase() {
         baremos: new BaremosRepository(client),
         testing: new TestingRepository(client),
         indicadores: new IndicadoresRepository(client),
+        reglas: new ReglasRepository(client),
+        auditoria: new AuditRepository(client),
       }))
       .catch((error) => {
         databasePromise = null; // permite reintento si la inicialización falló

@@ -22,8 +22,8 @@ Abrir `http://localhost:8000`.
 - [x] Módulo 3 — Organization (catálogos, operadores, menú, marca de empresa)
 - [x] Módulo 4 — Scientific Engine (estadística, score, ICO, baremos, versionado)
 - [x] Módulo 5 — Testing Engine (4 pruebas, registro atómico e idempotente de evaluaciones)
-- [ ] Módulo 6 — Indicators Engine
-- [ ] Módulo 7 — Rules Engine
+- [x] Módulo 6 — Indicators Engine (indicadores_valores, fórmulas provisionales, recálculo tras cada evaluación)
+- [x] Módulo 7 — Rules Engine, Alertas, Auditoría y Configuración de empresa
 - [ ] Módulo 8 — Dashboard Framework
 - [ ] Módulo 9 — Offline Engine
 - [ ] Módulo 10 — Research Platform
@@ -33,9 +33,10 @@ Abrir `http://localhost:8000`.
 
 ```bash
 node --test spec/*.test.mjs        # unitarias: auth, marca, servicios de Organization, menú (sin red ni DOM)
-bash supabase/tests/run-local.sh   # migraciones 0001–0013 (x2, idempotencia) + RLS, Organization, Scientific, Testing e Indicators con aserciones, en Postgres local
+bash supabase/tests/run-local.sh   # migraciones 0001–0016 (x2, idempotencia) + RLS, Organization, Scientific, Testing, Indicators, Rules y Audit con aserciones, en Postgres local
 node spec/e2e/organization.e2e.mjs # navegador
-node spec/e2e/testing.e2e.mjs      # evaluación completa (4 pruebas) en navegador real (Chromium) con Supabase simulado; requiere `playwright`
+node spec/e2e/testing.e2e.mjs      # evaluación completa (4 pruebas) en navegador
+node spec/e2e/admin.e2e.mjs        # configuración, reglas, alertas y auditoría real (Chromium) con Supabase simulado; requiere `playwright`
 ```
 
 La prueba de navegador usa un Supabase en memoria (`spec/e2e/fake-supabase.mjs`):

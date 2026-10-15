@@ -173,7 +173,7 @@ test('servicio: dispara el recálculo de indicadores tras guardar; su fallo no i
   const ok = new EvaluacionService({ ...base, guardar: async () => ({ duplicada: false }), alRegistrar: async (d) => { llamadas.push(d); } });
   const payload = { evaluacion_id: 'x', empresa_id: EMP, operador_id: OP, fecha: '2026-10-15T15:00:00.000Z' };
   await ok.guardar(payload);
-  assert.deepEqual(llamadas, [{ empresaId: EMP, operadorId: OP, fecha: payload.fecha }]);
+  assert.deepEqual(llamadas.map(({ empresaId, operadorId, fecha }) => ({ empresaId, operadorId, fecha })), [{ empresaId: EMP, operadorId: OP, fecha: payload.fecha }]);
 
   const roto = new EvaluacionService({ ...base, guardar: async () => ({ duplicada: false }), alRegistrar: async () => { throw new Error('boom'); } });
   assert.deepEqual(await roto.guardar(payload), { duplicada: false });

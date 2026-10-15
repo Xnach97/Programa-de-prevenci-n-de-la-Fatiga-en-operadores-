@@ -25,6 +25,7 @@ export const PERMISOS = Object.freeze({
   DATOS_EXPORTAR: 'datos.exportar',
   INVESTIGACION_ACCEDER: 'investigacion.acceder',
   AUDITORIA_VER: 'auditoria.ver',
+  ALERTAS_GESTIONAR: 'alertas.gestionar',
 });
 
 /** Nombres de los 5 roles de plantilla sembrados (Fase 2 §5). */

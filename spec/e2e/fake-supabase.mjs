@@ -19,7 +19,7 @@ const db = {
     { empresa_id: EMPRESA_A, marca: { color_primario: '#ff0000', logo_url: 'https://cdn.example.co/a.png' } },
     { empresa_id: EMPRESA_B, marca: { color_primario: 'red;background:url(x)', logo_url: "https://x.co/a')" } },
   ],
-  pruebas: [], ico_configuraciones: [], baremos: [], evaluaciones: [], resultados_pruebas: [], indicadores_valores: [],
+  pruebas: [], ico_configuraciones: [], baremos: [], reglas: [], recomendaciones_plantillas: [], alertas: [], recomendaciones_generadas: [], auditoria: [], evaluaciones: [], resultados_pruebas: [], indicadores_valores: [],
   indicadores_definiciones: ['ico_trabajador','ico_area','ico_cargo','ico_empresa','indice_atencion','indice_fatiga','indice_fatiga_empresa','indice_riesgo','indice_riesgo_area','indice_riesgo_empresa'].map((codigo) => ({ id: 'def-' + codigo, codigo, nombre: codigo, ambito: 'x', formula_ref: 'x' })),
   areas: [], procesos: [], centros_trabajo: [], cargos: [], lineas_operacionales: [], operadores: [],
 };
@@ -39,6 +39,7 @@ class Query {
   gte(c, v) { this.filtros.push([c, v, 'gte']); return this; }
   lte(c, v) { this.filtros.push([c, v, 'lte']); return this; }
   not(c, op, v) { this.filtros.push([c, v, 'not']); return this; }
+  neq(c, v) { this.filtros.push([c, v, 'neq']); return this; }
   lt(c, v) { this.filtros.push([c, v, 'lt']); return this; }
   in(c, vs) { this.filtros.push([c, vs, 'in']); return this; }
   limit() { return this; }
@@ -52,6 +53,7 @@ class Query {
     for (const [c, v, modo] of this.filtros) {
       if (modo === 'gte') filas = filas.filter((f) => f[c] >= v);
       else if (modo === 'lte') filas = filas.filter((f) => f[c] <= v);
+      else if (modo === 'neq') filas = filas.filter((f) => f[c] !== v);
       else if (modo === 'lt') filas = filas.filter((f) => f[c] < v);
       else if (modo === 'in') filas = filas.filter((f) => v.includes(f[c]));
       else if (modo === 'not') filas = filas.filter((f) => f[c] !== null && f[c] !== undefined);
@@ -68,6 +70,7 @@ class Query {
     return filas;
   }
   conEmbeds(f) {
+    if (this.tabla === 'alertas') { const r = db.reglas.find((x) => x.id === f.regla_id); return { ...f, regla: r ? { nombre: r.nombre } : null }; }
     if (this.tabla !== 'operadores') return f;
     const nombre = (tabla, id) => { const x = db[tabla].find((r) => r.id === id); return x ? { nombre: x.nombre } : null; };
     return { ...f, cargo: nombre('cargos', f.cargo_id), area: nombre('areas', f.area_id), centro_trabajo: nombre('centros_trabajo', f.centro_trabajo_id), linea_operacional: nombre('lineas_operacionales', f.linea_operacional_id) };
@@ -79,7 +82,7 @@ class Query {
       return { data: [EMPRESA_A, EMPRESA_B].map((e) => ({ empresa_id: e, empresas: { nombre: e === EMPRESA_A ? 'Empresa A' : 'Empresa B' }, roles: { id: 'r', nombre: 'Administrador', roles_permisos: PERMISOS.map((codigo) => ({ permisos: { codigo } })) } })), error: null };
     }
     if (this.op === 'insert') {
-      const fila = { id: uuid(), estado: 'activo', ...this.payload };
+      const fila = { id: uuid(), estado: this.tabla === 'reglas' ? 'activa' : 'activo', ...this.payload };
       const unicos = this.tabla === 'operadores' ? ['cedula'] : ['nombre'];
       const choca = db[this.tabla].some((f) => f.empresa_id === fila.empresa_id && unicos.every((k) => lc(f[k]) === lc(fila[k])));
       if (choca) return this.error('23505');
@@ -115,6 +118,28 @@ export function createClient() {
     },
     from: (tabla) => new Query(tabla),
     rpc: async (nombre, args) => {
+      if (nombre === 'publicar_ico_configuracion') {
+        const id = uuid();
+        db.ico_configuraciones.push({ id, empresa_id: args.p_empresa_id, cargo_id: args.p_cargo_id, pesos: args.p_pesos, vigente_desde: new Date().toISOString(), vigente_hasta: null });
+        return { data: id, error: null };
+      }
+      if (nombre === 'publicar_baremo') {
+        const id = uuid();
+        db.baremos.push({ id, empresa_id: args.p_empresa_id, prueba_id: args.p_prueba_id, modalidad: args.p_modalidad, parametros: args.p_parametros, fuente: args.p_fuente, vigente_desde: new Date().toISOString(), vigente_hasta: null });
+        return { data: id, error: null };
+      }
+      if (nombre === 'publicar_resultado_reglas') {
+        let na = 0; let nr = 0;
+        for (const a of args.p_alertas) {
+          if (db.alertas.some((x) => x.regla_id === a.regla_id && x.evaluacion_id === a.evaluacion_id)) continue;
+          db.alertas.push({ id: uuid(), empresa_id: args.p_empresa, estado: 'abierta', created_at: new Date().toISOString(), ...a }); na += 1;
+        }
+        for (const r of args.p_recomendaciones) {
+          if (db.recomendaciones_generadas.some((x) => x.plantilla_id === r.plantilla_id && x.evaluacion_id === r.evaluacion_id)) continue;
+          db.recomendaciones_generadas.push({ id: uuid(), empresa_id: args.p_empresa, texto_resuelto: r.texto, ...r }); nr += 1;
+        }
+        return { data: { alertas: na, recomendaciones: nr }, error: null };
+      }
       if (nombre === 'publicar_indicadores') {
         for (const v of args.p_valores) {
           const def = db.indicadores_definiciones.find((d) => d.codigo === v.codigo);

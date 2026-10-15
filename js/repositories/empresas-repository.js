@@ -48,6 +48,24 @@ export class EmpresasRepository {
     if (error) throw new RepositoryError('empresas.obtenerConfiguracion', error);
     return data;
   }
+
+  /**
+   * Actualiza la configuración de negocio (RLS: `configuracion.editar`).
+   * @param {string} empresaId
+   * @param {{marca?: object, turnos?: object[], pruebas_activas?: string[], baremo_modalidad?: string}} cambios ya validados
+   * @param {string|null} usuarioId
+   * @returns {Promise<object>}
+   */
+  async actualizarConfiguracion(empresaId, cambios, usuarioId = null) {
+    const { data, error } = await this._client
+      .from('configuracion_empresa')
+      .update({ ...cambios, updated_at: new Date().toISOString(), updated_by: usuarioId })
+      .eq('empresa_id', empresaId)
+      .select('empresa_id')
+      .single();
+    if (error) throw new RepositoryError('empresas.actualizarConfiguracion', error);
+    return data;
+  }
 }
 
 export default EmpresasRepository;
