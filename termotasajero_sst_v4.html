@@ -105,6 +105,8 @@
     .dpad{display:grid;grid-template-columns:repeat(3,68px);grid-template-rows:repeat(2,58px);gap:8px;justify-content:center;margin-top:10px}
     .dpad button{font-size:24px;border-radius:10px;border:1px solid #ccc;background:#fff;cursor:pointer;touch-action:manipulation;color:#1a1a1a}
     .dpad button:active{background:#B5D4F4}
+    .pract-banner{display:none;background:#FFF4D6;border:1px solid #F59E0B;color:#7A4B00;border-radius:8px;padding:8px 12px;font-size:13px;font-weight:600;text-align:center;margin-bottom:8px}
+    .pract-note{font-size:13px;color:#7A4B00;background:#FFF4D6;border:1px solid #F5D78A;border-radius:8px;padding:8px 12px;margin-bottom:12px}
   </style>
 </head>
 <body>
@@ -205,10 +207,12 @@
   <div class="logo"><h1 id="inst1-tit">Prueba 1</h1><p id="inst1-sub">Atención selectiva</p></div>
   <div class="card">
     <div class="instruccion"><strong style="font-weight:600;font-size:15px;display:block;margin-bottom:8px">Cancelación de símbolos</strong>Observa la cuadrícula. Tu tarea es tocar <strong style="font-weight:600">todos los que coincidan</strong> con el símbolo objetivo. Cuando termines presiona <strong style="font-weight:600">"Finalizar prueba"</strong>.</div>
-    <button class="btn btn-primary" onclick="iniciarP1()">Entendido — comenzar</button>
+    <p class="pract-note">Primero harás una <strong>práctica corta que no se guarda</strong>. Después comienza la prueba real.</p>
+    <button class="btn btn-primary" onclick="iniciarPractica(1)">Entendido — comenzar práctica</button>
   </div>
 </div>
 <div class="screen" id="s-p1">
+  <div class="pract-banner">🔸 PRÁCTICA — este resultado no se guarda</div>
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
     <span style="font-size:13px;color:#666">Prueba 1 — Atención</span>
     <span class="timer" id="timer-p1">00:00</span>
@@ -224,10 +228,12 @@
   <div class="logo"><h1 id="inst2-tit">Prueba 2</h1><p id="inst2-sub">Concentración</p></div>
   <div class="card">
     <div class="instruccion"><strong style="font-weight:600;font-size:15px;display:block;margin-bottom:8px">Prueba Stroop adaptada</strong>Verás una palabra en un color diferente. Selecciona el <strong style="font-weight:600">COLOR DE LA TINTA</strong>, no lo que dice la palabra.<br><br>Ejemplo: si ves <span style="color:#D85A30;font-weight:600">AZUL</span>, la respuesta correcta es "naranja".</div>
-    <button class="btn btn-primary" onclick="iniciarP2()">Entendido — comenzar</button>
+    <p class="pract-note">Primero harás una <strong>práctica corta que no se guarda</strong>. Después comienza la prueba real.</p>
+    <button class="btn btn-primary" onclick="iniciarPractica(2)">Entendido — comenzar práctica</button>
   </div>
 </div>
 <div class="screen" id="s-p2">
+  <div class="pract-banner">🔸 PRÁCTICA — este resultado no se guarda</div>
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
     <span style="font-size:13px;color:#666">Prueba 2 — Concentración</span>
     <span class="timer" id="timer-p2">00:00</span>
@@ -244,10 +250,12 @@
   <div class="logo"><h1 id="inst3-tit">Prueba 3</h1><p id="inst3-sub">Memoria de trabajo</p></div>
   <div class="card">
     <div class="instruccion"><strong style="font-weight:600;font-size:15px;display:block;margin-bottom:8px">Secuencias visuales</strong>Se iluminarán celdas en un orden. Debes tocarlas <strong style="font-weight:600">en el mismo orden</strong>. Cada ronda tiene más celdas y un patrón completamente nuevo.</div>
-    <button class="btn btn-primary" onclick="iniciarP3()">Entendido — comenzar</button>
+    <p class="pract-note">Primero harás una <strong>práctica corta que no se guarda</strong>. Después comienza la prueba real.</p>
+    <button class="btn btn-primary" onclick="iniciarPractica(3)">Entendido — comenzar práctica</button>
   </div>
 </div>
 <div class="screen" id="s-p3">
+  <div class="pract-banner">🔸 PRÁCTICA — este resultado no se guarda</div>
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
     <span style="font-size:13px;color:#666">Prueba 3 — Memoria</span>
     <span class="timer" id="timer-p3">00:00</span>
@@ -261,10 +269,12 @@
   <div class="logo"><h1 id="inst4-tit">Prueba 4</h1><p id="inst4-sub">Memoria espacial</p></div>
   <div class="card">
     <div class="instruccion"><strong style="font-weight:600;font-size:15px;display:block;margin-bottom:8px">Laberinto de memoria</strong>Verás un laberinto completo durante <strong style="font-weight:600">25 segundos</strong>. Memoriza el camino desde <strong style="font-weight:600">▶ (inicio)</strong> hasta <strong style="font-weight:600">🏁 (meta)</strong>.<br><br>Luego los muros desaparecerán y deberás llegar a la meta moviéndote con las flechas. Cada choque con un muro se marca un instante en rojo y cuenta como error. Tienes hasta 2 minutos y 20 choques.</div>
-    <button class="btn btn-primary" onclick="iniciarP4()">Entendido — comenzar</button>
+    <p class="pract-note">Primero harás una <strong>práctica corta que no se guarda</strong>. Después comienza la prueba real.</p>
+    <button class="btn btn-primary" onclick="iniciarPractica(4)">Entendido — comenzar práctica</button>
   </div>
 </div>
 <div class="screen" id="s-p4">
+  <div class="pract-banner">🔸 PRÁCTICA — este resultado no se guarda</div>
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
     <span style="font-size:13px;color:#666">Prueba 4 — Laberinto</span>
     <span class="timer" id="timer-p4">00:25</span>
@@ -277,6 +287,14 @@
     <button style="grid-column:1;grid-row:2" onclick="moverP4('w')" aria-label="Izquierda">◀</button>
     <button style="grid-column:2;grid-row:2" onclick="moverP4('s')" aria-label="Abajo">▼</button>
     <button style="grid-column:3;grid-row:2" onclick="moverP4('e')" aria-label="Derecha">▶</button>
+  </div>
+</div>
+
+<div class="screen" id="s-practica-fin">
+  <div class="logo"><h1>Práctica completada</h1><p id="pf-sub"></p></div>
+  <div class="card">
+    <div class="instruccion">La práctica <strong style="font-weight:600">no se guardó</strong>. Ahora comienza la <strong style="font-weight:600">prueba real</strong>: sus resultados sí quedan registrados. Hazla con la misma atención.</div>
+    <button class="btn btn-primary" onclick="iniciarReal()">Comenzar prueba real</button>
   </div>
 </div>
 
@@ -435,6 +453,7 @@ let estado={cedula:'',cargo:'',turno:'',fechaHora:'',
   p3:{tiempo:0,errores:0,inicio:0},
   p4:{tiempo:0,errores:0,inicio:0,completo:false}};
 let colaPruebas=[],totalPruebas=0,selPruebas=new Set();
+let modoPractica=false,practicaK=0,practicaBackup=null;
 let timerInterval=null;
 let p1Data={objetivo:'',celdas:[],marcadas:new Set()};
 let p2Data={items:[],idx:0};
@@ -495,6 +514,26 @@ function iniciarSeleccion(){
   seleccionarTurno('');
   irSiguientePrueba();
 }
+const INICIAR={1:()=>iniciarP1(),2:()=>iniciarP2(),3:()=>iniciarP3(),4:()=>iniciarP4()};
+function setBanner(on){document.querySelectorAll('.pract-banner').forEach(b=>b.style.display=on?'block':'none');}
+function iniciarPractica(k){
+  modoPractica=true;practicaK=k;
+  practicaBackup=estado['p'+k];                 /* se conserva intacto el registro real */
+  estado['p'+k]={tiempo:0,errores:0,inicio:0};  /* objeto temporal descartable */
+  INICIAR[k]();setBanner(true);
+}
+function finPractica(){
+  clearInterval(timerInterval);
+  modoPractica=false;
+  estado['p'+practicaK]=practicaBackup;         /* nada de la práctica llega al registro */
+  setBanner(false);
+  document.getElementById('pf-sub').textContent='Prueba '+practicaK+' · '+NOMBRES_PRUEBA[practicaK];
+  mostrar('s-practica-fin');
+}
+function iniciarReal(){
+  modoPractica=false;setBanner(false);
+  INICIAR[practicaK]();
+}
 function irSiguientePrueba(){
   if(!colaPruebas.length){finalizarSesion();return;}
   const n=colaPruebas.shift();
@@ -520,9 +559,10 @@ function iniciarP1(){
   p1Data.objetivo=obj;p1Data.marcadas=new Set();
   document.getElementById('objetivo-p1').textContent=obj;
   const pool=[];
-  for(let i=0;i<42;i++)pool.push(syms[Math.floor(Math.random()*syms.length)]);
+  const NC=modoPractica?14:42,MINT=modoPractica?3:8;
+  for(let i=0;i<NC;i++)pool.push(syms[Math.floor(Math.random()*syms.length)]);
   let cnt=pool.filter(x=>x===obj).length;
-  while(cnt<8){const p=Math.floor(Math.random()*42);if(pool[p]!==obj){pool[p]=obj;cnt++;}}
+  while(cnt<MINT){const p=Math.floor(Math.random()*NC);if(pool[p]!==obj){pool[p]=obj;cnt++;}}
   p1Data.celdas=pool;
   const g=document.getElementById('grid-p1');g.innerHTML='';
   pool.forEach((s,i)=>{const b=document.createElement('button');b.className='sym-btn';b.textContent=s;b.onclick=()=>clickP1(b,s,i);g.appendChild(b);});
@@ -538,13 +578,14 @@ function finalizarP1(){
   estado.p1.tiempo=Math.floor((Date.now()-estado.p1.inicio)/1000);
   const total=p1Data.celdas.filter(x=>x===p1Data.objetivo).length;
   estado.p1.errores+=total-p1Data.marcadas.size;
+  if(modoPractica){finPractica();return;}
   irSiguientePrueba();
 }
 
 /* ═══════════════ P2 ═══════════════ */
 function iniciarP2(){
   mostrar('s-p2');
-  p2Data.items=generarStroop(12);p2Data.idx=0;estado.p2.errores=0;
+  p2Data.items=generarStroop(modoPractica?4:12);p2Data.idx=0;estado.p2.errores=0;
   startTimer('timer-p2','p2');mostrarStroop();
 }
 function generarStroop(n){
@@ -573,7 +614,7 @@ function responderStroop(resp,correcto){
   else{fb.style.color='#A32D2D';fb.textContent='✗ Incorrecto — era: '+correcto;estado.p2.errores++;}
   setTimeout(()=>{p2Data.idx++;mostrarStroop();},650);
 }
-function finalizarP2(){clearInterval(timerInterval);estado.p2.tiempo=Math.floor((Date.now()-estado.p2.inicio)/1000);irSiguientePrueba();}
+function finalizarP2(){clearInterval(timerInterval);estado.p2.tiempo=Math.floor((Date.now()-estado.p2.inicio)/1000);if(modoPractica){finPractica();return;}irSiguientePrueba();}
 
 /* ═══════════════ P3 ═══════════════ */
 function generarSecuenciasMemoria(rondas){
@@ -591,7 +632,7 @@ function generarSecuenciasMemoria(rondas){
 }
 function iniciarP3(){
   mostrar('s-p3');
-  p3Data={secuencias:generarSecuenciasMemoria(6),nivel:0,entrada:[],mostrando:false,errores:0,inicio:Date.now()};
+  p3Data={secuencias:generarSecuenciasMemoria(modoPractica?2:6),nivel:0,entrada:[],mostrando:false,errores:0,inicio:Date.now()};
   estado.p3.errores=0;
   construirGridMem();startTimer('timer-p3','p3');setTimeout(()=>nuevaRondaMem(),800);
 }
@@ -638,6 +679,7 @@ function clickMem(idx){
 function finalizarP3(){
   clearInterval(timerInterval);
   estado.p3.tiempo=Math.floor((Date.now()-estado.p3.inicio)/1000);
+  if(modoPractica){finPractica();return;}
   irSiguientePrueba();
 }
 function finalizarSesion(){
@@ -662,11 +704,11 @@ function mostrarResultadoOperador(){
 }
 
 /* ═══════════════ P4 — LABERINTO DE MEMORIA ═══════════════ */
-const MZ_N=8;              /* cuadrícula 8x8 */
-const MZ_MEMO=25;          /* segundos de memorización (fijos, no cuentan en el tiempo de la prueba) */
-const MZ_LIM_T=120;        /* tiempo máximo de recorrido (s) */
-const MZ_LIM_E=20;         /* choques máximos */
-const MZ_PASOS_MIN=26, MZ_PASOS_MAX=40; /* longitud de la ruta correcta: complejidad media */
+let MZ_N=8;              /* cuadrícula 8x8 */
+let MZ_MEMO=25;          /* segundos de memorización (fijos, no cuentan en el tiempo de la prueba) */
+let MZ_LIM_T=120;        /* tiempo máximo de recorrido (s) */
+let MZ_LIM_E=20;         /* choques máximos */
+let MZ_PASOS_MIN=26, MZ_PASOS_MAX=40; /* longitud de la ruta correcta: complejidad media */
 const MZ_DIR={n:{dx:0,dy:-1,o:'s'},e:{dx:1,dy:0,o:'w'},s:{dx:0,dy:1,o:'n'},w:{dx:-1,dy:0,o:'e'}};
 let p4Data={celdas:[],x:0,y:0,fase:'',trail:[],flash:null,intMemo:null,toLim:null,errores:0};
 
@@ -713,6 +755,8 @@ function setP4Status(tipo,txt){
 }
 function iniciarP4(){
   mostrar('s-p4');
+  if(modoPractica){MZ_N=5;MZ_MEMO=10;MZ_LIM_T=60;MZ_LIM_E=10;MZ_PASOS_MIN=8;MZ_PASOS_MAX=14;}   /* práctica: laberinto 5x5 corto */
+  else{MZ_N=8;MZ_MEMO=25;MZ_LIM_T=120;MZ_LIM_E=20;MZ_PASOS_MIN=26;MZ_PASOS_MAX=40;}               /* prueba real: 8x8 media */
   clearInterval(timerInterval);clearInterval(p4Data.intMemo);clearTimeout(p4Data.toLim);
   p4Data={celdas:generarLaberinto(MZ_N),x:0,y:0,fase:'memo',trail:[[0,0]],flash:null,intMemo:null,toLim:null,errores:0};
   estado.p4.errores=0;estado.p4.completo=false;
@@ -765,7 +809,7 @@ function finalizarP4(motivo){
   estado.p4.completo=(motivo==='meta');
   if(motivo==='meta')setP4Status('ok','✓ ¡Llegaste a la meta!');
   else setP4Status('err',motivo==='tiempo'?'Se acabó el tiempo.':'Límite de choques alcanzado.');
-  setTimeout(()=>irSiguientePrueba(),1400);
+  setTimeout(()=>{if(modoPractica)finPractica();else irSiguientePrueba();},1400);
 }
 function dibujarLaberinto(){
   const cv=document.getElementById('maze-canvas');if(!cv)return;
