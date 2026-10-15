@@ -238,6 +238,88 @@
     .pap-nota{font-size:12px;color:#666;margin-bottom:6px}
     .pap-tabs-cnt{margin-left:4px}
     @media (min-width:900px){.p-form .pbg-foto{opacity:1;height:80svh;min-height:0}.p-form .p-inner{justify-content:center}}
+
+    /* ═══ Prueba 4 — nuevo diseño ═══ */
+    .screen.p4v{max-width:none;margin:0;padding:14px max(14px,calc((100% - 1080px)/2)) 24px;font-family:'Mulish','Segoe UI',system-ui,sans-serif;color:var(--ink);background:linear-gradient(160deg,#fff 0%,#FFF9F2 60%,#FFF1E0 100%);min-height:100vh;min-height:100svh}
+    .screen.p4v.active{display:block}
+    .p4v *{box-sizing:border-box}
+    .p4v button{font-family:inherit}
+    .p4-top{display:flex;align-items:center;gap:14px;background:#fff;border-radius:16px;padding:10px 16px;box-shadow:0 4px 18px rgba(35,38,43,.08);margin-bottom:14px}
+    .p4-top .logo-termo{width:150px;flex:none}
+    .p4-top .tsep{width:2px;align-self:stretch;background:var(--or);border-radius:2px}
+    .p4-top b{display:block;font-size:15px;font-weight:900}
+    .p4-top small{display:block;font-size:12px;color:var(--gris)}
+    .p4-top .p4-exit-m{margin-left:auto;display:none}
+    .p4-exit{display:flex;align-items:center;justify-content:center;gap:8px;border:2px solid var(--ink);background:#fff;color:var(--ink);border-radius:12px;padding:10px 14px;font-weight:800;font-size:14px;cursor:pointer}
+    .p4-exit:hover{background:#FFF1E0}
+    .p4-grid{display:grid;grid-template-columns:230px minmax(0,1fr) 230px;gap:14px;align-items:start}
+    .p4-side,.p4-ctl,.p4-main{background:#fff;border-radius:18px;box-shadow:0 8px 28px rgba(35,38,43,.10);padding:16px}
+    .p4-side h4,.p4-ctl h4{margin:0 0 10px;font-size:15px;font-weight:900}
+    .p4-side ol{list-style:none;margin:0 0 14px;padding:0}
+    .p4-side li{display:flex;gap:10px;align-items:flex-start;font-size:13px;line-height:1.35;color:#454A50;padding:7px 0}
+    .p4-side li i{flex:none;width:24px;height:24px;border-radius:50%;background:var(--or);color:#fff;font:800 13px 'Mulish',sans-serif;display:grid;place-items:center}
+    .p4-side li.on i{background:var(--ink)}
+    .p4-side li.on{color:var(--ink);font-weight:800}
+    .p4-side .p4-exit{width:100%}
+    .p4-title{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+    .p4-title h3{margin:0;font-size:clamp(17px,4.5vw,22px);font-weight:900;display:flex;align-items:center;gap:10px}
+    .p4-title h3 svg{width:32px;height:32px;flex:none}
+    .p4-timer{display:flex;align-items:center;gap:8px;background:var(--ink);color:#fff;border-radius:999px;padding:7px 16px;font:900 clamp(18px,5vw,24px) 'Mulish',sans-serif;font-variant-numeric:tabular-nums}
+    .p4-timer svg{width:20px;height:20px}
+    .p4v .alert{border-radius:12px;font-weight:700;font-size:14px;margin-bottom:12px}
+    .p4v .alert-amarillo{background:#FFF1DC;border:1.5px solid #F8C27A;color:#7A4B00}
+    .p4-board{position:relative;width:100%;max-width:520px;margin:0 auto}
+    .p4-board canvas{display:block;width:100%;height:auto;aspect-ratio:1/1;border-radius:14px;border:3px solid var(--ink);background:#fff}
+    .p4-bar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:12px}
+    .p4-fase{display:inline-flex;align-items:center;gap:10px;background:#FFF1DC;border:1.5px solid #F8C27A;color:#7A4B00;border-radius:999px;padding:6px 14px;font-weight:800;font-size:13px}
+    .p4-fase .dots{display:inline-flex;gap:4px}
+    .p4-fase .dots b{width:9px;height:9px;border-radius:50%;background:#E8C99A}
+    .p4-fase .dots b.on{background:var(--or)}
+    .p4-info{font-size:13px;color:var(--gris);font-weight:700}
+    .p4-keys{display:grid;grid-template-columns:repeat(3,56px);grid-template-rows:repeat(2,56px);gap:8px;justify-content:center;margin:6px 0 12px}
+    .p4-keys button{border:2px solid var(--ink);border-bottom-width:5px;border-radius:12px;background:#fff;color:var(--ink);font-size:20px;font-weight:900;cursor:pointer;touch-action:manipulation}
+    .p4-keys button:active{background:#FFE2C6;transform:translateY(2px);border-bottom-width:3px}
+    .p4-hint{font-size:13px;color:var(--gris);text-align:center;margin:6px 0 12px;line-height:1.4}
+    .p4-leg{display:flex;flex-direction:column;gap:8px;font-size:13px;font-weight:700;border-top:1px solid #eee;padding-top:12px}
+    .p4-leg span{display:flex;align-items:center;gap:10px}
+    .p4-leg i{width:22px;height:22px;border-radius:6px;display:inline-block;border:1.5px solid var(--ink)}
+    .p4-leg .li-ini{background:var(--or);border-color:var(--or)}
+    .p4-leg .li-meta{background:#FFF1D6}
+    @media (max-width:860px){
+      .p4-grid{grid-template-columns:1fr}
+      .p4-side{display:none}
+      .p4-top .p4-exit-m{display:flex;padding:7px 12px}
+      .p4-top .logo-termo{width:110px}
+      .p4-top small{display:none}
+      .p4-ctl{order:3}
+      .p4-keys{grid-template-columns:repeat(3,64px);grid-template-rows:repeat(2,56px);margin:0}
+      .p4-ctl{padding:10px}.p4-ctl h4,.p4-ctl .p4-leg{display:none}.p4-ctl .p4-hint{margin:0 0 8px}
+      .p4-main{padding:12px}.p4v{padding-top:10px!important}.p4-top{margin-bottom:10px}
+    }
+    /* instrucciones */
+    .i4-card{max-width:760px;margin:0 auto;background:#fff;border-radius:22px;box-shadow:0 16px 44px rgba(35,38,43,.13);padding:20px}
+    .i4-head{display:flex;align-items:center;gap:14px;padding-bottom:14px;position:relative;margin-bottom:12px}
+    .i4-head::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:linear-gradient(90deg,var(--or),var(--am) 45%,rgba(253,183,46,0))}
+    .i4-head>svg{flex:none;width:50px;height:50px}
+    .i4-head .fsep{flex:none;width:2px;align-self:stretch;background:var(--or);border-radius:2px}
+    .i4-head h2{margin:0;font-size:clamp(22px,6vw,28px);font-weight:900;letter-spacing:-.02em}
+    .i4-head p{margin:2px 0 0;font-size:14px;color:var(--gris)}
+    .i4-pill{margin-left:auto;flex:none;background:#FFF1DC;border:1.5px solid #F8C27A;color:#7A4B00;border-radius:999px;padding:6px 14px;font-weight:800;font-size:13px;white-space:nowrap}
+    .i4-body{display:grid;grid-template-columns:minmax(0,1fr) 230px;gap:18px;align-items:start}
+    .i4-steps{list-style:none;margin:0;padding:0}
+    .i4-steps li{display:flex;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid #f0ece6;font-size:14px;line-height:1.4;color:#454A50}
+    .i4-steps li:last-child{border-bottom:0}
+    .i4-steps li i{flex:none;width:30px;height:30px;border-radius:50%;background:var(--or);color:#fff;font:900 15px 'Mulish',sans-serif;display:grid;place-items:center}
+    .i4-steps li svg{flex:none;width:30px;height:30px;margin-left:auto}
+    .i4-steps b{color:var(--ink)}
+    .i4-ex{background:#FFF9F2;border:1.5px solid #F3DDBF;border-radius:16px;padding:12px;text-align:center}
+    .i4-ex h5{margin:0 0 8px;font-size:13px;font-weight:900}
+    .i4-ex svg{width:100%;height:auto;display:block;border-radius:8px;background:#fff}
+    .i4-ex .p4-leg{border:0;padding-top:8px;flex-direction:row;justify-content:center;gap:16px}
+    .i4-tip{margin-top:14px;background:#FFF1DC;border:1.5px solid #F8C27A;color:#7A4B00;border-radius:12px;padding:10px 14px;font-size:13px;line-height:1.45;display:flex;gap:10px}
+    @media (max-width:640px){.i4-body{grid-template-columns:1fr}.i4-pill{display:none}.i4-head p span{display:inline}}
+    .i4-pill-m{display:none;margin-top:4px;background:#FFF1DC;border:1.5px solid #F8C27A;color:#7A4B00;border-radius:999px;padding:3px 10px;font-weight:800;font-size:12px;width:fit-content}
+    @media (max-width:640px){.i4-pill-m{display:block}}
   </style>
 </head>
 <body>
@@ -436,28 +518,51 @@
   <div style="text-align:center;margin-top:6px"><span id="mem-nivel" style="font-size:13px;color:#666">Ronda 1</span></div>
 </div>
 
-<div class="screen" id="s-inst4">
-  <div class="logo"><h1 id="inst4-tit">Prueba 4</h1><p id="inst4-sub">Memoria espacial</p></div>
-  <div class="card">
-    <div class="instruccion"><strong style="font-weight:600;font-size:15px;display:block;margin-bottom:8px">Laberinto de memoria</strong>Verás un laberinto completo durante <strong style="font-weight:600">25 segundos</strong>. Memoriza el camino desde <strong style="font-weight:600">▶ (inicio)</strong> hasta <strong style="font-weight:600">🏁 (meta)</strong>.<br><br>Luego los muros desaparecerán y deberás llegar a la meta moviéndote con las flechas. Cada choque con un muro se marca un instante en rojo y cuenta como error. Tienes hasta 2 minutos y 20 choques.</div>
-    <p class="pract-note">Primero harás una <strong>práctica corta que no se guarda</strong>. Después comienza la prueba real.</p>
-    <button class="btn btn-primary" onclick="iniciarPractica(4)">Entendido — comenzar práctica</button>
+<div class="screen p4v" id="s-inst4">
+  <div class="i4-card">
+    <div class="i4-head"><svg viewBox="0 0 36 36"><path d="M18 4l12 6v14l-12 7-12-7V10z" fill="none" stroke="#23262B" stroke-width="2.4" stroke-linejoin="round"/><path d="M6 10l12 6 12-6M18 16v15" stroke="#23262B" stroke-width="2.4" fill="none"/><path d="M18 16l12-6-12-6-12 6z" fill="#F97316" opacity=".85"/></svg><span class="fsep"></span>
+      <div><h2 id="inst4-tit">Prueba 4</h2><p id="inst4-sub">Memoria espacial</p><span class="i4-pill-m" id="inst4-paso-m">Paso 1 de 1</span></div>
+      <span class="i4-pill" id="inst4-paso">Paso 1 de 1</span></div>
+    <div class="i4-body">
+      <ol class="i4-steps">
+        <li><i>1</i><span><b>Memoriza el camino</b> desde ▶ (inicio) hasta la meta durante <b>25 segundos</b>.</span><svg viewBox="0 0 32 32"><path d="M3 16s5-8 13-8 13 8 13 8-5 8-13 8S3 16 3 16z" fill="none" stroke="#23262B" stroke-width="2.4" stroke-linejoin="round"/><circle cx="16" cy="16" r="4.5" fill="#F97316"/></svg></li>
+        <li><i>2</i><span>Los <b>muros desaparecerán</b>.</span><svg viewBox="0 0 32 32"><path d="M3 16s5-8 13-8 13 8 13 8-5 8-13 8S3 16 3 16z" fill="none" stroke="#23262B" stroke-width="2.4" stroke-linejoin="round"/><circle cx="16" cy="16" r="4.5" fill="#F97316"/><path d="M5 27L27 5" stroke="#23262B" stroke-width="3" stroke-linecap="round"/></svg></li>
+        <li><i>3</i><span>Llega a la meta con las <b>flechas</b>. Cada choque con un muro cuenta como <b>error</b> y se marca en rojo.</span><svg viewBox="0 0 32 32"><path d="M16 4L29 27H3z" fill="#FDB72E" stroke="#23262B" stroke-width="2.2" stroke-linejoin="round"/><path d="M16 12v7" stroke="#23262B" stroke-width="2.6" stroke-linecap="round"/><circle cx="16" cy="23" r="1.6" fill="#23262B"/></svg></li>
+        <li><i>4</i><span>Tienes hasta <b>2 minutos</b> y <b>20 choques</b>.</span><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="11" fill="none" stroke="#23262B" stroke-width="2.4"/><path d="M16 9v7l5 3" fill="none" stroke="#F97316" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg></li>
+      </ol>
+      <div class="i4-ex"><h5>Ejemplo de la prueba</h5><svg viewBox="0 0 182 182"><rect x="6" y="6" width="34" height="34" fill="#F97316"/><path d="M17 14l16 9-16 9z" fill="#fff"/><rect x="142" y="142" width="34" height="34" fill="#FFF1D6"/><rect x="147" y="147" width="8" height="8" fill="#23262B"/><rect x="163" y="147" width="8" height="8" fill="#23262B"/><rect x="155" y="155" width="8" height="8" fill="#23262B"/><rect x="147" y="163" width="8" height="8" fill="#23262B"/><rect x="163" y="163" width="8" height="8" fill="#23262B"/><g stroke="#23262B" stroke-width="4" stroke-linecap="round" fill="none"><rect x="6" y="6" width="170" height="170"/><path d="M6 40L40 40"/><path d="M40 40L40 108"/><path d="M74 6L74 74"/><path d="M108 40L108 142"/><path d="M142 74L142 176"/><path d="M40 108L108 108"/><path d="M6 142L74 142"/><path d="M74 74L108 74"/><path d="M108 142L176 142"/><path d="M6 74L40 74"/></g></svg>
+        <div class="p4-leg"><span><i class="li-ini"></i>Inicio</span><span><i class="li-meta"></i>Meta</span></div></div>
+    </div>
+    <div class="i4-tip"><span>💡</span><span>Primero harás una <b>práctica corta que no se guarda</b>. Después comienza la prueba real.</span></div>
+    <button class="btn-dark" onclick="iniciarPractica(4)">Entendido — comenzar práctica<span class="bd-circ"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.600" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+    <button class="btn-line" onclick="salirP4(true)">Volver</button>
   </div>
 </div>
-<div class="screen" id="s-p4">
-  <div class="pract-banner">🔸 PRÁCTICA — este resultado no se guarda</div>
-  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-    <span style="font-size:13px;color:#666">Prueba 4 — Laberinto</span>
-    <span class="timer" id="timer-p4">00:25</span>
-  </div>
-  <div id="p4-status" class="alert alert-amarillo">Memoriza el laberinto...</div>
-  <canvas id="maze-canvas" width="600" height="600"></canvas>
-  <div style="text-align:center"><span id="p4-info" style="font-size:13px;color:#666"></span></div>
-  <div class="dpad" id="p4-dpad" style="display:none">
-    <button style="grid-column:2;grid-row:1" onclick="moverP4('n')" aria-label="Arriba">▲</button>
-    <button style="grid-column:1;grid-row:2" onclick="moverP4('w')" aria-label="Izquierda">◀</button>
-    <button style="grid-column:2;grid-row:2" onclick="moverP4('s')" aria-label="Abajo">▼</button>
-    <button style="grid-column:3;grid-row:2" onclick="moverP4('e')" aria-label="Derecha">▶</button>
+<div class="screen p4v" id="s-p4">
+  <div class="p4-top"><span class="logo-termo" role="img" aria-label="Termotasajero Colgener"></span><span class="tsep"></span>
+    <div><b>Evaluación SST</b><small>Sistema de pruebas cognitivas</small></div>
+    <button class="p4-exit p4-exit-m" onclick="salirP4()"><svg viewBox="0 0 24 24" width="18" height="18"><path d="M10 5H5v14h5M14 8l4 4-4 4M18 12H9" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Salir</button></div>
+  <div class="p4-grid">
+    <aside class="p4-side"><h4>Prueba 4 · Laberinto</h4>
+      <ol><li id="p4s-1" class="on"><i>1</i>Memoriza el camino de ▶ a la meta.</li><li id="p4s-2"><i>2</i>Los muros desaparecen.</li><li id="p4s-3"><i>3</i>Recorre con las flechas hasta la meta.</li><li id="p4s-4"><i>4</i>Máx. 2 min y 20 choques.</li></ol>
+      <button class="p4-exit" onclick="salirP4()"><svg viewBox="0 0 24 24" width="18" height="18"><path d="M10 5H5v14h5M14 8l4 4-4 4M18 12H9" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Salir de la prueba</button></aside>
+    <main class="p4-main">
+      <div class="pract-banner">🔸 PRÁCTICA — este resultado no se guarda</div>
+      <div class="p4-title"><h3><svg viewBox="0 0 36 36"><path d="M18 4l12 6v14l-12 7-12-7V10z" fill="none" stroke="#23262B" stroke-width="2.4" stroke-linejoin="round"/><path d="M6 10l12 6 12-6M18 16v15" stroke="#23262B" stroke-width="2.4" fill="none"/><path d="M18 16l12-6-12-6-12 6z" fill="#F97316" opacity=".85"/></svg>Prueba 4 — Laberinto</h3><div class="p4-timer"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="#fff" stroke-width="2.2"/><path d="M12 7v5l3.500 2" fill="none" stroke="#FDB72E" stroke-width="2.4" stroke-linecap="round"/></svg><span id="timer-p4">00:25</span></div></div>
+      <div id="p4-status" class="alert alert-amarillo">Memoriza el laberinto...</div>
+      <div class="p4-board"><canvas id="maze-canvas" width="720" height="720"></canvas></div>
+      <div class="p4-bar"><span class="p4-fase"><span id="p4-fase-txt">Fase de memorización</span><span class="dots"><b class="on" id="p4d-1"></b><b id="p4d-2"></b></span></span><span id="p4-info" class="p4-info"></span></div>
+    </main>
+    <aside class="p4-ctl"><h4>Controles</h4>
+      <p class="p4-hint" id="p4-hint">Las flechas se activan cuando desaparezcan los muros.</p>
+      <div class="p4-keys" id="p4-dpad" style="display:none">
+        <button style="grid-column:2;grid-row:1" onclick="moverP4('n')" aria-label="Arriba">▲</button>
+        <button style="grid-column:1;grid-row:2" onclick="moverP4('w')" aria-label="Izquierda">◀</button>
+        <button style="grid-column:2;grid-row:2" onclick="moverP4('s')" aria-label="Abajo">▼</button>
+        <button style="grid-column:3;grid-row:2" onclick="moverP4('e')" aria-label="Derecha">▶</button>
+      </div>
+      <div class="p4-leg"><span><i class="li-ini"></i>Inicio</span><span><i class="li-meta"></i>Meta</span></div>
+    </aside>
   </div>
 </div>
 
@@ -711,7 +816,10 @@ function irSiguientePrueba(){
   const n=colaPruebas.shift();
   const paso=totalPruebas-colaPruebas.length;
   document.getElementById('inst'+n+'-tit').textContent='Prueba '+n;
-  document.getElementById('inst'+n+'-sub').textContent=NOMBRES_PRUEBA[n]+' · Paso '+paso+' de '+totalPruebas;
+  const pe=document.getElementById('inst'+n+'-paso');
+  if(pe){document.getElementById('inst'+n+'-sub').textContent=NOMBRES_PRUEBA[n];
+    pe.textContent=document.getElementById('inst'+n+'-paso-m').textContent='Paso '+paso+' de '+totalPruebas;}
+  else document.getElementById('inst'+n+'-sub').textContent=NOMBRES_PRUEBA[n]+' · Paso '+paso+' de '+totalPruebas;
   mostrar('s-inst'+n);
 }
 function startTimer(tid,campo){
@@ -925,6 +1033,25 @@ function setP4Status(tipo,txt){
   el.className='alert '+(tipo==='amarillo'?'alert-amarillo':tipo==='verde'?'alert-verde':tipo==='ok'?'alert-ok':'alert-err');
   el.textContent=txt;
 }
+function setFaseP4(f){
+  const m=f==='memo';
+  document.getElementById('p4-fase-txt').textContent=m?'Fase de memorización':'Fase de recorrido';
+  document.getElementById('p4d-1').className=m?'on':'';document.getElementById('p4d-2').className=m?'':'on';
+  document.getElementById('p4-hint').style.display=m?'block':'none';
+  [1,2,3,4].forEach(i=>document.getElementById('p4s-'+i).className=(m?i===1:i>=3)?'on':'');
+}
+function salirP4(soloInstr){
+  if(soloInstr){ /* desde las instrucciones: nada se ha iniciado */
+    mostrar('s-seleccion');return;
+  }
+  if(!confirm('¿Salir de la prueba? Esta prueba no se guardará.'))return;
+  clearInterval(timerInterval);clearInterval(p4Data.intMemo);clearTimeout(p4Data.toLim);
+  p4Data.fase='fin';
+  if(modoPractica){estado['p'+practicaK]=practicaBackup;modoPractica=false;setBanner(false);}
+  estado.p4={tiempo:null,errores:null,inicio:0,completo:false};
+  const hecha=[1,2,3].some(k=>estado['p'+k]&&estado['p'+k].tiempo!=null);
+  if(colaPruebas.length||hecha)irSiguientePrueba();else mostrar('s-seleccion');
+}
 function iniciarP4(){
   mostrar('s-p4');
   if(modoPractica){MZ_N=5;MZ_MEMO=10;MZ_LIM_T=60;MZ_LIM_E=10;MZ_PASOS_MIN=8;MZ_PASOS_MAX=14;}   /* práctica: laberinto 5x5 corto */
@@ -933,8 +1060,9 @@ function iniciarP4(){
   p4Data={celdas:generarLaberinto(MZ_N),x:0,y:0,fase:'memo',trail:[[0,0]],flash:null,intMemo:null,toLim:null,errores:0};
   estado.p4.errores=0;estado.p4.completo=false;
   document.getElementById('p4-dpad').style.display='none';
-  setP4Status('amarillo','Memoriza el camino de ▶ a 🏁. Los muros desaparecerán.');
-  document.getElementById('p4-info').textContent='Fase de memorización';
+  setP4Status('amarillo','Memoriza el camino de ▶ a la meta. Los muros desaparecerán.');
+  document.getElementById('p4-info').textContent='';
+  setFaseP4('memo');
   let rest=MZ_MEMO;
   document.getElementById('timer-p4').textContent=fmtSeg(rest);
   dibujarLaberinto();
@@ -945,8 +1073,8 @@ function iniciarP4(){
 }
 function comenzarRecorridoP4(){
   p4Data.fase='recorrido';
-  setP4Status('verde','¡Ahora recorre el laberinto! Llega hasta 🏁');
-  document.getElementById('p4-dpad').style.display='grid';
+  setP4Status('verde','¡Ahora recorre el laberinto! Llega hasta la meta.');
+  document.getElementById('p4-dpad').style.display='grid';setFaseP4('rec');
   actualizarInfoP4();
   document.getElementById('timer-p4').textContent='00:00';
   startTimer('timer-p4','p4');
@@ -985,26 +1113,27 @@ function finalizarP4(motivo){
 }
 function dibujarLaberinto(){
   const cv=document.getElementById('maze-canvas');if(!cv)return;
-  const ctx=cv.getContext('2d');const N=MZ_N,S=cv.width,pad=14,cs=(S-2*pad)/N;
+  const ctx=cv.getContext('2d');const N=MZ_N,S=cv.width,pad=18,cs=(S-2*pad)/N;
   const ox=x=>pad+x*cs,oy=y=>pad+y*cs;
   const memo=p4Data.fase==='memo';
   ctx.clearRect(0,0,S,S);
-  /* inicio y meta */
-  ctx.fillStyle='#EAF3DE';ctx.fillRect(ox(0),oy(0),cs,cs);
-  ctx.fillStyle='#FAEEDA';ctx.fillRect(ox(N-1),oy(N-1),cs,cs);
+  ctx.fillStyle='#fff';ctx.fillRect(0,0,S,S);
   /* huella del recorrido */
   if(!memo){
-    ctx.fillStyle='#DCEBFA';
-    p4Data.trail.forEach(([x,y])=>ctx.fillRect(ox(x)+4,oy(y)+4,cs-8,cs-8));
-    /* cuadrícula tenue (sin revelar muros) */
-    ctx.strokeStyle='#e8e8e8';ctx.lineWidth=2;
-    for(let i=0;i<=N;i++){
-      ctx.beginPath();ctx.moveTo(ox(i),oy(0));ctx.lineTo(ox(i),oy(N));ctx.stroke();
-      ctx.beginPath();ctx.moveTo(ox(0),oy(i));ctx.lineTo(ox(N),oy(i));ctx.stroke();
-    }
+    ctx.fillStyle='#FFE6CF';
+    p4Data.trail.forEach(([x,y])=>ctx.fillRect(ox(x)+5,oy(y)+5,cs-10,cs-10));
+  }
+  /* inicio (naranja) y meta (crema) */
+  ctx.fillStyle='#F97316';ctx.fillRect(ox(0),oy(0),cs,cs);
+  ctx.fillStyle='#FFF1D6';ctx.fillRect(ox(N-1),oy(N-1),cs,cs);
+  /* cuadrícula tenue */
+  ctx.strokeStyle='#ECE7E0';ctx.lineWidth=2;
+  for(let i=0;i<=N;i++){
+    ctx.beginPath();ctx.moveTo(ox(i),oy(0));ctx.lineTo(ox(i),oy(N));ctx.stroke();
+    ctx.beginPath();ctx.moveTo(ox(0),oy(i));ctx.lineTo(ox(N),oy(i));ctx.stroke();
   }
   /* muros: todos en memorización; solo el marco en recorrido */
-  ctx.strokeStyle='#1a1a1a';ctx.lineWidth=7;ctx.lineCap='round';
+  ctx.strokeStyle='#23262B';ctx.lineWidth=Math.max(6,cs*0.11);ctx.lineCap='round';ctx.lineJoin='round';
   const seg=(x1,y1,x2,y2)=>{ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();};
   if(memo){
     for(let y=0;y<N;y++)for(let x=0;x<N;x++){
@@ -1019,22 +1148,25 @@ function dibujarLaberinto(){
   }
   /* choque: muro en rojo un instante */
   if(p4Data.flash){
-    const f=p4Data.flash;ctx.strokeStyle='#E24B4A';ctx.lineWidth=9;
+    const f=p4Data.flash;ctx.strokeStyle='#E24B4A';ctx.lineWidth=Math.max(8,cs*0.15);
     if(f.k==='n')seg(ox(f.x),oy(f.y),ox(f.x+1),oy(f.y));
     if(f.k==='s')seg(ox(f.x),oy(f.y+1),ox(f.x+1),oy(f.y+1));
     if(f.k==='w')seg(ox(f.x),oy(f.y),ox(f.x),oy(f.y+1));
     if(f.k==='e')seg(ox(f.x+1),oy(f.y),ox(f.x+1),oy(f.y+1));
   }
-  /* marcas inicio / meta */
-  ctx.textAlign='center';ctx.textBaseline='middle';
-  ctx.font=Math.floor(cs*0.5)+'px sans-serif';
-  ctx.fillStyle='#3B6D11';ctx.fillText('▶',ox(0)+cs/2,oy(0)+cs/2);
-  ctx.fillStyle='#1a1a1a';ctx.fillText('🏁',ox(N-1)+cs/2,oy(N-1)+cs/2);
+  /* marca de inicio: triángulo blanco */
+  const a=cs*0.2;
+  ctx.fillStyle='#fff';ctx.beginPath();
+  ctx.moveTo(ox(0)+cs/2-a*0.8,oy(0)+cs/2-a*1.2);ctx.lineTo(ox(0)+cs/2+a*1.3,oy(0)+cs/2);ctx.lineTo(ox(0)+cs/2-a*0.8,oy(0)+cs/2+a*1.2);ctx.closePath();ctx.fill();
+  /* bandera de cuadros en la meta */
+  const k=3,q=cs*0.55/k,gx=ox(N-1)+cs/2-q*k/2,gy=oy(N-1)+cs/2-q*k/2;
+  for(let i=0;i<k;i++)for(let j=0;j<k;j++){ctx.fillStyle=(i+j)%2?'#fff':'#23262B';ctx.fillRect(gx+i*q,gy+j*q,q,q);}
+  ctx.strokeStyle='#23262B';ctx.lineWidth=2;ctx.strokeRect(gx,gy,q*k,q*k);
   /* jugador */
   if(!memo){
-    ctx.fillStyle='#185FA5';ctx.beginPath();
-    ctx.arc(ox(p4Data.x)+cs/2,oy(p4Data.y)+cs/2,cs*0.27,0,Math.PI*2);ctx.fill();
-    ctx.strokeStyle='#fff';ctx.lineWidth=3;ctx.stroke();
+    ctx.fillStyle='#23262B';ctx.beginPath();
+    ctx.arc(ox(p4Data.x)+cs/2,oy(p4Data.y)+cs/2,cs*0.26,0,Math.PI*2);ctx.fill();
+    ctx.strokeStyle='#FDB72E';ctx.lineWidth=Math.max(3,cs*0.06);ctx.stroke();
   }
 }
 document.addEventListener('keydown',e=>{
