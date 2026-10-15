@@ -95,6 +95,16 @@
     #nit-error{color:#A32D2D;font-size:13px;margin-top:8px;display:none}
     .empty-turno{text-align:center;padding:2rem;color:#888;font-size:14px}
     .sync-status{font-size:12px;text-align:center;padding:6px;border-radius:6px;margin-top:8px}
+    .prueba-opt{display:flex;gap:12px;align-items:center;padding:12px 14px;border:1.5px solid #ddd;border-radius:10px;margin-bottom:8px;cursor:pointer;background:#fff;transition:all .15s;user-select:none}
+    .prueba-opt.sel{border-color:#185FA5;background:#f0f6ff}
+    .chk{width:22px;height:22px;border-radius:6px;border:2px solid #bbb;flex:none;display:flex;align-items:center;justify-content:center;font-size:14px;color:#fff;background:#fff}
+    .prueba-opt.sel .chk{background:#185FA5;border-color:#185FA5}
+    .po-t{font-size:14px;font-weight:600}
+    .po-d{font-size:12px;color:#666;margin-top:2px}
+    #maze-canvas{display:block;margin:8px auto;max-width:380px;background:#fff;border:1px solid #ddd;border-radius:8px;touch-action:none}
+    .dpad{display:grid;grid-template-columns:repeat(3,68px);grid-template-rows:repeat(2,58px);gap:8px;justify-content:center;margin-top:10px}
+    .dpad button{font-size:24px;border-radius:10px;border:1px solid #ccc;background:#fff;cursor:pointer;touch-action:manipulation;color:#1a1a1a}
+    .dpad button:active{background:#B5D4F4}
   </style>
 </head>
 <body>
@@ -172,9 +182,27 @@
   <button class="btn" style="margin-top:8px" onclick="mostrar('s-selector')">Volver</button>
 </div>
 
+<!-- ══ SELECCIÓN DE PRUEBAS ══ -->
+<div class="screen" id="s-seleccion">
+  <div class="logo"><h1>Selección de pruebas</h1><p>Marca la o las pruebas que vas a realizar</p></div>
+  <div class="card">
+    <div class="prueba-opt" id="opt-1" onclick="togglePrueba(1)"><span class="chk" id="chk-1"></span><div><div class="po-t">Prueba 1 — Atención selectiva</div><div class="po-d">Cancelación de símbolos</div></div></div>
+    <div class="prueba-opt" id="opt-2" onclick="togglePrueba(2)"><span class="chk" id="chk-2"></span><div><div class="po-t">Prueba 2 — Concentración</div><div class="po-d">Stroop adaptada</div></div></div>
+    <div class="prueba-opt" id="opt-3" onclick="togglePrueba(3)"><span class="chk" id="chk-3"></span><div><div class="po-t">Prueba 3 — Memoria de trabajo</div><div class="po-d">Secuencias visuales</div></div></div>
+    <div class="prueba-opt" id="opt-4" onclick="togglePrueba(4)"><span class="chk" id="chk-4"></span><div><div class="po-t">Prueba 4 — Memoria espacial</div><div class="po-d">Laberinto de memoria</div></div></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0">
+      <button class="btn" onclick="marcarPruebas(true)">Marcar todas</button>
+      <button class="btn" onclick="marcarPruebas(false)">Limpiar</button>
+    </div>
+    <div id="sel-resumen" style="font-size:12px;color:#666;text-align:center;margin-bottom:10px">Ninguna prueba seleccionada</div>
+    <button class="btn btn-primary" onclick="iniciarSeleccion()">Iniciar pruebas</button>
+  </div>
+  <button class="btn" style="margin-top:8px" onclick="mostrar('s-registro')">Volver</button>
+</div>
+
 <!-- ══ PRUEBAS ══ -->
 <div class="screen" id="s-inst1">
-  <div class="logo"><h1>Prueba 1 de 3</h1><p>Atención selectiva</p></div>
+  <div class="logo"><h1 id="inst1-tit">Prueba 1</h1><p id="inst1-sub">Atención selectiva</p></div>
   <div class="card">
     <div class="instruccion"><strong style="font-weight:600;font-size:15px;display:block;margin-bottom:8px">Cancelación de símbolos</strong>Observa la cuadrícula. Tu tarea es tocar <strong style="font-weight:600">todos los que coincidan</strong> con el símbolo objetivo. Cuando termines presiona <strong style="font-weight:600">"Finalizar prueba"</strong>.</div>
     <button class="btn btn-primary" onclick="iniciarP1()">Entendido — comenzar</button>
@@ -193,7 +221,7 @@
   <button class="btn btn-primary" style="margin-top:10px" onclick="finalizarP1()">Finalizar prueba</button>
 </div>
 <div class="screen" id="s-inst2">
-  <div class="logo"><h1>Prueba 2 de 3</h1><p>Concentración</p></div>
+  <div class="logo"><h1 id="inst2-tit">Prueba 2</h1><p id="inst2-sub">Concentración</p></div>
   <div class="card">
     <div class="instruccion"><strong style="font-weight:600;font-size:15px;display:block;margin-bottom:8px">Prueba Stroop adaptada</strong>Verás una palabra en un color diferente. Selecciona el <strong style="font-weight:600">COLOR DE LA TINTA</strong>, no lo que dice la palabra.<br><br>Ejemplo: si ves <span style="color:#D85A30;font-weight:600">AZUL</span>, la respuesta correcta es "naranja".</div>
     <button class="btn btn-primary" onclick="iniciarP2()">Entendido — comenzar</button>
@@ -213,7 +241,7 @@
   <div style="text-align:center"><span id="stroop-prog" style="font-size:13px;color:#666">0/12</span></div>
 </div>
 <div class="screen" id="s-inst3">
-  <div class="logo"><h1>Prueba 3 de 3</h1><p>Memoria de trabajo</p></div>
+  <div class="logo"><h1 id="inst3-tit">Prueba 3</h1><p id="inst3-sub">Memoria de trabajo</p></div>
   <div class="card">
     <div class="instruccion"><strong style="font-weight:600;font-size:15px;display:block;margin-bottom:8px">Secuencias visuales</strong>Se iluminarán celdas en un orden. Debes tocarlas <strong style="font-weight:600">en el mismo orden</strong>. Cada ronda tiene más celdas y un patrón completamente nuevo.</div>
     <button class="btn btn-primary" onclick="iniciarP3()">Entendido — comenzar</button>
@@ -229,24 +257,53 @@
   <div style="text-align:center;margin-top:6px"><span id="mem-nivel" style="font-size:13px;color:#666">Ronda 1</span></div>
 </div>
 
+<div class="screen" id="s-inst4">
+  <div class="logo"><h1 id="inst4-tit">Prueba 4</h1><p id="inst4-sub">Memoria espacial</p></div>
+  <div class="card">
+    <div class="instruccion"><strong style="font-weight:600;font-size:15px;display:block;margin-bottom:8px">Laberinto de memoria</strong>Verás un laberinto completo durante <strong style="font-weight:600">25 segundos</strong>. Memoriza el camino desde <strong style="font-weight:600">▶ (inicio)</strong> hasta <strong style="font-weight:600">🏁 (meta)</strong>.<br><br>Luego los muros desaparecerán y deberás llegar a la meta moviéndote con las flechas. Cada choque con un muro se marca un instante en rojo y cuenta como error. Tienes hasta 2 minutos y 20 choques.</div>
+    <button class="btn btn-primary" onclick="iniciarP4()">Entendido — comenzar</button>
+  </div>
+</div>
+<div class="screen" id="s-p4">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+    <span style="font-size:13px;color:#666">Prueba 4 — Laberinto</span>
+    <span class="timer" id="timer-p4">00:25</span>
+  </div>
+  <div id="p4-status" class="alert alert-amarillo">Memoriza el laberinto...</div>
+  <canvas id="maze-canvas" width="600" height="600"></canvas>
+  <div style="text-align:center"><span id="p4-info" style="font-size:13px;color:#666"></span></div>
+  <div class="dpad" id="p4-dpad" style="display:none">
+    <button style="grid-column:2;grid-row:1" onclick="moverP4('n')" aria-label="Arriba">▲</button>
+    <button style="grid-column:1;grid-row:2" onclick="moverP4('w')" aria-label="Izquierda">◀</button>
+    <button style="grid-column:2;grid-row:2" onclick="moverP4('s')" aria-label="Abajo">▼</button>
+    <button style="grid-column:3;grid-row:2" onclick="moverP4('e')" aria-label="Derecha">▶</button>
+  </div>
+</div>
+
 <!-- ══ RESULTADO OPERADOR ══ -->
 <div class="screen" id="s-resultado">
   <div class="logo"><h1>Evaluación completada</h1><p>Resultados registrados correctamente</p></div>
   <div class="card">
-    <div class="stat-card" style="margin-bottom:10px">
+    <div class="stat-card" id="res-card-1" style="margin-bottom:10px">
       <div style="font-size:12px;color:#555;margin-bottom:4px;font-weight:600">Prueba 1 — Atención selectiva</div>
       <div class="stat-num" id="res-t1">—</div><div class="stat-lbl">segundos</div>
       <div style="margin-top:4px"><span id="res-e1-badge" class="badge">—</span></div>
     </div>
-    <div class="stat-card" style="margin-bottom:10px">
+    <div class="stat-card" id="res-card-2" style="margin-bottom:10px">
       <div style="font-size:12px;color:#555;margin-bottom:4px;font-weight:600">Prueba 2 — Concentración Stroop</div>
       <div class="stat-num" id="res-t2">—</div><div class="stat-lbl">segundos</div>
       <div style="margin-top:4px"><span id="res-e2-badge" class="badge">—</span></div>
     </div>
-    <div class="stat-card">
+    <div class="stat-card" id="res-card-3" style="margin-bottom:10px">
       <div style="font-size:12px;color:#555;margin-bottom:4px;font-weight:600">Prueba 3 — Memoria de trabajo</div>
       <div class="stat-num" id="res-t3">—</div><div class="stat-lbl">segundos</div>
       <div style="margin-top:4px"><span id="res-e3-badge" class="badge">—</span></div>
+    </div>
+    <div class="stat-card" id="res-card-4" style="margin-bottom:10px">
+      <div style="font-size:12px;color:#555;margin-bottom:4px;font-weight:600">Prueba 4 — Laberinto (memoria espacial)</div>
+      <div class="stat-num" id="res-t4">—</div><div class="stat-lbl">segundos</div>
+      <div style="margin-top:4px"><span id="res-e4-badge" class="badge">—</span></div>
+      <div id="res-p4-nota" style="font-size:11px;color:#791F1F;margin-top:4px;display:none">No llegó a la meta dentro del límite</div>
     </div>
     <div id="sync-msg" class="sync-status"></div>
     <p style="font-size:13px;color:#666;text-align:center;margin-top:10px">Gracias. Los datos fueron enviados al área de SST.</p>
@@ -375,7 +432,9 @@ const COL_SESION=['#378ADD','#639922','#EF9F27','#E24B4A','#9B59B6','#E67E22','#
 let estado={cedula:'',cargo:'',turno:'',fechaHora:'',
   p1:{tiempo:0,errores:0,inicio:0},
   p2:{tiempo:0,errores:0,inicio:0},
-  p3:{tiempo:0,errores:0,inicio:0}};
+  p3:{tiempo:0,errores:0,inicio:0},
+  p4:{tiempo:0,errores:0,inicio:0,completo:false}};
+let colaPruebas=[],totalPruebas=0,selPruebas=new Set();
 let timerInterval=null;
 let p1Data={objetivo:'',celdas:[],marcadas:new Set()};
 let p2Data={items:[],idx:0};
@@ -410,13 +469,39 @@ function iniciarEval(){
   if(!turno){alert('Por favor selecciona el tipo de turno');return;}
   estado.cedula=c;estado.cargo=area;estado.turno=turno;
   estado.fechaHora=new Date().toLocaleString('es-CO');
-  estado.p1={tiempo:0,errores:0,inicio:0};
-  estado.p2={tiempo:0,errores:0,inicio:0};
-  estado.p3={tiempo:0,errores:0,inicio:0};
+  marcarPruebas(false);
+  mostrar('s-seleccion');
+}
+const NOMBRES_PRUEBA={1:'Atención selectiva',2:'Concentración',3:'Memoria de trabajo',4:'Memoria espacial'};
+function actualizarSeleccionUI(){
+  [1,2,3,4].forEach(k=>{
+    document.getElementById('opt-'+k).className='prueba-opt'+(selPruebas.has(k)?' sel':'');
+    document.getElementById('chk-'+k).textContent=selPruebas.has(k)?'✓':'';
+  });
+  const n=selPruebas.size;
+  document.getElementById('sel-resumen').textContent=n?n+' prueba'+(n===1?'':'s')+' seleccionada'+(n===1?'':'s')+' (se realizarán en orden numérico)':'Ninguna prueba seleccionada';
+}
+function togglePrueba(k){if(selPruebas.has(k))selPruebas.delete(k);else selPruebas.add(k);actualizarSeleccionUI();}
+function marcarPruebas(todas){selPruebas=new Set(todas?[1,2,3,4]:[]);actualizarSeleccionUI();}
+function iniciarSeleccion(){
+  if(!selPruebas.size){alert('Selecciona al menos una prueba');return;}
+  colaPruebas=[...selPruebas].sort((x,y)=>x-y);totalPruebas=colaPruebas.length;
+  [1,2,3,4].forEach(k=>{
+    estado['p'+k]=selPruebas.has(k)?{tiempo:0,errores:0,inicio:0}:{tiempo:null,errores:null,inicio:0};
+  });
+  estado.p4.completo=false;
   document.getElementById('inp-cedula').value='';
   document.getElementById('inp-cargo').value='';
   seleccionarTurno('');
-  mostrar('s-inst1');
+  irSiguientePrueba();
+}
+function irSiguientePrueba(){
+  if(!colaPruebas.length){finalizarSesion();return;}
+  const n=colaPruebas.shift();
+  const paso=totalPruebas-colaPruebas.length;
+  document.getElementById('inst'+n+'-tit').textContent='Prueba '+n;
+  document.getElementById('inst'+n+'-sub').textContent=NOMBRES_PRUEBA[n]+' · Paso '+paso+' de '+totalPruebas;
+  mostrar('s-inst'+n);
 }
 function startTimer(tid,campo){
   clearInterval(timerInterval);
@@ -453,7 +538,7 @@ function finalizarP1(){
   estado.p1.tiempo=Math.floor((Date.now()-estado.p1.inicio)/1000);
   const total=p1Data.celdas.filter(x=>x===p1Data.objetivo).length;
   estado.p1.errores+=total-p1Data.marcadas.size;
-  mostrar('s-inst2');
+  irSiguientePrueba();
 }
 
 /* ═══════════════ P2 ═══════════════ */
@@ -488,7 +573,7 @@ function responderStroop(resp,correcto){
   else{fb.style.color='#A32D2D';fb.textContent='✗ Incorrecto — era: '+correcto;estado.p2.errores++;}
   setTimeout(()=>{p2Data.idx++;mostrarStroop();},650);
 }
-function finalizarP2(){clearInterval(timerInterval);estado.p2.tiempo=Math.floor((Date.now()-estado.p2.inicio)/1000);mostrar('s-inst3');}
+function finalizarP2(){clearInterval(timerInterval);estado.p2.tiempo=Math.floor((Date.now()-estado.p2.inicio)/1000);irSiguientePrueba();}
 
 /* ═══════════════ P3 ═══════════════ */
 function generarSecuenciasMemoria(rondas){
@@ -553,33 +638,208 @@ function clickMem(idx){
 function finalizarP3(){
   clearInterval(timerInterval);
   estado.p3.tiempo=Math.floor((Date.now()-estado.p3.inicio)/1000);
+  irSiguientePrueba();
+}
+function finalizarSesion(){
   mostrarResultadoOperador();
   guardarEnSupabase();
 }
 function mostrarResultadoOperador(){
-  document.getElementById('res-t1').textContent=estado.p1.tiempo;
-  document.getElementById('res-t2').textContent=estado.p2.tiempo;
-  document.getElementById('res-t3').textContent=estado.p3.tiempo;
-  const setBadge=(id,e)=>{const el=document.getElementById(id);el.textContent=e+' error'+(e===1?'':'es');el.className='badge '+claseBadge(e);};
-  setBadge('res-e1-badge',estado.p1.errores);
-  setBadge('res-e2-badge',estado.p2.errores);
-  setBadge('res-e3-badge',estado.p3.errores);
+  [1,2,3,4].forEach(k=>{
+    const p=estado['p'+k];const card=document.getElementById('res-card-'+k);
+    if(!p||p.tiempo==null){card.style.display='none';return;}
+    card.style.display='';
+    document.getElementById('res-t'+k).textContent=p.tiempo;
+    const el=document.getElementById('res-e'+k+'-badge');
+    el.textContent=p.errores+' error'+(p.errores===1?'':'es');
+    el.className='badge '+claseBadge(p.errores);
+  });
+  document.getElementById('res-p4-nota').style.display=(estado.p4.tiempo!=null&&!estado.p4.completo)?'block':'none';
   const sm=document.getElementById('sync-msg');
   sm.className='sync-status alert alert-info';
   sm.innerHTML='<span class="spinner"></span>Guardando en la nube...';
   mostrar('s-resultado');
 }
 
+/* ═══════════════ P4 — LABERINTO DE MEMORIA ═══════════════ */
+const MZ_N=8;              /* cuadrícula 8x8 */
+const MZ_MEMO=25;          /* segundos de memorización (fijos, no cuentan en el tiempo de la prueba) */
+const MZ_LIM_T=120;        /* tiempo máximo de recorrido (s) */
+const MZ_LIM_E=20;         /* choques máximos */
+const MZ_PASOS_MIN=26, MZ_PASOS_MAX=40; /* longitud de la ruta correcta: complejidad media */
+const MZ_DIR={n:{dx:0,dy:-1,o:'s'},e:{dx:1,dy:0,o:'w'},s:{dx:0,dy:1,o:'n'},w:{dx:-1,dy:0,o:'e'}};
+let p4Data={celdas:[],x:0,y:0,fase:'',trail:[],flash:null,intMemo:null,toLim:null,errores:0};
+
+function mezclar(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function tallarLaberinto(n){
+  const c=[];
+  for(let y=0;y<n;y++){c[y]=[];for(let x=0;x<n;x++)c[y][x]={n:true,e:true,s:true,w:true,v:false};}
+  const pila=[[0,0]];c[0][0].v=true;
+  while(pila.length){
+    const [x,y]=pila[pila.length-1];
+    const op=mezclar(Object.keys(MZ_DIR)).filter(k=>{const nx=x+MZ_DIR[k].dx,ny=y+MZ_DIR[k].dy;return nx>=0&&ny>=0&&nx<n&&ny<n&&!c[ny][nx].v;});
+    if(!op.length){pila.pop();continue;}
+    const k=op[0],d=MZ_DIR[k],nx=x+d.dx,ny=y+d.dy;
+    c[y][x][k]=false;c[ny][nx][d.o]=false;c[ny][nx].v=true;pila.push([nx,ny]);
+  }
+  return c;
+}
+function pasosSolucion(c,n){
+  const dist=Array.from({length:n},()=>Array(n).fill(-1));dist[0][0]=0;const q=[[0,0]];
+  while(q.length){
+    const [x,y]=q.shift();
+    for(const k in MZ_DIR){
+      if(c[y][x][k])continue;
+      const nx=x+MZ_DIR[k].dx,ny=y+MZ_DIR[k].dy;
+      if(dist[ny][nx]<0){dist[ny][nx]=dist[y][x]+1;q.push([nx,ny]);}
+    }
+  }
+  return dist[n-1][n-1];
+}
+function generarLaberinto(n){
+  let ultimo=null;
+  for(let i=0;i<300;i++){
+    const c=tallarLaberinto(n);ultimo=c;
+    const p=pasosSolucion(c,n);
+    if(p>=MZ_PASOS_MIN&&p<=MZ_PASOS_MAX)return c;
+  }
+  return ultimo;
+}
+function fmtSeg(s){s=Math.max(0,s);return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');}
+function setP4Status(tipo,txt){
+  const el=document.getElementById('p4-status');
+  el.className='alert '+(tipo==='amarillo'?'alert-amarillo':tipo==='verde'?'alert-verde':tipo==='ok'?'alert-ok':'alert-err');
+  el.textContent=txt;
+}
+function iniciarP4(){
+  mostrar('s-p4');
+  clearInterval(timerInterval);clearInterval(p4Data.intMemo);clearTimeout(p4Data.toLim);
+  p4Data={celdas:generarLaberinto(MZ_N),x:0,y:0,fase:'memo',trail:[[0,0]],flash:null,intMemo:null,toLim:null,errores:0};
+  estado.p4.errores=0;estado.p4.completo=false;
+  document.getElementById('p4-dpad').style.display='none';
+  setP4Status('amarillo','Memoriza el camino de ▶ a 🏁. Los muros desaparecerán.');
+  document.getElementById('p4-info').textContent='Fase de memorización';
+  let rest=MZ_MEMO;
+  document.getElementById('timer-p4').textContent=fmtSeg(rest);
+  dibujarLaberinto();
+  p4Data.intMemo=setInterval(()=>{
+    rest--;document.getElementById('timer-p4').textContent=fmtSeg(rest);
+    if(rest<=0){clearInterval(p4Data.intMemo);comenzarRecorridoP4();}
+  },1000);
+}
+function comenzarRecorridoP4(){
+  p4Data.fase='recorrido';
+  setP4Status('verde','¡Ahora recorre el laberinto! Llega hasta 🏁');
+  document.getElementById('p4-dpad').style.display='grid';
+  actualizarInfoP4();
+  document.getElementById('timer-p4').textContent='00:00';
+  startTimer('timer-p4','p4');
+  p4Data.toLim=setTimeout(()=>finalizarP4('tiempo'),MZ_LIM_T*1000);
+  dibujarLaberinto();
+}
+function actualizarInfoP4(){
+  document.getElementById('p4-info').textContent='Choques: '+p4Data.errores+' / '+MZ_LIM_E+' · Tiempo máximo '+fmtSeg(MZ_LIM_T);
+}
+function moverP4(k){
+  if(p4Data.fase!=='recorrido')return;
+  const d=MZ_DIR[k];const nx=p4Data.x+d.dx,ny=p4Data.y+d.dy;
+  if(nx<0||ny<0||nx>=MZ_N||ny>=MZ_N)return; /* borde visible: no cuenta como error */
+  if(p4Data.celdas[p4Data.y][p4Data.x][k]){
+    p4Data.errores++;estado.p4.errores++;
+    p4Data.flash={x:p4Data.x,y:p4Data.y,k:k};
+    actualizarInfoP4();dibujarLaberinto();
+    const mio=p4Data.flash;
+    setTimeout(()=>{if(p4Data.flash===mio){p4Data.flash=null;dibujarLaberinto();}},500);
+    if(p4Data.errores>=MZ_LIM_E)finalizarP4('choques');
+    return;
+  }
+  p4Data.x=nx;p4Data.y=ny;p4Data.trail.push([nx,ny]);
+  dibujarLaberinto();
+  if(nx===MZ_N-1&&ny===MZ_N-1)finalizarP4('meta');
+}
+function finalizarP4(motivo){
+  if(p4Data.fase!=='recorrido')return;
+  p4Data.fase='fin';
+  clearInterval(timerInterval);clearTimeout(p4Data.toLim);
+  estado.p4.tiempo=Math.min(MZ_LIM_T,Math.floor((Date.now()-estado.p4.inicio)/1000));
+  estado.p4.completo=(motivo==='meta');
+  if(motivo==='meta')setP4Status('ok','✓ ¡Llegaste a la meta!');
+  else setP4Status('err',motivo==='tiempo'?'Se acabó el tiempo.':'Límite de choques alcanzado.');
+  setTimeout(()=>irSiguientePrueba(),1400);
+}
+function dibujarLaberinto(){
+  const cv=document.getElementById('maze-canvas');if(!cv)return;
+  const ctx=cv.getContext('2d');const N=MZ_N,S=cv.width,pad=14,cs=(S-2*pad)/N;
+  const ox=x=>pad+x*cs,oy=y=>pad+y*cs;
+  const memo=p4Data.fase==='memo';
+  ctx.clearRect(0,0,S,S);
+  /* inicio y meta */
+  ctx.fillStyle='#EAF3DE';ctx.fillRect(ox(0),oy(0),cs,cs);
+  ctx.fillStyle='#FAEEDA';ctx.fillRect(ox(N-1),oy(N-1),cs,cs);
+  /* huella del recorrido */
+  if(!memo){
+    ctx.fillStyle='#DCEBFA';
+    p4Data.trail.forEach(([x,y])=>ctx.fillRect(ox(x)+4,oy(y)+4,cs-8,cs-8));
+    /* cuadrícula tenue (sin revelar muros) */
+    ctx.strokeStyle='#e8e8e8';ctx.lineWidth=2;
+    for(let i=0;i<=N;i++){
+      ctx.beginPath();ctx.moveTo(ox(i),oy(0));ctx.lineTo(ox(i),oy(N));ctx.stroke();
+      ctx.beginPath();ctx.moveTo(ox(0),oy(i));ctx.lineTo(ox(N),oy(i));ctx.stroke();
+    }
+  }
+  /* muros: todos en memorización; solo el marco en recorrido */
+  ctx.strokeStyle='#1a1a1a';ctx.lineWidth=7;ctx.lineCap='round';
+  const seg=(x1,y1,x2,y2)=>{ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();};
+  if(memo){
+    for(let y=0;y<N;y++)for(let x=0;x<N;x++){
+      const c=p4Data.celdas[y][x];
+      if(c.n)seg(ox(x),oy(y),ox(x+1),oy(y));
+      if(c.w)seg(ox(x),oy(y),ox(x),oy(y+1));
+      if(c.s)seg(ox(x),oy(y+1),ox(x+1),oy(y+1));
+      if(c.e)seg(ox(x+1),oy(y),ox(x+1),oy(y+1));
+    }
+  }else{
+    ctx.strokeRect(ox(0),oy(0),N*cs,N*cs);
+  }
+  /* choque: muro en rojo un instante */
+  if(p4Data.flash){
+    const f=p4Data.flash;ctx.strokeStyle='#E24B4A';ctx.lineWidth=9;
+    if(f.k==='n')seg(ox(f.x),oy(f.y),ox(f.x+1),oy(f.y));
+    if(f.k==='s')seg(ox(f.x),oy(f.y+1),ox(f.x+1),oy(f.y+1));
+    if(f.k==='w')seg(ox(f.x),oy(f.y),ox(f.x),oy(f.y+1));
+    if(f.k==='e')seg(ox(f.x+1),oy(f.y),ox(f.x+1),oy(f.y+1));
+  }
+  /* marcas inicio / meta */
+  ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.font=Math.floor(cs*0.5)+'px sans-serif';
+  ctx.fillStyle='#3B6D11';ctx.fillText('▶',ox(0)+cs/2,oy(0)+cs/2);
+  ctx.fillStyle='#1a1a1a';ctx.fillText('🏁',ox(N-1)+cs/2,oy(N-1)+cs/2);
+  /* jugador */
+  if(!memo){
+    ctx.fillStyle='#185FA5';ctx.beginPath();
+    ctx.arc(ox(p4Data.x)+cs/2,oy(p4Data.y)+cs/2,cs*0.27,0,Math.PI*2);ctx.fill();
+    ctx.strokeStyle='#fff';ctx.lineWidth=3;ctx.stroke();
+  }
+}
+document.addEventListener('keydown',e=>{
+  const sc=document.getElementById('s-p4');
+  if(!sc||!sc.classList.contains('active'))return;
+  const m={ArrowUp:'n',ArrowDown:'s',ArrowLeft:'w',ArrowRight:'e'};
+  if(m[e.key]){e.preventDefault();moverP4(m[e.key]);}
+});
+
 /* ═══════════════ SUPABASE GUARDAR ═══════════════ */
 async function guardarEnSupabase(){
   const sm=document.getElementById('sync-msg');
   const registro={
     empresa:EMPRESA, cedula:estado.cedula, cargo:estado.cargo,
-    turno:estado.turno, fecha:estado.fechaHora,
-    p1_tiempo:estado.p1.tiempo, p1_errores:estado.p1.errores,
-    p2_tiempo:estado.p2.tiempo, p2_errores:estado.p2.errores,
-    p3_tiempo:estado.p3.tiempo, p3_errores:estado.p3.errores
+    turno:estado.turno, fecha:estado.fechaHora
   };
+  /* solo se envían las pruebas realizadas; las demás quedan vacías (NULL) en la BD */
+  [1,2,3,4].forEach(k=>{
+    const pr=estado['p'+k];
+    if(pr&&pr.tiempo!=null){registro['p'+k+'_tiempo']=pr.tiempo;registro['p'+k+'_errores']=pr.errores;}
+  });
   try{
     await sbInsertar(registro);
     sm.className='sync-status alert alert-ok';
@@ -595,6 +855,7 @@ async function guardarEnSupabase(){
 
 /* ═══════════════ DASHBOARD ═══════════════ */
 function claseBadge(e){return e===0?'badge-ok':e<=3?'badge-warn':'badge-bad';}
+function badgeP(p){return(p&&p.tiempo!=null)?`<span class="badge ${claseBadge(p.errores)}">${p.tiempo}s/${p.errores}e</span>`:'<span style="color:#aaa">—</span>';}
 
 async function mostrarDash(){
   mostrar('s-dash');
@@ -605,7 +866,8 @@ async function mostrarDash(){
       id:r.id, cedula:r.cedula, cargo:r.cargo, turno:r.turno, fecha:r.fecha,
       p1:{tiempo:r.p1_tiempo,errores:r.p1_errores},
       p2:{tiempo:r.p2_tiempo,errores:r.p2_errores},
-      p3:{tiempo:r.p3_tiempo,errores:r.p3_errores}
+      p3:{tiempo:r.p3_tiempo,errores:r.p3_errores},
+      p4:{tiempo:r.p4_tiempo,errores:r.p4_errores}
     }));
   }catch(e){
     todosLosDatos=[];
@@ -656,10 +918,12 @@ function destroyAllCharts(){
 function renderMejores(datos){
   const cont=document.getElementById('mejores-tiempos');
   if(!datos.length){cont.innerHTML=`<div class="empty-turno">Sin registros de turno ${turnoActivo.toLowerCase()} aún.</div>`;return;}
-  const nombres={p1:'Atención selectiva',p2:'Concentración Stroop',p3:'Memoria de trabajo'};
+  const nombres={p1:'Atención selectiva',p2:'Concentración Stroop',p3:'Memoria de trabajo',p4:'Laberinto (memoria espacial)'};
   let html='';
-  ['p1','p2','p3'].forEach(p=>{
-    const m=[...datos].sort((a,b)=>a[p].tiempo-b[p].tiempo)[0];
+  ['p1','p2','p3','p4'].forEach(p=>{
+    const v=datos.filter(d=>d[p]&&d[p].tiempo!=null);
+    if(!v.length)return;
+    const m=[...v].sort((a,b)=>a[p].tiempo-b[p].tiempo)[0];
     html+=`<div class="mejor-card">
       <div style="flex:1;min-width:0">
         <div style="font-size:11px;color:#666">${nombres[p]}</div>
@@ -682,7 +946,7 @@ function renderTab(el,tab,datos){
   if(!datos.length){cont.innerHTML=`<div class="empty-turno">${icono} Sin registros de turno ${turnoActivo.toLowerCase()}.</div>`;return;}
 
   if(tab==='resumen'){
-    let html='<div style="overflow-x:auto"><table class="mini-table"><thead><tr><th>Cédula</th><th>Área</th><th>Turno</th><th>Fecha</th><th>Atención</th><th>Concentración</th><th>Memoria</th></tr></thead><tbody>';
+    let html='<div style="overflow-x:auto"><table class="mini-table"><thead><tr><th>Cédula</th><th>Área</th><th>Turno</th><th>Fecha</th><th>Atención</th><th>Concentración</th><th>Memoria</th><th>Laberinto</th></tr></thead><tbody>';
     datos.forEach(d=>{
       const tb=d.turno==='Diurno'?'turno-badge-dia':'turno-badge-noche';
       const ti=d.turno==='Diurno'?'☀️':'🌙';
@@ -691,9 +955,10 @@ function renderTab(el,tab,datos){
         <td style="color:#666">${d.cargo}</td>
         <td><span class="badge ${tb}" style="font-size:10px">${ti} ${d.turno}</span></td>
         <td style="color:#666;font-size:11px">${d.fecha}</td>
-        <td><span class="badge ${claseBadge(d.p1.errores)}">${d.p1.tiempo}s/${d.p1.errores}e</span></td>
-        <td><span class="badge ${claseBadge(d.p2.errores)}">${d.p2.tiempo}s/${d.p2.errores}e</span></td>
-        <td><span class="badge ${claseBadge(d.p3.errores)}">${d.p3.tiempo}s/${d.p3.errores}e</span></td>
+        <td>${badgeP(d.p1)}</td>
+        <td>${badgeP(d.p2)}</td>
+        <td>${badgeP(d.p3)}</td>
+        <td>${badgeP(d.p4)}</td>
       </tr>`;
     });
     html+='</tbody></table></div><p style="font-size:11px;color:#666;margin-top:6px">s=segundos, e=errores</p>';
@@ -729,11 +994,13 @@ function verDetalle(cedula){
   if(!d)return;
   const icono=d.turno==='Diurno'?'☀️':'🌙';
   document.getElementById('modal-nombre').textContent='Cédula: '+cedula;
-  const pruebas=[{key:'p1',nombre:'Prueba 1 — Atención selectiva'},{key:'p2',nombre:'Prueba 2 — Concentración Stroop'},{key:'p3',nombre:'Prueba 3 — Memoria de trabajo'}];
+  const pruebas=[{key:'p1',nombre:'Prueba 1 — Atención selectiva'},{key:'p2',nombre:'Prueba 2 — Concentración Stroop'},{key:'p3',nombre:'Prueba 3 — Memoria de trabajo'},{key:'p4',nombre:'Prueba 4 — Laberinto (memoria espacial)'}];
   // Mostrar última sesión
   let html=`<div style="font-size:12px;color:#666;margin-bottom:10px">${d.cargo} · ${icono} ${d.turno} · ${d.fecha}</div>`;
   pruebas.forEach(pr=>{
-    const p=d[pr.key];const b=claseBadge(p.errores);
+    const p=d[pr.key];
+    if(!p||p.tiempo==null){html+=`<div class="ind-section"><div class="ind-title">${pr.nombre}</div><div style="font-size:12px;color:#888">No realizada en esta sesión</div></div>`;return;}
+    const b=claseBadge(p.errores);
     const et=p.errores===0?'Óptimo':p.errores<=3?'Moderado':'Alto riesgo';
     html+=`<div class="ind-section"><div class="ind-title">${pr.nombre}</div>
       <div class="ind-row"><span style="color:#666">Tiempo</span><span style="font-weight:600">${p.tiempo} segundos</span></div>
@@ -761,7 +1028,8 @@ function renderGraficas(datos,cont){
   const pruebas=[
     {key:'p1',nombre:'Prueba 1 — Atención selectiva',   ct:'#378ADD',ce:'#E24B4A'},
     {key:'p2',nombre:'Prueba 2 — Concentración Stroop', ct:'#185FA5',ce:'#A32D2D'},
-    {key:'p3',nombre:'Prueba 3 — Memoria de trabajo',   ct:'#3B6D11',ce:'#BA7517'}
+    {key:'p3',nombre:'Prueba 3 — Memoria de trabajo',   ct:'#3B6D11',ce:'#BA7517'},
+    {key:'p4',nombre:'Prueba 4 — Laberinto (memoria espacial)',ct:'#7C3AED',ce:'#D97706'}
   ];
   let html=`<p style="font-size:13px;color:#666;margin-bottom:10px">${icono} Selecciona un operador para ver su distribución acumulada:</p>`;
   participantes.forEach((p,i)=>{
@@ -778,9 +1046,11 @@ function renderGraficas(datos,cont){
       <div style="font-size:12px;color:#666;margin-top:2px">Todos los operadores del turno ${turnoActivo.toLowerCase()}</div>
     </div>`;
   pruebas.forEach(pr=>{
-    const tiempos=datos.map(d=>d[pr.key].tiempo);
-    const errores=datos.map(d=>d[pr.key].errores);
-    const N=datos.length;
+    const dp=datos.filter(d=>d[pr.key]&&d[pr.key].tiempo!=null);
+    if(!dp.length){html+=`<div class="empresa-card"><div class="empresa-title">${pr.nombre}</div><div class="empty-turno" style="padding:1rem">Sin registros de esta prueba en el turno.</div></div>`;return;}
+    const tiempos=dp.map(d=>d[pr.key].tiempo);
+    const errores=dp.map(d=>d[pr.key].errores);
+    const N=dp.length;
     const muT=tiempos.reduce((a,b)=>a+b,0)/N;
     const muE=errores.reduce((a,b)=>a+b,0)/N;
     const sdT=N>1?Math.sqrt(tiempos.reduce((a,b)=>a+(b-muT)**2,0)/(N-1)):0;
@@ -800,10 +1070,11 @@ function renderGraficas(datos,cont){
   cont._participantes=participantes;
   setTimeout(()=>{
     pruebas.forEach(pr=>{
-      const t=datos.map(d=>d[pr.key].tiempo).filter(v=>v!=null&&!isNaN(v));
-      const e=datos.map(d=>d[pr.key].errores).filter(v=>v!=null&&!isNaN(v));
+      const dp=datos.filter(d=>d[pr.key]&&d[pr.key].tiempo!=null);
+      const t=dp.map(d=>d[pr.key].tiempo);
+      const e=dp.map(d=>d[pr.key].errores);
       if(t.length>0&&e.length>0)
-        chartCache['emp_'+pr.key]=dibujarGaussDoble('cmp-'+pr.key,t,e,datos,pr.ct,pr.ce,false);
+        chartCache['emp_'+pr.key]=dibujarGaussDoble('cmp-'+pr.key,t,e,dp,pr.ct,pr.ce,false);
     });
   },80);
 }
@@ -815,12 +1086,13 @@ function seleccionarParticipante(idx){
   document.querySelectorAll('.part-card').forEach(c=>c.classList.remove('selected'));
   const card=document.getElementById('pcard-'+idx);
   if(card)card.classList.add('selected');
-  ['ind_p1','ind_p2','ind_p3'].forEach(k=>{if(chartCache[k])try{chartCache[k].destroy();}catch(e){}chartCache[k]=null;});
+  ['ind_p1','ind_p2','ind_p3','ind_p4'].forEach(k=>{if(chartCache[k])try{chartCache[k].destroy();}catch(e){}chartCache[k]=null;});
   const p=participantes[idx];const sesiones=p.sesiones;const N=sesiones.length;
   const pruebas=[
     {key:'p1',nombre:'Prueba 1 — Atención selectiva',   ct:'#378ADD',ce:'#E24B4A'},
     {key:'p2',nombre:'Prueba 2 — Concentración Stroop', ct:'#185FA5',ce:'#A32D2D'},
-    {key:'p3',nombre:'Prueba 3 — Memoria de trabajo',   ct:'#3B6D11',ce:'#BA7517'}
+    {key:'p3',nombre:'Prueba 3 — Memoria de trabajo',   ct:'#3B6D11',ce:'#BA7517'},
+    {key:'p4',nombre:'Prueba 4 — Laberinto (memoria espacial)',ct:'#7C3AED',ce:'#D97706'}
   ];
   const icono=p.turno==='Diurno'?'☀️':'🌙';
   let html=`<div style="padding:10px 14px;background:#f0f6ff;border-radius:8px;margin-bottom:10px;border-left:3px solid #185FA5">
@@ -830,8 +1102,11 @@ function seleccionarParticipante(idx){
   sesiones.forEach((s,i)=>{html+=`<span><span class="sesion-dot" style="background:${COL_SESION[i%COL_SESION.length]}"></span>Sesión ${i+1}: ${s.fecha}</span>`;});
   html+=`</div></div>`;
   pruebas.forEach(pr=>{
-    const tiempos=sesiones.map(s=>s[pr.key].tiempo);
-    const errores=sesiones.map(s=>s[pr.key].errores);
+    const ses=sesiones.map((x,i)=>Object.assign({},x,{_i:i})).filter(x=>x[pr.key]&&x[pr.key].tiempo!=null);
+    if(!ses.length){html+=`<div class="card"><div style="font-size:14px;font-weight:600;margin-bottom:8px">${pr.nombre}</div><div class="empty-turno" style="padding:1rem">Este operador no ha realizado esta prueba.</div></div>`;return;}
+    const N=ses.length;
+    const tiempos=ses.map(s=>s[pr.key].tiempo);
+    const errores=ses.map(s=>s[pr.key].errores);
     const muT=tiempos.reduce((a,b)=>a+b,0)/N;
     const muE=errores.reduce((a,b)=>a+b,0)/N;
     const sdT=N>1?Math.sqrt(tiempos.reduce((a,b)=>a+(b-muT)**2,0)/(N-1)):0;
@@ -850,10 +1125,11 @@ function seleccionarParticipante(idx){
   document.getElementById('gauss-individual').innerHTML=html;
   setTimeout(()=>{
     pruebas.forEach(pr=>{
-      const t=sesiones.map(s=>s[pr.key].tiempo).filter(v=>v!=null&&!isNaN(v));
-      const e=sesiones.map(s=>s[pr.key].errores).filter(v=>v!=null&&!isNaN(v));
+      const ses=sesiones.map((x,i)=>Object.assign({},x,{_i:i})).filter(x=>x[pr.key]&&x[pr.key].tiempo!=null);
+      const t=ses.map(x=>x[pr.key].tiempo);
+      const e=ses.map(x=>x[pr.key].errores);
       if(t.length>0&&e.length>0)
-        chartCache['ind_'+pr.key]=dibujarGaussDoble('ind-c-'+pr.key,t,e,sesiones,pr.ct,pr.ce,true);
+        chartCache['ind_'+pr.key]=dibujarGaussDoble('ind-c-'+pr.key,t,e,ses,pr.ct,pr.ce,true);
     });
   },80);
 }
@@ -884,10 +1160,11 @@ function dibujarGaussDoble(canvasId,tiempos,errores,registros,colorT,colorE,esIn
   const norm=(pts,maxY)=>pts.map(p=>({x:p.x,y:maxY>0?p.y/maxY:0}));
   const zonaT=cT.pts.filter(p=>p.x>=cT.mu-cT.sigma&&p.x<=cT.mu+cT.sigma);
   const zonaE=cE.pts.filter(p=>p.x>=cE.mu-cE.sigma&&p.x<=cE.mu+cE.sigma);
-  const etqT=i=>esIndividual?'Ses.'+(i+1)+' ('+tiempos[i]+'s)':registros[i].cedula+' ('+tiempos[i]+'s)';
-  const etqE=i=>esIndividual?'Ses.'+(i+1)+' ('+errores[i]+'e)':registros[i].cedula+' ('+errores[i]+'e)';
-  const scT=tiempos.map((v,i)=>({type:'scatter',label:etqT(i),data:[{x:v,y:maxYT>0?gaussPDF(v,cT.mu,cT.sigma)/maxYT:0}],backgroundColor:esIndividual?COL_SESION[i%COL_SESION.length]:colorT,borderColor:'#fff',borderWidth:1.5,pointRadius:7,pointHoverRadius:9,order:1,xAxisID:'xT'}));
-  const scE=errores.map((v,i)=>({type:'scatter',label:etqE(i),data:[{x:v,y:maxYE>0?gaussPDF(v,cE.mu,cE.sigma)/maxYE:0}],backgroundColor:esIndividual?COL_SESION[i%COL_SESION.length]+'99':colorE+'99',borderColor:'#fff',borderWidth:1.5,pointRadius:7,pointHoverRadius:9,pointStyle:'triangle',order:1,xAxisID:'xE'}));
+  const si=i=>(registros[i]&&registros[i]._i!=null)?registros[i]._i:i;
+  const etqT=i=>esIndividual?'Ses.'+(si(i)+1)+' ('+tiempos[i]+'s)':registros[i].cedula+' ('+tiempos[i]+'s)';
+  const etqE=i=>esIndividual?'Ses.'+(si(i)+1)+' ('+errores[i]+'e)':registros[i].cedula+' ('+errores[i]+'e)';
+  const scT=tiempos.map((v,i)=>({type:'scatter',label:etqT(i),data:[{x:v,y:maxYT>0?gaussPDF(v,cT.mu,cT.sigma)/maxYT:0}],backgroundColor:esIndividual?COL_SESION[si(i)%COL_SESION.length]:colorT,borderColor:'#fff',borderWidth:1.5,pointRadius:7,pointHoverRadius:9,order:1,xAxisID:'xT'}));
+  const scE=errores.map((v,i)=>({type:'scatter',label:etqE(i),data:[{x:v,y:maxYE>0?gaussPDF(v,cE.mu,cE.sigma)/maxYE:0}],backgroundColor:esIndividual?COL_SESION[si(i)%COL_SESION.length]+'99':colorE+'99',borderColor:'#fff',borderWidth:1.5,pointRadius:7,pointHoverRadius:9,pointStyle:'triangle',order:1,xAxisID:'xE'}));
   return new Chart(canvas,{type:'line',data:{datasets:[
     {type:'line',label:'Distribución tiempos (●)',data:norm(cT.pts,maxYT),borderColor:colorT,backgroundColor:'transparent',borderWidth:2.5,pointRadius:0,tension:0.4,order:5,xAxisID:'xT'},
     ...(zonaT.length?[{type:'line',label:'±1σ tiempos',data:norm(zonaT,maxYT),fill:true,backgroundColor:colorT+'22',borderColor:'transparent',pointRadius:0,order:4,xAxisID:'xT'}]:[]),
