@@ -180,7 +180,7 @@
 
 .button-danger {
   padding: var(--espacio-3) var(--espacio-6);
-  background-color: var(--color-critico);
+  background-color: var(--color-critico-boton);
   color: #ffffff;
   border: none;
   font-weight: var(--peso-medio);

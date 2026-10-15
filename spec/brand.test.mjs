@@ -62,3 +62,22 @@ test('CatalogosRepository rechaza catálogos fuera de la lista blanca', async ()
     await assert.rejects(() => repo.listar(malo, 'e1'), RangeError, malo);
   }
 });
+
+import { contraste, textoSobre, luminancia } from '../js/brand.js';
+
+test('contraste WCAG: valores de referencia', () => {
+  assert.equal(Math.round(contraste('#000000', '#ffffff')), 21);
+  assert.equal(luminancia('#ffffff'), 1);
+  assert.ok(contraste('#2f8fd6', '#ffffff') < 4.5);
+});
+
+test('texto sobre el color de marca: siempre cumple AA (≥ 4.5:1), para cualquier color', () => {
+  for (const hex of ['#2f8fd6', '#ffffff', '#000000', '#ff0000', '#00ff00', '#0000ff', '#ffd400', '#1a6fb0', '#e24b4a']) {
+    assert.ok(contraste(hex, textoSobre(hex)) >= 4.5, `${hex} → ${textoSobre(hex)} = ${contraste(hex, textoSobre(hex)).toFixed(2)}`);
+  }
+  // Franja de grises medios: ninguno de los dos extremos llega a 4.5:1; se elige el mejor posible.
+  assert.ok(contraste('#777777', textoSobre('#777777')) >= 4.4);
+  assert.equal(textoSobre('#1a1a80'), '#ffffff');
+  assert.equal(textoSobre('#2f8fd6'), '#0b0f17');
+  assert.equal(textoSobre('color-invalido'), '#ffffff');
+});

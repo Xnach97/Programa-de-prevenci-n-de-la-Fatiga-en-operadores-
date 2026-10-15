@@ -5,3 +5,7 @@ js/env.js
 node_modules/
 *.log
 .DS_Store
+
+# Generados por scripts/instalar.mjs (el segundo contiene datos del administrador)
+supabase/instalacion.sql
+supabase/bootstrap.generado.sql

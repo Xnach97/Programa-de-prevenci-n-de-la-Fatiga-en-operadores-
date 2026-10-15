@@ -19,7 +19,7 @@
  * y de privacidad, Ley 1581, Fase 2 §0.6).
  */
 
-const APP_SHELL_CACHE_VERSION = 'v10';
+const APP_SHELL_CACHE_VERSION = 'v12';
 const APP_SHELL_CACHE_NAME = `neurolab-app-shell-${APP_SHELL_CACHE_VERSION}`;
 
 /** Activos mínimos del Core Platform. Cada módulo futuro que añada assets estáticos propios amplía esta lista. */
@@ -78,6 +78,7 @@ const APP_SHELL_ASSETS = Object.freeze([
   '/js/admin-module.js',
   '/js/alerts.js',
   '/js/dashboard-module.js',
+  '/vendor/supabase-js.mjs',
   '/js/research-module.js',
   '/js/repositories/research-repository.js',
   '/research/csv.js',

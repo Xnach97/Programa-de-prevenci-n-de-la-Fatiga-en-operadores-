@@ -1,0 +1,14 @@
+# Cabeceras de seguridad para hosting estático compatible con "_headers"
+# (Netlify, Cloudflare Pages). En otros hosts, configure lo equivalente.
+# La CSP de aplicación ya va en <meta> de index.html; aquí se añade lo que
+# solo se puede enviar como cabecera (frame-ancestors) y endurecimiento general.
+/*
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' https: data:; font-src 'self'; connect-src 'self' https://*.supabase.co wss://*.supabase.co; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
+  Cross-Origin-Opener-Policy: same-origin
+/service-worker.js
+  Cache-Control: no-cache
+/js/env.js
+  Cache-Control: no-cache

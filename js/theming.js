@@ -20,7 +20,7 @@
 import { createLogger } from '../services/logger.js';
 import { eventBus, CORE_EVENTS } from '../services/event-bus.js';
 import { createStore } from './state-store.js';
-import { sanitizarColor, sanitizarFuente, sanitizarLogoUrl, escaparParaCssUrl } from './brand.js';
+import { sanitizarColor, sanitizarFuente, sanitizarLogoUrl, escaparParaCssUrl, textoSobre } from './brand.js';
 
 const logger = createLogger('theming');
 
@@ -96,6 +96,9 @@ export function applyBrandTokens(tokens = {}, meta = {}) {
       root.style.setProperty(cssVariable, seguro);
     }
   }
+
+  // Texto de los botones primarios siempre legible (WCAG AA) sea cual sea el color de la empresa.
+  root.style.setProperty('--color-sobre-primario', textoSobre(mergedTokens.colorPrimario));
 
   themeStore.setState({ tokens: mergedTokens, empresaId: meta.empresaId ?? themeStore.getState().empresaId });
 

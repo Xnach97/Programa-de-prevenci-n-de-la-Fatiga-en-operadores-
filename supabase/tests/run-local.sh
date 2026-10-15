@@ -39,4 +39,19 @@ done
 "${PSQL[@]}" "psql -q -d $DB -v ON_ERROR_STOP=1 -f $ROOT/supabase/tests/audit.test.sql"
 "${PSQL[@]}" "psql -q -d $DB -v ON_ERROR_STOP=1 -f $ROOT/supabase/tests/research.test.sql"
 
+# Bootstrap de la primera empresa/administrador (se aplica dos veces: idempotente)
+"${PSQL[@]}" "psql -q -d $DB -v ON_ERROR_STOP=1 -c \"insert into auth.users (id, email) values ('a8000000-0000-0000-0000-000000000001', 'boot@test.co')\""
+BOOT="$(mktemp /tmp/neurolab-bootstrap.XXXXXX.sql)"
+node --input-type=module -e "
+import { readFileSync, writeFileSync } from 'node:fs';
+import { generarBootstrap } from '$ROOT/scripts/instalar.mjs';
+const plantilla = readFileSync('$ROOT/supabase/bootstrap.sql', 'utf8');
+writeFileSync('$BOOT', generarBootstrap(plantilla, { empresa: \"O'Boot & Cía\", nit: '900-BOOT-1', email: 'boot@test.co', sembrar: true }));
+"
+chmod 644 "$BOOT"
+run_sql_file "$BOOT"
+run_sql_file "$BOOT"
+rm -f "$BOOT"
+"${PSQL[@]}" "psql -q -d $DB -v ON_ERROR_STOP=1 -f $ROOT/supabase/tests/bootstrap.test.sql"
+
 "${PSQL[@]}" "psql -q -c 'drop database $DB;'"

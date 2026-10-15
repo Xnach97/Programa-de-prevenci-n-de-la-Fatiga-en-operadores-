@@ -61,6 +61,40 @@ export function escaparParaCssUrl(valor) {
   return valor.replace(/[\\"\n\r\f]/g, (c) => `\\${c.charCodeAt(0).toString(16)} `);
 }
 
+const NEGRO_TEXTO = '#0b0f17';
+const BLANCO_TEXTO = '#ffffff';
+
+/** Luminancia relativa WCAG de un color `#rrggbb`. */
+export function luminancia(hex) {
+  const canal = (i) => {
+    const c = parseInt(hex.slice(1 + 2 * i, 3 + 2 * i), 16) / 255;
+    return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+  };
+  return 0.2126 * canal(0) + 0.7152 * canal(1) + 0.0722 * canal(2);
+}
+
+/** Relación de contraste WCAG entre dos colores `#rrggbb` (1–21). */
+export function contraste(a, b) {
+  const [la, lb] = [luminancia(a), luminancia(b)];
+  return (Math.max(la, lb) + 0.05) / (Math.min(la, lb) + 0.05);
+}
+
+/**
+ * Color de texto legible sobre el color de marca (WCAG AA ≥ 4.5:1 para texto normal).
+ * Blanco si su contraste supera 5.2 (margen para el efecto hover) o es el mejor de los dos; si no, casi negro.
+ * Cada empresa elige su color: el texto de los botones se adapta en vez de fallar.
+ * @param {string} hex `#rrggbb` ya saneado
+ * @returns {string}
+ */
+export function textoSobre(hex) {
+  const color = sanitizarColor(hex);
+  if (!color) return BLANCO_TEXTO;
+  const conBlanco = contraste(color, BLANCO_TEXTO);
+  const conNegro = contraste(color, NEGRO_TEXTO);
+  // En la franja de grises medios ninguno de los dos llega a 4.5:1; se elige el mejor posible.
+  return conBlanco >= 5.2 || conBlanco > conNegro ? BLANCO_TEXTO : NEGRO_TEXTO;
+}
+
 /**
  * Convierte la marca de BD (snake_case) en tokens camelCase de `theming.js`,
  * descartando todo valor que no supere la validación.
@@ -82,4 +116,4 @@ export function marcaATokens(marca) {
   return tokens;
 }
 
-export default { marcaATokens, sanitizarColor, sanitizarFuente, sanitizarLogoUrl, escaparParaCssUrl };
+export default { luminancia, contraste, textoSobre, marcaATokens, sanitizarColor, sanitizarFuente, sanitizarLogoUrl, escaparParaCssUrl };

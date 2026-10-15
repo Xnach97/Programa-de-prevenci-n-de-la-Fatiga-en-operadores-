@@ -29,18 +29,20 @@
 
   --color-texto-primario: #e8edf5;
   --color-texto-secundario: #9fb0c7;
-  --color-texto-terciario: #6b7d97;
+  --color-texto-terciario: #8093ad; /* ≥ 4.5:1 sobre fondo y superficies (WCAG AA) */
 
   /* Marca por defecto — sobrescrita por theming.js con la marca de la empresa activa */
   --color-primario: #2f8fd6;
   --color-primario-hover: #4aa3e6;
+  --color-sobre-primario: #0b0f17; /* texto sobre el primario; theming.js lo recalcula (WCAG AA) para la marca de cada empresa */
   --color-secundario: #1a6fb0;
   --color-acento: #45c9b0;
 
   /* Semántica de estado, usada por el motor de alertas (Módulo Rules & Alerts) y por resultados de pruebas */
   --color-exito: #3fbd7a;
   --color-advertencia: #e0a838;
-  --color-critico: #e0523f;
+  --color-critico: #f27a69; /* ≥ 4.5:1 sobre fondo y superficies (WCAG AA) */
+  --color-critico-boton: #c43d2b; /* fondo de botones destructivos: blanco encima cumple AA */
   --color-info: #4aa3e6;
 
   /* Superficies de estado (fondo suave para badges/alerts) */

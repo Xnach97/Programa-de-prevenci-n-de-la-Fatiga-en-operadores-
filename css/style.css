@@ -195,7 +195,7 @@ button {
   gap: var(--espacio-2);
   padding: var(--espacio-3) var(--espacio-6);
   background-color: var(--color-primario);
-  color: #ffffff;
+  color: var(--color-sobre-primario);
   border: none;
   border-radius: var(--radio-md);
   font-weight: var(--peso-medio);

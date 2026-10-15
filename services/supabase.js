@@ -16,11 +16,13 @@ import { createLogger } from './logger.js';
 const logger = createLogger('supabase');
 
 /**
- * Sin bundler (arquitectura vanilla), el SDK se carga como módulo ES desde
- * CDN. Se fija la versión mayor (`@2`) para evitar cambios de API no
- * anunciados en producción.
+ * Sin bundler de aplicación (arquitectura vanilla), el SDK se sirve DESDE EL MISMO
+ * ORIGEN: `vendor/supabase-js.mjs` es `@supabase/supabase-js` 2.118.0 empaquetado con
+ * esbuild (ver `vendor/LEEME.md` para regenerarlo). Sin CDN externo: la app funciona
+ * offline, la CSP no necesita permitir scripts de terceros y no hay riesgo de cadena
+ * de suministro en tiempo de ejecución.
  */
-const SUPABASE_JS_MODULE_URL = 'https://esm.sh/@supabase/supabase-js@2';
+const SUPABASE_JS_MODULE_URL = new URL('../vendor/supabase-js.mjs', import.meta.url).href;
 
 /** @type {import('@supabase/supabase-js').SupabaseClient | null} */
 let clientInstance = null;

@@ -64,7 +64,7 @@ async function nuevaPagina({ vincular }) {
   await pagina.route('**/js/env.js', (r) =>
     r.fulfill({ contentType: 'text/javascript', body: "window.__NEUROLAB_ENV__={SUPABASE_URL:'https://e2e.supabase.co',SUPABASE_ANON_KEY:'e2e',APP_ENV:'development',LOG_LEVEL:'error'};" }),
   );
-  await pagina.route('https://esm.sh/**', (r) => r.fulfill({ contentType: 'text/javascript', body: FAKE_SUPABASE_SOURCE }));
+  await pagina.route('**/vendor/supabase-js.mjs', (r) => r.fulfill({ contentType: 'text/javascript', body: FAKE_SUPABASE_SOURCE }));
   await pagina.goto(`${base}/#/`);
   await pagina.waitForSelector('#login-form');
   await pagina.fill('input[name=email]', 'a@x.co');
