@@ -14,8 +14,8 @@ import { campo } from './ui/forms.js';
 import { getDatabase } from './database.js';
 import { getScientificServices } from './scientific.js';
 import { EvaluacionService, turnosDeEmpresa } from '../services/evaluacion-service.js';
-import { IndicadoresService } from '../services/indicadores-service.js';
-import { ReglasService } from '../services/reglas-service.js';
+import { crearGuardadoConCola } from '../services/offline-queue.js';
+import { getCola, postRegistro } from './offline.js';
 import { testRegistry } from '../tests/index.js';
 import { mostrarTutorial } from '../tests/tutorial.js';
 import { PERMISOS } from '../services/permissions-catalog.js';
@@ -44,10 +44,8 @@ function dispositivoId() {
 let dependenciasPromise = null;
 function dependencias() {
   if (!dependenciasPromise) {
-    dependenciasPromise = Promise.all([getDatabase(), getScientificServices()])
-      .then(([db, { motor }]) => {
-        const indicadores = new IndicadoresService({ indicadores: db.indicadores });
-        const reglas = new ReglasService({ reglas: db.reglas });
+    dependenciasPromise = Promise.all([getDatabase(), getScientificServices(), getCola()])
+      .then(([db, { motor }, cola]) => {
         return {
           db,
           servicio: new EvaluacionService({
@@ -55,23 +53,8 @@ function dependencias() {
             motor,
             registro: testRegistry,
             dispositivoId: dispositivoId(),
-            alRegistrar: async (datos) => {
-              // Los indicadores alimentan las reglas, pero un fallo de uno no debe anular el otro.
-              let valoresDia = {};
-              try {
-                ({ valoresDia } = await indicadores.recalcularTrasEvaluacion(datos));
-              } catch (error) {
-                logger.warn('Indicadores no recalculados', { error: String(error) });
-              }
-              await reglas.evaluarTrasEvaluacion({
-                empresaId: datos.empresaId,
-                operadorId: datos.operadorId,
-                operadorNombre: datos.contexto?.operadorNombre ?? null,
-                payload: datos.payload,
-                codigosPorVersion: datos.codigosPorVersion,
-                indicadoresDia: valoresDia,
-              });
-            },
+            alRegistrar: postRegistro,
+            guardar: crearGuardadoConCola({ cola, enviar: (payload) => db.testing.registrar(payload) }),
           }),
         };
       })

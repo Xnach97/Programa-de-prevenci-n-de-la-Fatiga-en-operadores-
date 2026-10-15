@@ -25,7 +25,7 @@ Abrir `http://localhost:8000`.
 - [x] Módulo 6 — Indicators Engine (indicadores_valores, fórmulas provisionales, recálculo tras cada evaluación)
 - [x] Módulo 7 — Rules Engine, Alertas, Auditoría y Configuración de empresa
 - [x] Módulo 8 — Dashboard Framework (4 dashboards SVG, lectura solo de indicadores_valores)
-- [ ] Módulo 9 — Offline Engine
+- [x] Módulo 9 — Offline Engine (cola IndexedDB idempotente, reintento con retroceso, caché de lectura, aviso a supervisor)
 - [ ] Módulo 10 — Research Platform
 - [ ] Módulo 11 — Optimización final
 

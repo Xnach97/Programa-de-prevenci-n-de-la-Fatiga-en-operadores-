@@ -183,13 +183,31 @@ try {
   await B.evaluate(() => { window.__E2E_RPC_FALLA__ = 1; });
   await B.click('button:text("Comenzar evaluación")');
   await jugarLasCuatro(B);
-  await B.waitForSelector('text=No fue posible guardar la evaluación');
+  await B.waitForSelector('text=Sin conexión: la evaluación quedó pendiente de envío.');
   assert.equal(await B.evaluate(() => window.__fakeDb.evaluaciones.length), 0);
-  await B.click('button:text("Reintentar guardado")');
-  await B.waitForSelector('text=Evaluación guardada correctamente.');
+  await B.waitForSelector('#offline-banner:not([hidden])');
+  assert.ok((await B.textContent('#offline-banner')).includes('1 evaluación(es) pendiente(s)'));
+  const enCola = await B.evaluate(() => new Promise((ok) => {
+    const r = indexedDB.open('neurolab-offline', 1);
+    r.onsuccess = () => { const q = r.result.transaction('cola').objectStore('cola').getAll(); q.onsuccess = () => ok(q.result.length); };
+  }));
+  assert.equal(enCola, 1, 'la evaluación quedó persistida en IndexedDB');
+  paso('fallo de red → la evaluación queda en la cola de IndexedDB y se avisa');
+
+  await B.reload(); // la sesión simulada vive en memoria: se vuelve a entrar; la cola está en IndexedDB
+  await B.waitForSelector('#login-form');
+  await B.fill('input[name=email]', 'a@x.co');
+  await B.fill('input[name=password]', 'secreto');
+  await B.click('[data-submit]');
+  paso('la cola sobrevive a una recarga de la página');
+
+  // Al iniciar sesión (con red de nuevo) la cola se sincroniza sola.
+  await B.waitForFunction(() => window.__fakeDb.evaluaciones.length === 1);
+  await B.waitForSelector('#offline-banner', { state: 'hidden' });
   const [unica] = await B.evaluate(() => window.__fakeDb.evaluaciones);
   assert.equal(unica.turno, 'Nocturno');
-  paso('fallo de guardado → reintento con el mismo payload guarda una sola vez');
+  await B.waitForFunction(() => window.__fakeDb.indicadores_valores.length > 0);
+  paso('al volver la conexión se sincroniza sola, se guarda UNA vez y corre el recálculo de indicadores');
 
   await B.evaluate(() => window.__fakeDb.evaluaciones.length);
   assert.deepEqual(errores, [], `Errores de consola/página: ${errores.join(' | ')}`);

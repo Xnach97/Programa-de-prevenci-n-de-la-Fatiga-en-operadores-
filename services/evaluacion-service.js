@@ -16,6 +16,7 @@
 import { puntuar } from '../statistics/score.js';
 import { ScientificError, CODIGOS_CIENTIFICOS } from '../statistics/scientific-error.js';
 import { createLogger } from './logger.js';
+import { clasificarError } from './offline-queue.js';
 
 const logger = createLogger('evaluacion');
 
@@ -126,6 +127,10 @@ export class EvaluacionService {
       // el resultado de un operador por falta de configuración sería peor.
       if (error instanceof ScientificError && error.codigo === CODIGOS_CIENTIFICOS.CONFIGURACION_NO_ENCONTRADA) {
         configuracionFaltante = true;
+      } else if (!(error instanceof ScientificError) && clasificarError(error) === 'transitorio') {
+        // Sin conexión y sin configuración en caché: se registran los puntajes igual (ICO nulo)
+        // para no perder la evaluación; el ICO queda pendiente.
+        configuracionFaltante = true;
       } else {
         throw error;
       }
@@ -158,7 +163,9 @@ export class EvaluacionService {
    * @returns {Promise<{evaluacion_id: string, duplicada: boolean}>}
    */
   async guardar(payload, contexto = {}) {
-    const respuesta = await this._guardar(payload);
+    // El contexto (nombre para mensajes + mapa versión→código) viaja con el payload a la cola
+    // offline para que el recálculo de indicadores/reglas pueda correr tras la sincronización.
+    const respuesta = await this._guardar(payload, { ...contexto, codigosPorVersion: { ...this._codigosPorVersion } });
     // Los indicadores son DERIVADOS: si su recálculo falla, la evaluación ya está
     // guardada y el fallo no debe reportarse al operador como fallo de guardado.
     if (this._alRegistrar && !respuesta?.encolada) {

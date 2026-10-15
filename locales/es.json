@@ -433,5 +433,15 @@
       "atipicos": "Valores atípicos",
       "sinAtipicos": "No se detectaron valores atípicos."
     }
+  },
+  "offline": {
+    "sinConexion": "Sin conexión. Puede seguir evaluando; los resultados se enviarán al recuperar la red.",
+    "pendientes": "{{n}} evaluación(es) pendiente(s) de envío. La más antigua lleva {{antiguedad}}.",
+    "avisoSupervisor": "Aviso al supervisor: hay evaluaciones sin enviar desde hace demasiado tiempo. Verifique la conexión de este dispositivo.",
+    "sincronizar": "Sincronizar ahora",
+    "rechazadas": "{{n}} evaluación(es) rechazada(s) por el servidor (permisos o datos inválidos).",
+    "reintentar": "Reintentar",
+    "descartar": "Descartar rechazadas",
+    "menosDeUnMinuto": "menos de 1 min"
   }
 }

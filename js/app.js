@@ -34,6 +34,7 @@ import { initOrganizationModule } from './organization.js';
 import { initEvaluationModule } from './evaluation-module.js';
 import { initAdminModule } from './admin-module.js';
 import { initDashboardModule } from './dashboard-module.js';
+import { initOfflineModule } from './offline-status.js';
 
 const logger = createLogger('app');
 
@@ -137,9 +138,8 @@ function installGlobalErrorHandlers() {
  * defecto (`APP_CONFIG.pwa.registrarEnDesarrollo === false`) para evitar
  * que una caché de SW obsoleta interfiera con la recarga en caliente
  * durante el desarrollo local. La cola de sincronización offline
- * (IndexedDB + reintento) se añade en el Módulo Offline Engine — este
- * registro solo habilita la instalabilidad y el caché del app-shell
- * estático.
+ * (IndexedDB + reintento) vive en js/offline.js; este registro habilita
+ * la instalabilidad y el caché del app-shell estático.
  */
 async function registerServiceWorker() {
   const shouldRegister = APP_CONFIG.app.esProduccion || APP_CONFIG.pwa.registrarEnDesarrollo;
@@ -185,6 +185,7 @@ export async function bootstrap() {
     initEvaluationModule({ router, authService });
     initAdminModule({ router, authService });
     initDashboardModule({ router, authService });
+    initOfflineModule();
     await router.start(APP_CONFIG.dom.appViewSelector);
 
     await registerServiceWorker();

@@ -241,3 +241,9 @@ button {
     animation: none;
   }
 }
+
+/* Módulo 9 — aviso de estado offline */
+.offline-banner { display: flex; flex-wrap: wrap; gap: var(--espacio-3); align-items: center; padding: var(--espacio-2) var(--espacio-4); background: var(--color-superficie); border-bottom: 2px solid var(--color-info); font-size: var(--tamano-texto-sm); }
+.offline-banner[data-vencida="true"] { border-bottom-color: var(--color-critico); }
+.offline-banner__alerta { color: var(--color-critico); }
+.offline-banner[hidden] { display: none; }
