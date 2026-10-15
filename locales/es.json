@@ -261,7 +261,9 @@
       "guardarBaremo": "Publicar baremo",
       "versionVigente": "Versión vigente desde {{fecha}}",
       "sinVersion": "Sin versión vigente.",
-      "baremoCientifico": "Los baremos científicos los publica el responsable científico con su fuente bibliográfica."
+      "baremoCientifico": "Los baremos científicos los publica el responsable científico con su fuente bibliográfica.",
+      "funcionalidades": "Funcionalidades",
+      "flagCientifico": "Habilitar el dashboard científico (investigación)"
     },
     "reglas": {
       "title": "Reglas de alerta",
@@ -349,5 +351,87 @@
     "descartar": "Descartar",
     "vacio": "No hay alertas.",
     "paginaDe": "Página {{actual}} de {{total}} ({{filas}} alertas)"
+  },
+  "dashboard": {
+    "verDatos": "Ver datos de la gráfica",
+    "dia": "Día",
+    "grupo": "Grupo",
+    "valor": "Valor",
+    "categoria": "Categoría",
+    "sinDato": "sin dato",
+    "intervalo": "Intervalo",
+    "cantidad": "Cantidad",
+    "fecha": "Fecha",
+    "fechaInvalida": "Seleccione una fecha válida.",
+    "sinDatosDia": "No hay indicadores calculados para este día.",
+    "kpi": {
+      "evaluados": "Operadores evaluados",
+      "icoPromedio": "ICO promedio",
+      "enRiesgo": "Operadores en riesgo",
+      "alertas": "Alertas abiertas",
+      "ico": "ICO de la empresa",
+      "fatiga": "Índice de fatiga",
+      "riesgo": "Índice de riesgo"
+    },
+    "categorias": {
+      "atencion": "Atención",
+      "memoria": "Memoria",
+      "velocidad": "Velocidad",
+      "inhibicion": "Inhibición"
+    },
+    "operativo": {
+      "title": "Dashboard operativo",
+      "menu": "Dashboard operativo",
+      "icoPorArea": "ICO por área",
+      "icoPorAreaAria": "Gráfica de barras con el ICO promedio de cada área",
+      "operadoresDelDia": "Operadores evaluados en el día",
+      "col": {
+        "operador": "Operador",
+        "ico": "ICO",
+        "riesgo": "Riesgo",
+        "fatiga": "Fatiga"
+      }
+    },
+    "clinico": {
+      "title": "Dashboard clínico",
+      "menu": "Dashboard clínico",
+      "operador": "Operador",
+      "elegir": "Seleccione un operador",
+      "elegirAyuda": "Seleccione un operador evaluado en la fecha elegida.",
+      "fatiga": "Fatiga (30 días)",
+      "riesgo": "Riesgo (30 días)",
+      "evolucion": "Evolución del ICO (30 días)",
+      "evolucionAria": "Gráfica de líneas con el ICO diario y su media móvil de 7 días",
+      "ico": "ICO diario",
+      "movil": "Media móvil 7 días",
+      "radar": "Perfil cognitivo (30 días)",
+      "radarAria": "Radar con atención, memoria, velocidad e inhibición",
+      "recomendaciones": "Recomendaciones recientes",
+      "sinRecomendaciones": "Sin recomendaciones recientes."
+    },
+    "ejecutivo": {
+      "title": "Dashboard ejecutivo",
+      "menu": "Dashboard ejecutivo",
+      "tendencia": "Tendencia del ICO de la empresa (30 días)",
+      "tendenciaAria": "Gráfica de líneas con el ICO diario de la empresa",
+      "porArea": "ICO por área",
+      "porAreaAria": "Barras con el ICO de cada área",
+      "porCargo": "ICO por cargo",
+      "porCargoAria": "Barras con el ICO de cada cargo"
+    },
+    "cientifico": {
+      "title": "Dashboard científico",
+      "menu": "Dashboard científico",
+      "desactivado": "El dashboard científico no está habilitado para esta empresa.",
+      "aviso": "Vista de investigación: los operadores se identifican solo con etiquetas anónimas. Cada acceso queda auditado.",
+      "media": "Media",
+      "desviacion": "Desv. estándar",
+      "cv": "Coef. de variación",
+      "distribucion": "Distribución del ICO",
+      "distribucionAria": "Histograma del ICO con curva gaussiana superpuesta",
+      "percentiles": "Percentiles del ICO",
+      "atipicos": "Valores atípicos",
+      "sinAtipicos": "No se detectaron valores atípicos."
+    }
   }
 }

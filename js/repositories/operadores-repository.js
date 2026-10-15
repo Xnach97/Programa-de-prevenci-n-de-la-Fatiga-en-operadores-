@@ -72,6 +72,24 @@ export class OperadoresRepository {
   }
 
   /**
+   * Nombres de operadores por id (para etiquetar dashboards). Solo se invoca si
+   * el usuario tiene `operadores.ver`; RLS lo impone igualmente.
+   * @param {string} empresaId
+   * @param {string[]} ids
+   * @returns {Promise<Map<string, string>>} id → "Nombre Apellido"
+   */
+  async nombresPorIds(empresaId, ids) {
+    const unicos = [...new Set(ids)].filter((i) => typeof i === 'string' && /^[0-9a-f-]{36}$/i.test(i));
+    const mapa = new Map();
+    for (let i = 0; i < unicos.length; i += 200) {
+      const { data, error } = await this._client.from('operadores').select('id, nombre, apellido').eq('empresa_id', empresaId).in('id', unicos.slice(i, i + 200));
+      if (error) throw new RepositoryError('operadores.nombresPorIds', error);
+      for (const f of data ?? []) mapa.set(f.id, [f.nombre, f.apellido].filter(Boolean).join(' ') || null);
+    }
+    return mapa;
+  }
+
+  /**
    * @param {string} id
    * @returns {Promise<object|null>}
    */

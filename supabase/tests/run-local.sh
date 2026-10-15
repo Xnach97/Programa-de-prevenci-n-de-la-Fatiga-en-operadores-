@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # =============================================================================
 # supabase/tests/run-local.sh
-# Aplica las migraciones 0001–0016 sobre un Postgres local descartable (con los
+# Aplica las migraciones 0001–0017 sobre un Postgres local descartable (con los
 # stubs de Supabase) y ejecuta las pruebas de RLS , Organization, Scientific, Testing, Indicators, Rules y Audit. Las migraciones se aplican
 # DOS veces para comprobar idempotencia.
 #

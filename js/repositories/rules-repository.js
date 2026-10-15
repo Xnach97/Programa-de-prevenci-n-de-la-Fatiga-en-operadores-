@@ -109,7 +109,7 @@ export class ReglasRepository {
    * @param {{estado?: string|null, pagina?: number}} [filtros]
    * @returns {Promise<{filas: object[], total: number}>}
    */
-  async listarAlertas(empresaId, { estado = null, pagina = 0 } = {}) {
+  async listarAlertas(empresaId, { estado = null, pagina = 0, operadorId = null } = {}) {
     const id = exigirUuid(empresaId, 'empresaId');
     const desde = Math.max(Math.trunc(pagina) || 0, 0) * TAMANO_PAGINA_ALERTAS;
     let q = this._client
@@ -119,9 +119,37 @@ export class ReglasRepository {
       .order('created_at', { ascending: false })
       .range(desde, desde + TAMANO_PAGINA_ALERTAS - 1);
     if (estado) q = q.eq('estado', estado);
+    if (operadorId) q = q.eq('operador_id', exigirUuid(operadorId, 'operadorId'));
     const { data, error, count } = await q;
     if (error) throw new RepositoryError('alertas.listar', error);
     return { filas: data ?? [], total: count ?? 0 };
+  }
+
+  /**
+   * Últimas recomendaciones generadas para un operador (vía sus evaluaciones recientes).
+   * @returns {Promise<Array<{id: string, texto_resuelto: string, created_at: string}>>}
+   */
+  async recomendacionesDeOperador(empresaId, operadorId, limite = 5) {
+    const empresa = exigirUuid(empresaId, 'empresaId');
+    const { data: evals, error: e1 } = await this._client
+      .from('evaluaciones')
+      .select('id')
+      .eq('empresa_id', empresa)
+      .eq('operador_id', exigirUuid(operadorId, 'operadorId'))
+      .order('fecha', { ascending: false })
+      .limit(30);
+    if (e1) throw new RepositoryError('recomendaciones.evaluaciones', e1);
+    const ids = (evals ?? []).map((e) => e.id);
+    if (ids.length === 0) return [];
+    const { data, error } = await this._client
+      .from('recomendaciones_generadas')
+      .select('id, texto_resuelto, created_at')
+      .eq('empresa_id', empresa)
+      .in('evaluacion_id', ids)
+      .order('created_at', { ascending: false })
+      .limit(limite);
+    if (error) throw new RepositoryError('recomendaciones.listar', error);
+    return data ?? [];
   }
 
   async resolverAlerta(alertaId, estado) {

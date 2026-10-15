@@ -43,7 +43,7 @@ declare
 begin
   -- Definiciones sembradas
   select count(*) into v_n from indicadores_definiciones;
-  assert v_n = 10, 'se esperaban 10 definiciones, hay ' || v_n;
+  assert v_n = 13, 'se esperaban 13 definiciones, hay ' || v_n;
   assert exists (select 1 from indicadores_definiciones where codigo = 'ico_empresa' and ambito = 'empresa'), 'ico_empresa';
 
   -- Supervisor (evaluaciones.registrar) publica

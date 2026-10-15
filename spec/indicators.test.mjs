@@ -38,11 +38,13 @@ test('fórmulas por operador (excluyen inválidas) y redondeo a 3 decimales', ()
 
 test('calcularIndicadoresOperador: solo los calculables, con detalle', () => {
   const r = calcularIndicadoresOperador(EVALS);
-  assert.deepEqual(r.map((x) => x.codigo), ['ico_trabajador', 'indice_atencion', 'indice_fatiga', 'indice_riesgo']);
+  assert.deepEqual(r.map((x) => x.codigo), ['ico_trabajador', 'indice_atencion', 'indice_memoria', 'indice_velocidad', 'indice_fatiga', 'indice_riesgo']);
+  assert.equal(r.find((x) => x.codigo === 'indice_memoria').valor, 50);
+  assert.equal(r.find((x) => x.codigo === 'indice_velocidad').valor, 50);   // (70+30)/2
   assert.equal(r[0].detalle.evaluaciones_validas, 2);
   assert.deepEqual(calcularIndicadoresOperador([]), []);
   const soloMemoria = calcularIndicadoresOperador([ev(70, 'aceptable', [res('memoria', 70)])]);
-  assert.deepEqual(soloMemoria.map((x) => x.codigo), ['ico_trabajador', 'indice_riesgo']);
+  assert.deepEqual(soloMemoria.map((x) => x.codigo), ['ico_trabajador', 'indice_memoria', 'indice_riesgo']);
 });
 
 test('grupo: cada operador pesa igual; área/cargo/empresa', () => {

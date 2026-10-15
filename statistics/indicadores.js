@@ -21,6 +21,9 @@ export const CODIGOS_INDICADOR = Object.freeze({
   ICO_CARGO: 'ico_cargo',
   ICO_EMPRESA: 'ico_empresa',
   INDICE_ATENCION: 'indice_atencion',
+  INDICE_MEMORIA: 'indice_memoria',
+  INDICE_VELOCIDAD: 'indice_velocidad',
+  INDICE_INHIBICION: 'indice_inhibicion',
   INDICE_FATIGA: 'indice_fatiga',
   INDICE_FATIGA_EMPRESA: 'indice_fatiga_empresa',
   INDICE_RIESGO: 'indice_riesgo',
@@ -86,6 +89,12 @@ export function indiceAtencion(evaluaciones) {
   return p.length ? { valor: redondear(media(p)), n: p.length } : null;
 }
 
+/** Media del puntaje de las pruebas de una categoría (insumo del radar cognitivo). */
+export function indicePorCategoria(evaluaciones, categoria) {
+  const p = puntajesDe(evaluaciones, [categoria]);
+  return p.length ? { valor: redondear(media(p)), n: p.length } : null;
+}
+
 export function indiceFatiga(evaluaciones) {
   const p = puntajesDe(evaluaciones, ['atencion', 'velocidad']);
   return p.length ? { valor: redondear(100 - media(p)), n: p.length } : null;
@@ -106,6 +115,9 @@ export function calcularIndicadoresOperador(evaluaciones) {
   const anadir = (codigo, r, extra = {}) => r && salida.push({ codigo, valor: r.valor, detalle: { n: r.n, ...extra } });
   anadir(CODIGOS_INDICADOR.ICO_TRABAJADOR, icoMedia(evaluaciones), { evaluaciones_validas: validas(evaluaciones).length });
   anadir(CODIGOS_INDICADOR.INDICE_ATENCION, indiceAtencion(evaluaciones));
+  anadir(CODIGOS_INDICADOR.INDICE_MEMORIA, indicePorCategoria(evaluaciones, 'memoria'));
+  anadir(CODIGOS_INDICADOR.INDICE_VELOCIDAD, indicePorCategoria(evaluaciones, 'velocidad'));
+  anadir(CODIGOS_INDICADOR.INDICE_INHIBICION, indicePorCategoria(evaluaciones, 'inhibicion'));
   anadir(CODIGOS_INDICADOR.INDICE_FATIGA, indiceFatiga(evaluaciones));
   anadir(CODIGOS_INDICADOR.INDICE_RIESGO, indiceRiesgo(evaluaciones));
   return salida;

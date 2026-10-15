@@ -1,0 +1,29 @@
+/* Módulo 8 — Dashboards. Solo tokens de css/tokens.css. */
+.dashboard .toolbar { display: flex; flex-wrap: wrap; gap: var(--espacio-3); align-items: flex-end; }
+.kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr)); gap: var(--espacio-3); margin: var(--espacio-4) 0; }
+.kpi { background: var(--color-superficie); border: 1px solid var(--color-borde); border-radius: 8px; padding: var(--espacio-3); display: flex; flex-direction: column; gap: var(--espacio-1); }
+.kpi__valor { font-size: 1.75rem; font-weight: 700; color: var(--color-texto-primario); font-family: var(--tipografia-mono); }
+.kpi__etiqueta { font-size: var(--tamano-texto-sm); color: var(--color-texto-secundario); }
+.grafica { margin: var(--espacio-4) 0; background: var(--color-superficie); border: 1px solid var(--color-borde); border-radius: 8px; padding: var(--espacio-3); }
+.grafica__titulo { font-weight: 600; margin-bottom: var(--espacio-2); }
+.grafica__svg { width: 100%; height: auto; max-height: 24rem; display: block; }
+.grafica__rejilla { stroke: var(--color-borde); stroke-width: 1; fill: none; }
+.grafica__etiqueta { fill: var(--color-texto-secundario); font-size: 11px; }
+.grafica__valor { fill: var(--color-texto-primario); font-size: 11px; font-family: var(--tipografia-mono); }
+.grafica__barra { fill: var(--color-primario); }
+.grafica__area { fill: var(--color-primario); fill-opacity: .25; stroke: var(--color-primario); stroke-width: 2; }
+.grafica__linea { stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.grafica__linea--0 { stroke: var(--color-primario); }
+.grafica__linea--1 { stroke: var(--color-info); }
+.grafica__linea--2 { stroke: var(--color-advertencia); }
+.grafica__linea--punteada { stroke-dasharray: 6 4; }
+.grafica__leyenda { list-style: none; display: flex; gap: var(--espacio-4); padding: 0; margin: var(--espacio-2) 0; font-size: var(--tamano-texto-sm); }
+.grafica__leyenda li { display: flex; align-items: center; gap: var(--espacio-2); }
+.grafica__muestra { display: inline-block; width: 1.5rem; height: 0; border-top: 3px solid var(--color-primario); }
+.grafica__muestra--1 { border-top-color: var(--color-info); }
+.grafica__muestra--2 { border-top-color: var(--color-advertencia); }
+.grafica__muestra--punteada { border-top-style: dashed; }
+.grafica__datos { margin-top: var(--espacio-2); font-size: var(--tamano-texto-sm); }
+.grafica__tabla { margin-top: var(--espacio-2); }
+.recomendaciones { padding-left: var(--espacio-4); }
+@media (prefers-reduced-motion: reduce) { .grafica__svg * { transition: none; } }

@@ -65,6 +65,18 @@ export function validarTurnos(turnos) {
   });
 }
 
+/** Banderas booleanas con nombre en minúsculas/guion bajo; cualquier otra forma se rechaza. */
+const NOMBRE_FLAG = /^[a-z][a-z0-9_]{0,39}$/;
+export function validarFlags(flags) {
+  if (!flags || typeof flags !== 'object' || Array.isArray(flags)) falla('Las banderas de funcionalidad son inválidas.');
+  const salida = {};
+  for (const [k, v] of Object.entries(flags)) {
+    if (!NOMBRE_FLAG.test(k) || typeof v !== 'boolean') falla(`Bandera de funcionalidad inválida: "${k}".`);
+    salida[k] = v;
+  }
+  return salida;
+}
+
 export class ConfiguracionService {
   /**
    * @param {{empresas: {actualizarConfiguracion: Function}, cientifica: import('./scientific-service.js').ConfiguracionCientificaService,
@@ -82,14 +94,20 @@ export class ConfiguracionService {
   /**
    * @param {{empresaId: string, usuarioId?: string|null, marca: object, turnos: object[], pruebasActivas: string[], baremoModalidad: string}} datos
    */
-  async guardarGeneral({ empresaId, usuarioId = null, marca, turnos, pruebasActivas, baremoModalidad }) {
+  async guardarGeneral({ empresaId, usuarioId = null, marca, turnos, pruebasActivas, baremoModalidad, featureFlags = undefined }) {
     if (!MODALIDADES_BAREMO.includes(baremoModalidad)) falla('Modalidad de baremo inválida.');
     const conocidas = new Set(this._codigosPruebas());
     const activas = [...new Set(pruebasActivas ?? [])];
     if (activas.some((c) => !conocidas.has(c))) falla('Se seleccionó una prueba desconocida.');
     return this._empresas.actualizarConfiguracion(
       empresaId,
-      { marca: validarMarca(marca), turnos: validarTurnos(turnos), pruebas_activas: activas, baremo_modalidad: baremoModalidad },
+      {
+        marca: validarMarca(marca),
+        turnos: validarTurnos(turnos),
+        pruebas_activas: activas,
+        baremo_modalidad: baremoModalidad,
+        ...(featureFlags === undefined ? {} : { feature_flags: validarFlags(featureFlags) }),
+      },
       usuarioId,
     );
   }

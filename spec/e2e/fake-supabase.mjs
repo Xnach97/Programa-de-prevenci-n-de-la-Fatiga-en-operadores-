@@ -20,7 +20,7 @@ const db = {
     { empresa_id: EMPRESA_B, marca: { color_primario: 'red;background:url(x)', logo_url: "https://x.co/a')" } },
   ],
   pruebas: [], ico_configuraciones: [], baremos: [], reglas: [], recomendaciones_plantillas: [], alertas: [], recomendaciones_generadas: [], auditoria: [], evaluaciones: [], resultados_pruebas: [], indicadores_valores: [],
-  indicadores_definiciones: ['ico_trabajador','ico_area','ico_cargo','ico_empresa','indice_atencion','indice_fatiga','indice_fatiga_empresa','indice_riesgo','indice_riesgo_area','indice_riesgo_empresa'].map((codigo) => ({ id: 'def-' + codigo, codigo, nombre: codigo, ambito: 'x', formula_ref: 'x' })),
+  indicadores_definiciones: ['ico_trabajador','ico_area','ico_cargo','ico_empresa','indice_atencion','indice_memoria','indice_velocidad','indice_inhibicion','indice_fatiga','indice_fatiga_empresa','indice_riesgo','indice_riesgo_area','indice_riesgo_empresa'].map((codigo) => ({ id: 'def-' + codigo, codigo, nombre: codigo, ambito: 'x', formula_ref: 'x' })),
   areas: [], procesos: [], centros_trabajo: [], cargos: [], lineas_operacionales: [], operadores: [],
 };
 const uuid = () => crypto.randomUUID();
@@ -41,6 +41,7 @@ class Query {
   not(c, op, v) { this.filtros.push([c, v, 'not']); return this; }
   neq(c, v) { this.filtros.push([c, v, 'neq']); return this; }
   lt(c, v) { this.filtros.push([c, v, 'lt']); return this; }
+  containedBy(c, r) { this.filtros.push([c, r, 'contenido']); return this; }
   in(c, vs) { this.filtros.push([c, vs, 'in']); return this; }
   limit() { return this; }
   range(a, b) { this.rango = [a, b]; return this; }
@@ -55,7 +56,10 @@ class Query {
       else if (modo === 'lte') filas = filas.filter((f) => f[c] <= v);
       else if (modo === 'neq') filas = filas.filter((f) => f[c] !== v);
       else if (modo === 'lt') filas = filas.filter((f) => f[c] < v);
-      else if (modo === 'in') filas = filas.filter((f) => v.includes(f[c]));
+      else if (modo === 'contenido') {
+        const [a, b] = v.slice(1, -1).split(',');
+        filas = filas.filter((f) => { const [d, h] = String(f[c]).slice(1, -1).split(','); return d >= a && h <= b; });
+      } else if (modo === 'in') filas = filas.filter((f) => v.includes(f[c]));
       else if (modo === 'not') filas = filas.filter((f) => f[c] !== null && f[c] !== undefined);
       else filas = filas.filter((f) => f[c] === v);
     }

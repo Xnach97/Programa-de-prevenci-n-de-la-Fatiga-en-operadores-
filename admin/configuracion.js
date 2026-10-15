@@ -106,6 +106,8 @@ async function renderConfiguracion(contenedor, contexto) {
     const modalidad = campo(t('admin.configuracion.modalidad'), 'select', { name: 'baremo_modalidad' },
       MODALIDADES_BAREMO.map((m) => h('option', { value: m, selected: m === (cfg.baremo_modalidad ?? 'dinamico') }, t(`admin.configuracion.modalidades.${m}`))));
 
+    const banderas = cfg.feature_flags && typeof cfg.feature_flags === 'object' ? cfg.feature_flags : {};
+    const flagCientifico = h('input', { type: 'checkbox', name: 'dashboard_cientifico', checked: banderas.dashboard_cientifico === true });
     const guardar = h('button', { type: 'submit', class: 'button-primary' }, t('admin.configuracion.guardar'));
     const form = h(
       'form',
@@ -124,6 +126,7 @@ async function renderConfiguracion(contenedor, contexto) {
             turnos: [...filasTurnos.children].map((f) => f.leer()),
             pruebasActivas: checks.filter((c) => c.input.checked).map((c) => c.input.value),
             baremoModalidad: modalidad.control.value,
+            featureFlags: { ...banderas, dashboard_cientifico: flagCientifico.checked },
           });
           applyBrandTokens(marcaATokens(await db.empresas.obtenerConfiguracion(empresaId).then((c) => c?.marca)));
           estado.ok(t('admin.guardado'));
@@ -143,6 +146,8 @@ async function renderConfiguracion(contenedor, contexto) {
       h('p', { class: 'dialog__description' }, t('admin.configuracion.pruebasAyuda')),
       checks.map((c) => c.nodo),
       modalidad.contenedor,
+      h('h3', {}, t('admin.configuracion.funcionalidades')),
+      h('label', { class: 'form-field form-field--check' }, flagCientifico, t('admin.configuracion.flagCientifico')),
       guardar,
       estado.nodo,
     );

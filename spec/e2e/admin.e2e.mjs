@@ -70,7 +70,7 @@ try {
   await pagina.fill('input[name=password]', 'secreto');
   await pagina.click('[data-submit]');
   await pagina.waitForSelector('#app-menu a');
-  assert.deepEqual(await pagina.$$eval('#app-menu a', (as) => as.map((a) => a.textContent)), ['Inicio', 'Alertas', 'Configuración', 'Reglas', 'Auditoría']);
+  assert.deepEqual(await pagina.$$eval('#app-menu a', (as) => as.map((a) => a.textContent)), ['Inicio', 'Dashboard operativo', 'Dashboard clínico', 'Dashboard ejecutivo', 'Alertas', 'Configuración', 'Reglas', 'Auditoría']);
   paso('menú según permisos (configuración, reglas, alertas, auditoría)');
 
   // ------------------------------------------------------------ configuración

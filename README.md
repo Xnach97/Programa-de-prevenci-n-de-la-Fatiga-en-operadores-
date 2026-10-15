@@ -24,7 +24,7 @@ Abrir `http://localhost:8000`.
 - [x] Módulo 5 — Testing Engine (4 pruebas, registro atómico e idempotente de evaluaciones)
 - [x] Módulo 6 — Indicators Engine (indicadores_valores, fórmulas provisionales, recálculo tras cada evaluación)
 - [x] Módulo 7 — Rules Engine, Alertas, Auditoría y Configuración de empresa
-- [ ] Módulo 8 — Dashboard Framework
+- [x] Módulo 8 — Dashboard Framework (4 dashboards SVG, lectura solo de indicadores_valores)
 - [ ] Módulo 9 — Offline Engine
 - [ ] Módulo 10 — Research Platform
 - [ ] Módulo 11 — Optimización final
@@ -37,6 +37,7 @@ bash supabase/tests/run-local.sh   # migraciones 0001–0016 (x2, idempotencia) 
 node spec/e2e/organization.e2e.mjs # navegador
 node spec/e2e/testing.e2e.mjs      # evaluación completa (4 pruebas) en navegador
 node spec/e2e/admin.e2e.mjs        # configuración, reglas, alertas y auditoría real (Chromium) con Supabase simulado; requiere `playwright`
+node spec/e2e/dashboard.e2e.mjs    # dashboards operativo/clínico/ejecutivo/científico (Chromium) con Supabase simulado
 ```
 
 La prueba de navegador usa un Supabase en memoria (`spec/e2e/fake-supabase.mjs`):
