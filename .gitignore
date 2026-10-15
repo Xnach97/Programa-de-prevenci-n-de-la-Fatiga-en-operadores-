@@ -1,0 +1,7 @@
+# Configuración local de entorno (contiene la URL/clave del proyecto Supabase; ver js/env.example.js)
+js/env.js
+
+# Dependencias y artefactos locales
+node_modules/
+*.log
+.DS_Store

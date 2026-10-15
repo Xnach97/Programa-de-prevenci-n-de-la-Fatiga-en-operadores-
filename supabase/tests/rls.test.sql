@@ -49,7 +49,12 @@ begin
   assert (select count(*) from permisos) = 14, 'seed: deben existir 14 permisos';
   assert (select count(*) from roles where es_plantilla and empresa_id is null) = 5, 'seed: deben existir 5 roles de plantilla';
   assert (select count(*) from roles_permisos rp join roles r on r.id = rp.role_id where r.nombre = 'Super Administrador') = 14, 'seed: Super Administrador debe tener los 14 permisos';
-  assert (select count(*) from roles_permisos rp join roles r on r.id = rp.role_id where r.nombre = 'Operador') = 1, 'seed: Operador debe tener 1 permiso';
+  assert exists (
+    select 1 from roles_permisos rp join roles r on r.id = rp.role_id join permisos p on p.id = rp.permiso_id
+    where r.nombre = 'Operador' and r.es_plantilla and p.codigo = 'evaluaciones.registrar'
+  ), 'seed: Operador debe poder registrar evaluaciones';
+  assert (select count(*) from roles_permisos rp join roles r on r.id = rp.role_id where r.nombre = 'Operador' and r.es_plantilla) = 2,
+    'seed: Operador debe tener 2 permisos (evaluaciones.registrar y catalogos.ver, este último desde la migración 0006)';
   assert not exists (
     select 1 from roles_permisos rp join roles r on r.id = rp.role_id join permisos p on p.id = rp.permiso_id
     where r.nombre in ('Operador', 'Profesional PGR') and p.codigo in ('configuracion.editar', 'usuarios.administrar', 'baremos.editar')

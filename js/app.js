@@ -30,6 +30,7 @@ import { applyBrandTokens } from './theming.js';
 import { router } from './navigation.js';
 import { createStore } from './state-store.js';
 import { initAuthModule } from './auth.js';
+import { initOrganizationModule } from './organization.js';
 
 const logger = createLogger('app');
 
@@ -85,7 +86,7 @@ function registerCoreRoutes() {
     title: () => `${t('core.home.title')} · ${t('core.appName')}`,
     render: renderHomeView,
     // Requiere sesión activa (la guarda instalada por js/auth.js lo hace cumplir).
-    meta: { publico: false },
+    meta: { publico: false, menu: { etiqueta: 'core.menu.home', orden: 0 } },
   });
 
   router.setNotFound({
@@ -176,7 +177,8 @@ export async function bootstrap() {
     applyBrandTokens(); // Tokens por defecto de la plataforma — la marca de empresa llega en el Módulo Organization.
 
     registerCoreRoutes();
-    await initAuthModule({ router });
+    const authService = await initAuthModule({ router });
+    initOrganizationModule({ router, authService });
     await router.start(APP_CONFIG.dom.appViewSelector);
 
     await registerServiceWorker();

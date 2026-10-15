@@ -20,6 +20,7 @@
 import { createLogger } from '../services/logger.js';
 import { eventBus, CORE_EVENTS } from '../services/event-bus.js';
 import { createStore } from './state-store.js';
+import { sanitizarColor, sanitizarFuente, sanitizarLogoUrl, escaparParaCssUrl } from './brand.js';
 
 const logger = createLogger('theming');
 
@@ -66,7 +67,8 @@ const themeStore = createStore({ tokens: DEFAULT_BRAND_TOKENS, empresaId: null }
  * @returns {string}
  */
 function formatLogoCssValue(logoUrl) {
-  return logoUrl ? `url('${logoUrl}')` : 'none';
+  const seguro = sanitizarLogoUrl(logoUrl);
+  return seguro ? `url("${escaparParaCssUrl(seguro)}")` : 'none';
 }
 
 /**
@@ -87,8 +89,11 @@ export function applyBrandTokens(tokens = {}, meta = {}) {
       root.style.setProperty(cssVariable, formatLogoCssValue(value));
       continue;
     }
-    if (value) {
-      root.style.setProperty(cssVariable, value);
+    // Defensa en profundidad: aunque el origen ya sanea (brand.js), el único
+    // punto que escribe CSS valida también, sea cual sea el llamador.
+    const seguro = businessKey.startsWith('color') ? sanitizarColor(value) : sanitizarFuente(value);
+    if (seguro) {
+      root.style.setProperty(cssVariable, seguro);
     }
   }
 

@@ -272,6 +272,25 @@ class Router {
     return this._resolveAndRender();
   }
 
+  /**
+   * Rutas registradas, en orden de registro. Permite a módulos de navegación
+   * (menú) derivar su contenido de `meta` sin acoplarse al Map interno.
+   * @returns {RouteDefinition[]}
+   */
+  listRoutes() {
+    return [...this.routes.values()];
+  }
+
+  /**
+   * Re-evalúa guardas y vuelve a renderizar la ruta actual (p. ej. tras cambiar
+   * de empresa activa). Seguro de invocar antes de `start()`: no hace nada.
+   * @returns {Promise<void>}
+   */
+  async refresh() {
+    if (!this.container) return;
+    await this._resolveAndRender();
+  }
+
   /** @returns {Readonly<{currentPath: string|null, isNavigating: boolean}>} */
   getState() {
     return this.store.getState();

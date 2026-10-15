@@ -19,7 +19,7 @@ Abrir `http://localhost:8000`.
 
 - [x] Módulo 1 — Core Platform
 - [x] Módulo 2 — Authentication
-- [ ] Módulo 3 — Organization
+- [x] Módulo 3 — Organization (catálogos, operadores, menú, marca de empresa)
 - [ ] Módulo 4 — Scientific Engine
 - [ ] Módulo 5 — Testing Engine
 - [ ] Módulo 6 — Indicators Engine
@@ -32,6 +32,15 @@ Abrir `http://localhost:8000`.
 ## Pruebas
 
 ```bash
-node --test spec/auth-service.test.mjs   # lógica de autenticación (sin red ni DOM)
-bash supabase/tests/run-local.sh         # migraciones (x2, idempotencia) + RLS con aserciones, en Postgres local
+node --test spec/*.test.mjs        # unitarias: auth, marca, servicios de Organization, menú (sin red ni DOM)
+bash supabase/tests/run-local.sh   # migraciones 0001–0006 (x2, idempotencia) + RLS y Organization con aserciones, en Postgres local
+node spec/e2e/organization.e2e.mjs # navegador real (Chromium) con Supabase simulado; requiere `playwright`
 ```
+
+La prueba de navegador usa un Supabase en memoria (`spec/e2e/fake-supabase.mjs`):
+valida la interfaz, no las políticas RLS (esas las cubre la batería SQL).
+
+## Configuración local
+
+`js/env.js` **no se versiona** (ver `.gitignore`). Cópielo desde `js/env.example.js`
+y complete `SUPABASE_URL` y `SUPABASE_ANON_KEY`.

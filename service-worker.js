@@ -19,7 +19,7 @@
  * y de privacidad, Ley 1581, Fase 2 §0.6).
  */
 
-const APP_SHELL_CACHE_VERSION = 'v2';
+const APP_SHELL_CACHE_VERSION = 'v3';
 const APP_SHELL_CACHE_NAME = `neurolab-app-shell-${APP_SHELL_CACHE_VERSION}`;
 
 /** Activos mínimos del Core Platform. Cada módulo futuro que añada assets estáticos propios amplía esta lista. */
@@ -30,6 +30,7 @@ const APP_SHELL_ASSETS = Object.freeze([
   '/css/tokens.css',
   '/css/style.css',
   '/css/auth.css',
+  '/css/organization.css',
   '/js/app.js',
   '/js/config.js',
   '/js/navigation.js',
@@ -41,11 +42,25 @@ const APP_SHELL_ASSETS = Object.freeze([
   '/js/repositories/repository-error.js',
   '/js/repositories/usuarios-repository.js',
   '/js/repositories/empresas-repository.js',
+  '/js/repositories/catalogos-repository.js',
+  '/js/repositories/operadores-repository.js',
+  '/js/brand.js',
+  '/js/company-context.js',
+  '/js/menu.js',
+  '/js/operator.js',
+  '/js/organization.js',
+  '/js/organization-services.js',
+  '/js/ui/dom.js',
+  '/js/ui/forms.js',
+  '/admin/catalogos.js',
   '/services/logger.js',
   '/services/event-bus.js',
   '/services/supabase.js',
   '/services/auth-service.js',
   '/services/permissions-catalog.js',
+  '/services/organization-error.js',
+  '/services/catalogos-service.js',
+  '/services/operadores-service.js',
   '/locales/es.json',
 ]);
 

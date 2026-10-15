@@ -26,6 +26,9 @@
       "readyMessage": "Núcleo de la plataforma inicializado correctamente.",
       "pendingModulesTitle": "Módulos pendientes de activación",
       "pendingModulesDescription": "Autenticación, catálogos organizacionales, motor científico y pruebas cognitivas se incorporan en los siguientes módulos de implementación."
+    },
+    "menu": {
+      "home": "Inicio"
     }
   },
   "auth": {
@@ -55,7 +58,87 @@
       "cancel": "Cancelar",
       "close": "Cerrar",
       "continue": "Continuar",
-      "back": "Volver"
+      "back": "Volver",
+      "save": "Guardar"
+    },
+    "loading": "Cargando…"
+  },
+  "organization": {
+    "menu": {
+      "catalogos": "Catálogos",
+      "operadores": "Operadores"
+    },
+    "sinSeleccion": "— Sin selección —",
+    "sinEmpresa": "Su cuenta no tiene una empresa asignada. Contacte al administrador.",
+    "estados": {
+      "activo": "Activo",
+      "inactivo": "Inactivo",
+      "archivado": "Archivado",
+      "anonimizado": "Anonimizado"
+    },
+    "errors": {
+      "validacion": "Los datos ingresados no son válidos.",
+      "duplicado": "Ya existe un registro con ese nombre o cédula.",
+      "referencia_invalida": "La referencia seleccionada no es válida para esta empresa.",
+      "no_encontrado": "El registro no existe o no tiene permiso para modificarlo.",
+      "sin_permiso": "No tiene permiso para realizar esta acción.",
+      "operacion_no_permitida": "Esta operación no está permitida.",
+      "desconocido": "No fue posible completar la operación. Intente de nuevo."
+    },
+    "catalogos": {
+      "title": "Catálogos organizacionales",
+      "tabsLabel": "Catálogos",
+      "nombres": {
+        "areas": "Áreas",
+        "cargos": "Cargos",
+        "centros_trabajo": "Centros de trabajo",
+        "procesos": "Procesos",
+        "lineas_operacionales": "Líneas operacionales"
+      },
+      "padre": {
+        "cargos": "Área",
+        "lineas_operacionales": "Proceso"
+      },
+      "columnaNombre": "Nombre",
+      "columnaEstado": "Estado",
+      "columnaAcciones": "Acciones",
+      "crear": "Nuevo registro",
+      "editar": "Editar",
+      "guardar": "Guardar",
+      "activar": "Activar",
+      "desactivar": "Desactivar",
+      "vacio": "No hay registros en este catálogo."
+    },
+    "operadores": {
+      "title": "Operadores",
+      "buscar": "Buscar por cédula o nombre",
+      "filtroEstado": "Estado",
+      "todos": "Todos",
+      "nuevo": "Nuevo operador",
+      "editar": "Editar operador",
+      "nombre": "Nombre",
+      "apellido": "Apellido",
+      "centroTrabajo": "Centro de trabajo",
+      "lineaOperacional": "Línea operacional",
+      "turno": "Turno habitual",
+      "columnas": {
+        "cedula": "Cédula",
+        "nombre": "Nombre",
+        "cargo": "Cargo",
+        "area": "Área",
+        "estado": "Estado"
+      },
+      "vacio": "No se encontraron operadores.",
+      "anonimizadoEtiqueta": "Operador anonimizado",
+      "anonimizar": "Anonimizar",
+      "anonimizarTitulo": "Anonimizar operador",
+      "anonimizarAdvertencia": "Se eliminará de forma permanente la identificación del operador (cédula, nombre y cuenta). Sus evaluaciones se conservan sin identificarlo. Esta acción no se puede deshacer.",
+      "confirmarAnonimizacion": "Entiendo que esta acción es irreversible",
+      "debeConfirmar": "Debe confirmar que entiende que la acción es irreversible.",
+      "paginacion": "Paginación de operadores",
+      "anterior": "Anterior",
+      "siguiente": "Siguiente",
+      "paginaDe": "Página {{actual}} de {{total}} ({{filas}} operadores)"
     }
   }
 }

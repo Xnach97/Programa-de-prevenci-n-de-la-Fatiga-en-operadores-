@@ -13,13 +13,15 @@
 import { getSupabaseClient } from '../services/supabase.js';
 import { UsuariosRepository } from './repositories/usuarios-repository.js';
 import { EmpresasRepository } from './repositories/empresas-repository.js';
+import { CatalogosRepository } from './repositories/catalogos-repository.js';
+import { OperadoresRepository } from './repositories/operadores-repository.js';
 
-/** @type {Promise<{usuarios: UsuariosRepository, empresas: EmpresasRepository}> | null} */
+/** @type {Promise<{usuarios: UsuariosRepository, empresas: EmpresasRepository, catalogos: CatalogosRepository, operadores: OperadoresRepository}> | null} */
 let databasePromise = null;
 
 /**
  * Instancia única de la capa de datos, con repositorios ya conectados.
- * @returns {Promise<{usuarios: UsuariosRepository, empresas: EmpresasRepository}>}
+ * @returns {Promise<{usuarios: UsuariosRepository, empresas: EmpresasRepository, catalogos: CatalogosRepository, operadores: OperadoresRepository}>}
  */
 export async function getDatabase() {
   if (!databasePromise) {
@@ -27,6 +29,8 @@ export async function getDatabase() {
       .then((client) => ({
         usuarios: new UsuariosRepository(client),
         empresas: new EmpresasRepository(client),
+        catalogos: new CatalogosRepository(client),
+        operadores: new OperadoresRepository(client),
       }))
       .catch((error) => {
         databasePromise = null; // permite reintento si la inicialización falló
