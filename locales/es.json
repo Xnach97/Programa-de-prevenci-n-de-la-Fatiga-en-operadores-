@@ -28,6 +28,27 @@
       "pendingModulesDescription": "Autenticación, catálogos organizacionales, motor científico y pruebas cognitivas se incorporan en los siguientes módulos de implementación."
     }
   },
+  "auth": {
+    "login": {
+      "title": "Iniciar sesión",
+      "subtitle": "NeuroLab SST — acceso a la plataforma",
+      "emailLabel": "Correo electrónico",
+      "passwordLabel": "Contraseña",
+      "submit": "Ingresar",
+      "submitting": "Ingresando…",
+      "missingFields": "Ingresa tu correo y contraseña.",
+      "genericError": "No se pudo iniciar sesión. Intenta de nuevo."
+    },
+    "session": {
+      "logout": "Cerrar sesión",
+      "switchEmpresa": "Cambiar empresa"
+    },
+    "accessDenied": {
+      "title": "Acceso denegado",
+      "description": "No tienes permiso para ver esta sección.",
+      "backAction": "Volver al inicio"
+    }
+  },
   "common": {
     "actions": {
       "accept": "Aceptar",

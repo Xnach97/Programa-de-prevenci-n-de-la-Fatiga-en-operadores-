@@ -18,7 +18,7 @@ Abrir `http://localhost:8000`.
 ## Estado de módulos
 
 - [x] Módulo 1 — Core Platform
-- [ ] Módulo 2 — Authentication
+- [x] Módulo 2 — Authentication
 - [ ] Módulo 3 — Organization
 - [ ] Módulo 4 — Scientific Engine
 - [ ] Módulo 5 — Testing Engine
@@ -28,3 +28,10 @@ Abrir `http://localhost:8000`.
 - [ ] Módulo 9 — Offline Engine
 - [ ] Módulo 10 — Research Platform
 - [ ] Módulo 11 — Optimización final
+
+## Pruebas
+
+```bash
+node --test spec/auth-service.test.mjs   # lógica de autenticación (sin red ni DOM)
+bash supabase/tests/run-local.sh         # migraciones (x2, idempotencia) + RLS con aserciones, en Postgres local
+```

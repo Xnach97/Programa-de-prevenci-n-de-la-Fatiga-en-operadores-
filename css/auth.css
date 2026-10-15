@@ -1,0 +1,104 @@
+/**
+ * auth.css — Estilos del Módulo 2 (Authentication): panel de login y controles
+ * de sesión en #app-nav. Solo variables de tokens.css (Fase 2 §3): ninguna
+ * regla introduce un color o tipografía literal.
+ */
+
+.auth-panel {
+  max-width: 400px;
+  margin: var(--espacio-12) auto 0;
+  padding: var(--espacio-8);
+  background-color: var(--color-superficie);
+  border: 1px solid var(--color-borde-sutil);
+  border-radius: var(--radio-lg);
+  box-shadow: var(--sombra-elevacion-1);
+}
+
+.auth-panel h1 {
+  font-size: var(--tamano-texto-xl);
+  margin-bottom: var(--espacio-2);
+}
+
+.auth-panel p {
+  margin-bottom: var(--espacio-6);
+}
+
+.auth-panel__field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-2);
+  margin-bottom: var(--espacio-4);
+  font-size: var(--tamano-texto-sm);
+  color: var(--color-texto-secundario);
+}
+
+.auth-panel__field input {
+  font: inherit;
+  padding: var(--espacio-3);
+  background-color: var(--color-fondo);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-sm);
+  color: var(--color-texto-primario);
+  transition: border-color var(--duracion-transicion-rapida) var(--curva-transicion);
+}
+
+.auth-panel__field input:focus-visible {
+  border-color: var(--color-primario);
+}
+
+.auth-panel__error {
+  margin-bottom: var(--espacio-4);
+  padding: var(--espacio-3);
+  background-color: var(--color-critico-superficie);
+  border: 1px solid var(--color-critico);
+  border-radius: var(--radio-sm);
+  color: var(--color-texto-primario);
+  font-size: var(--tamano-texto-sm);
+}
+
+/* El atributo hidden debe ganar sobre display de componentes. */
+.auth-panel__error[hidden] {
+  display: none;
+}
+
+.auth-panel button[type='submit'] {
+  width: 100%;
+  justify-content: center;
+}
+
+.auth-panel button[type='submit']:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+/* ---- Controles de sesión en #app-nav ---- */
+
+.session-controls__user {
+  font-size: var(--tamano-texto-sm);
+  color: var(--color-texto-secundario);
+}
+
+.session-controls__empresa {
+  font: inherit;
+  font-size: var(--tamano-texto-sm);
+  padding: var(--espacio-1) var(--espacio-2);
+  background-color: var(--color-superficie-elevada);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-sm);
+  color: var(--color-texto-primario);
+}
+
+.session-controls__logout {
+  font-size: var(--tamano-texto-sm);
+  padding: var(--espacio-2) var(--espacio-3);
+  background-color: transparent;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-sm);
+  color: var(--color-texto-secundario);
+  transition: border-color var(--duracion-transicion-rapida) var(--curva-transicion);
+}
+
+.session-controls__logout:hover {
+  border-color: var(--color-critico);
+  color: var(--color-critico);
+}
