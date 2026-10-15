@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NeuroLab SST</title>
+  <meta name="description" content="Plataforma Inteligente de Vigilancia Cognitiva Operacional — NeuroLab SST" />
+  <meta name="theme-color" content="#0e1420" />
+
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="icon" href="/assets/icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="/assets/icons/icon-192.png" />
+
+  <link rel="stylesheet" href="/css/tokens.css" />
+  <link rel="stylesheet" href="/css/style.css" />
+
+  <!--
+    js/env.js NO se versiona (ver .gitignore y js/env.example.js). Debe
+    cargarse ANTES de js/app.js como script clásico (no módulo) para que
+    defina window.__NEUROLAB_ENV__ de forma síncrona, antes de que
+    js/config.js lo lea en el primer import de la cadena de módulos.
+  -->
+  <script src="/js/env.js"></script>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="app-header">
+      <div class="app-header__brand">
+        <span class="app-header__logo" aria-hidden="true"></span>
+        <span>NeuroLab SST</span>
+      </div>
+      <!-- Los módulos de Authentication y Organization insertan aquí sus controles (sesión, selector de empresa). -->
+      <nav id="app-nav" aria-label="Controles de sesión"></nav>
+    </header>
+
+    <!-- Frontera de error global — poblada y mostrada por js/app.js ante fallos no capturados. -->
+    <div id="app-error-boundary" role="alert" data-visible="false"></div>
+
+    <main class="app-main">
+      <!-- Contenedor de renderizado del router (js/navigation.js). Se limpia y repuebla en cada navegación. -->
+      <div id="app-view">
+        <div class="boot-loader" role="status" aria-live="polite">
+          <div class="boot-loader__spinner" aria-hidden="true"></div>
+          <span>Cargando…</span>
+        </div>
+      </div>
+    </main>
+
+    <footer class="app-footer">
+      <span data-app-version>NeuroLab SST</span>
+    </footer>
+  </div>
+
+  <noscript>
+    Esta aplicación requiere JavaScript habilitado para funcionar.
+  </noscript>
+
+  <script type="module" src="/js/app.js"></script>
+</body>
+</html>

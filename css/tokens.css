@@ -1,0 +1,107 @@
+/**
+ * tokens.css — Tokens de diseño por defecto de NeuroLab SST.
+ *
+ * Estas variables son el fallback de la plataforma ANTES de que exista una
+ * sesión activa o una empresa con marca configurada. Una vez implementado
+ * el módulo Organization, `js/theming.js` sobrescribe el subconjunto de
+ * variables de marca (--color-primario, --color-secundario, --color-acento,
+ * --logo-url, --tipografia-display) en tiempo de ejecución leyendo
+ * `configuracion_empresa.marca` (Fase 3 §4). Ningún componente visual debe
+ * usar un color o tipografía literal fuera de este archivo — Fase 2 §3
+ * (theming.js): "Ningún componente visual referencia un color fijo".
+ *
+ * Dirección de diseño: instrumentación clínica de sala de control — la
+ * plataforma vigila procesos cognitivos de operadores de una planta
+ * termoeléctrica, así que el lenguaje visual toma prestado el vocabulario
+ * de un panel de control industrial (fondo profundo, retícula estable,
+ * acentos de señal/alerta de alto contraste) en vez de una paleta genérica
+ * de SaaS corporativo. Esta es la identidad *por defecto* de la plataforma
+ * NeuroLab como producto; cada empresa cliente la sobrescribe con la suya.
+ */
+
+:root {
+  /* ---- Paleta base: "sala de control" ---- */
+  --color-fondo: #0e1420;
+  --color-superficie: #161e2d;
+  --color-superficie-elevada: #1e2838;
+  --color-borde: #2a3548;
+  --color-borde-sutil: #202a3a;
+
+  --color-texto-primario: #e8edf5;
+  --color-texto-secundario: #9fb0c7;
+  --color-texto-terciario: #6b7d97;
+
+  /* Marca por defecto — sobrescrita por theming.js con la marca de la empresa activa */
+  --color-primario: #2f8fd6;
+  --color-primario-hover: #4aa3e6;
+  --color-secundario: #1a6fb0;
+  --color-acento: #45c9b0;
+
+  /* Semántica de estado, usada por el motor de alertas (Módulo Rules & Alerts) y por resultados de pruebas */
+  --color-exito: #3fbd7a;
+  --color-advertencia: #e0a838;
+  --color-critico: #e0523f;
+  --color-info: #4aa3e6;
+
+  /* Superficies de estado (fondo suave para badges/alerts) */
+  --color-exito-superficie: rgba(63, 189, 122, 0.12);
+  --color-advertencia-superficie: rgba(224, 168, 56, 0.12);
+  --color-critico-superficie: rgba(224, 82, 63, 0.12);
+  --color-info-superficie: rgba(74, 163, 230, 0.12);
+
+  /* ---- Tipografía ----
+     Display: para números/lecturas (ICO, tiempos de reacción) — proporción
+     tabular, carácter técnico. Base: para texto de interfaz, alta
+     legibilidad en turnos nocturnos. Mono: para datos crudos/depuración. */
+  --tipografia-display: 'Space Grotesk', 'Segoe UI', system-ui, sans-serif;
+  --tipografia-base: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  --tipografia-mono: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
+
+  --tamano-texto-xs: 0.75rem;
+  --tamano-texto-sm: 0.875rem;
+  --tamano-texto-base: 1rem;
+  --tamano-texto-lg: 1.25rem;
+  --tamano-texto-xl: 1.75rem;
+  --tamano-texto-2xl: 2.5rem;
+
+  --peso-regular: 400;
+  --peso-medio: 500;
+  --peso-semibold: 600;
+  --peso-bold: 700;
+
+  /* ---- Espaciado (escala base 4px) ---- */
+  --espacio-1: 0.25rem;
+  --espacio-2: 0.5rem;
+  --espacio-3: 0.75rem;
+  --espacio-4: 1rem;
+  --espacio-6: 1.5rem;
+  --espacio-8: 2rem;
+  --espacio-12: 3rem;
+
+  /* ---- Forma y elevación ---- */
+  --radio-sm: 6px;
+  --radio-md: 10px;
+  --radio-lg: 16px;
+  --sombra-elevacion-1: 0 1px 2px rgba(0, 0, 0, 0.24);
+  --sombra-elevacion-2: 0 4px 16px rgba(0, 0, 0, 0.32);
+
+  /* ---- Movimiento ---- */
+  --duracion-transicion-rapida: 120ms;
+  --duracion-transicion-base: 220ms;
+  --curva-transicion: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* ---- Marca activa (logo) — null hasta que theming.js inyecte el de la empresa ---- */
+  --logo-url: none;
+
+  /* ---- Layout núcleo ---- */
+  --altura-encabezado: 64px;
+  --ancho-maximo-contenido: 1200px;
+}
+
+/* Respeta la preferencia de movimiento reducido del sistema operativo — accesibilidad, no negociable. */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duracion-transicion-rapida: 0ms;
+    --duracion-transicion-base: 0ms;
+  }
+}

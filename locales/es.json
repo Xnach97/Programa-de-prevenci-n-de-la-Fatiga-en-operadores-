@@ -1,0 +1,40 @@
+{
+  "core": {
+    "appName": "NeuroLab SST",
+    "tagline": "Plataforma Inteligente de Vigilancia Cognitiva Operacional",
+    "loading": "Cargando…",
+    "genericError": {
+      "title": "Ocurrió un error inesperado",
+      "description": "El equipo técnico ya fue notificado. Puede intentar recargar la página.",
+      "retryAction": "Recargar"
+    },
+    "fatalError": {
+      "title": "NeuroLab SST no pudo iniciar",
+      "description": "Verifique la configuración de la aplicación o contacte al administrador del sistema."
+    },
+    "configurationError": {
+      "title": "Aplicación no configurada",
+      "description": "Falta o es inválida la configuración de entorno requerida para iniciar."
+    },
+    "notFound": {
+      "title": "Página no encontrada",
+      "description": "La sección que buscas no existe o fue movida.",
+      "backAction": "Volver al inicio"
+    },
+    "home": {
+      "title": "NeuroLab SST",
+      "readyMessage": "Núcleo de la plataforma inicializado correctamente.",
+      "pendingModulesTitle": "Módulos pendientes de activación",
+      "pendingModulesDescription": "Autenticación, catálogos organizacionales, motor científico y pruebas cognitivas se incorporan en los siguientes módulos de implementación."
+    }
+  },
+  "common": {
+    "actions": {
+      "accept": "Aceptar",
+      "cancel": "Cancelar",
+      "close": "Cerrar",
+      "continue": "Continuar",
+      "back": "Volver"
+    }
+  }
+}

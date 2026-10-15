@@ -1,0 +1,243 @@
+/**
+ * style.css — Estilos base del app-shell de NeuroLab SST.
+ *
+ * Solo contiene layout estructural y utilidades núcleo consumidas por
+ * index.html y por las vistas del Core Platform (home placeholder, 404,
+ * fronteras de error). Estilos específicos de dashboard viven en
+ * `css/dashboard.css` (Módulo Dashboard Framework) y no se anticipan aquí.
+ *
+ * Toda referencia de color/tipografía usa variables de `tokens.css` — cero
+ * valores literales, para que theming.js pueda re-marcar la aplicación por
+ * empresa sin tocar esta hoja de estilos (Fase 2 §3).
+ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-fondo);
+  color: var(--color-texto-primario);
+  font-family: var(--tipografia-base);
+  font-size: var(--tamano-texto-base);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Foco visible obligatorio en toda la plataforma — Fase 2 no menciona accesibilidad
+   explícitamente, pero es requisito de calidad no negociable (OWASP/WCAG) para un
+   sistema usado en turnos nocturnos por operadores bajo fatiga. */
+:focus-visible {
+  outline: 2px solid var(--color-primario);
+  outline-offset: 2px;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--tipografia-display);
+  font-weight: var(--peso-semibold);
+  margin: 0 0 var(--espacio-4);
+  color: var(--color-texto-primario);
+}
+
+p {
+  margin: 0 0 var(--espacio-4);
+  color: var(--color-texto-secundario);
+}
+
+a {
+  color: var(--color-primario);
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+/* ---- App shell ---- */
+
+.app-shell {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-header {
+  height: var(--altura-encabezado);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--espacio-4);
+  padding: 0 var(--espacio-6);
+  background-color: var(--color-superficie);
+  border-bottom: 1px solid var(--color-borde-sutil);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.app-header__brand {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-3);
+  font-family: var(--tipografia-display);
+  font-weight: var(--peso-semibold);
+  font-size: var(--tamano-texto-lg);
+}
+
+.app-header__logo {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radio-sm);
+  background: var(--logo-url, linear-gradient(135deg, var(--color-primario), var(--color-acento))) center / cover
+    no-repeat;
+  flex-shrink: 0;
+}
+
+/* Contenedor donde los módulos de autenticación/navegación futuros insertan controles de sesión. */
+#app-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-3);
+}
+
+.app-main {
+  flex: 1;
+  width: 100%;
+  max-width: var(--ancho-maximo-contenido);
+  margin: 0 auto;
+  padding: var(--espacio-8) var(--espacio-6);
+}
+
+.app-footer {
+  padding: var(--espacio-4) var(--espacio-6);
+  text-align: center;
+  color: var(--color-texto-terciario);
+  font-size: var(--tamano-texto-xs);
+  border-top: 1px solid var(--color-borde-sutil);
+}
+
+/* ---- Frontera de error global ---- */
+
+#app-error-boundary {
+  display: none;
+}
+
+#app-error-boundary[data-visible='true'] {
+  display: block;
+  margin: var(--espacio-4) var(--espacio-6) 0;
+  padding: var(--espacio-4) var(--espacio-6);
+  background-color: var(--color-critico-superficie);
+  border: 1px solid var(--color-critico);
+  border-radius: var(--radio-md);
+  color: var(--color-texto-primario);
+}
+
+#app-error-boundary h2 {
+  color: var(--color-critico);
+  font-size: var(--tamano-texto-lg);
+}
+
+/* ---- Vistas núcleo (home placeholder / 404) ---- */
+
+.view-panel {
+  max-width: 640px;
+  margin: 0 auto;
+  text-align: center;
+  padding: var(--espacio-12) var(--espacio-6);
+  background-color: var(--color-superficie);
+  border: 1px solid var(--color-borde-sutil);
+  border-radius: var(--radio-lg);
+  box-shadow: var(--sombra-elevacion-1);
+}
+
+.view-panel__badge {
+  display: inline-block;
+  padding: var(--espacio-1) var(--espacio-3);
+  border-radius: 999px;
+  background-color: var(--color-exito-superficie);
+  color: var(--color-exito);
+  font-family: var(--tipografia-mono);
+  font-size: var(--tamano-texto-xs);
+  font-weight: var(--peso-medio);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: var(--espacio-4);
+}
+
+.view-panel__pending {
+  margin-top: var(--espacio-8);
+  padding-top: var(--espacio-6);
+  border-top: 1px solid var(--color-borde-sutil);
+  text-align: left;
+}
+
+.view-panel__pending h3 {
+  font-size: var(--tamano-texto-sm);
+  color: var(--color-texto-secundario);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.button-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--espacio-2);
+  padding: var(--espacio-3) var(--espacio-6);
+  background-color: var(--color-primario);
+  color: #ffffff;
+  border: none;
+  border-radius: var(--radio-md);
+  font-weight: var(--peso-medio);
+  font-size: var(--tamano-texto-base);
+  transition: background-color var(--duracion-transicion-rapida) var(--curva-transicion);
+}
+
+.button-primary:hover {
+  background-color: var(--color-primario-hover);
+}
+
+/* ---- Loading shell (mostrado antes de que app.js monte el router) ---- */
+
+.boot-loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--espacio-4);
+  min-height: 60vh;
+  color: var(--color-texto-secundario);
+  font-family: var(--tipografia-mono);
+  font-size: var(--tamano-texto-sm);
+}
+
+.boot-loader__spinner {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 3px solid var(--color-borde);
+  border-top-color: var(--color-primario);
+  animation: boot-loader-spin 800ms linear infinite;
+}
+
+@keyframes boot-loader-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .boot-loader__spinner {
+    animation: none;
+  }
+}
