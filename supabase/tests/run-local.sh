@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # =============================================================================
 # supabase/tests/run-local.sh
-# Aplica las migraciones 0001–0011 sobre un Postgres local descartable (con los
-# stubs de Supabase) y ejecuta las pruebas de RLS , Organization y Scientific Engine. Las migraciones se aplican
+# Aplica las migraciones 0001–0013 sobre un Postgres local descartable (con los
+# stubs de Supabase) y ejecuta las pruebas de RLS , Organization, Scientific, Testing e Indicators. Las migraciones se aplican
 # DOS veces para comprobar idempotencia.
 #
 # Uso:  bash supabase/tests/run-local.sh
@@ -34,5 +34,6 @@ done
 "${PSQL[@]}" "psql -q -d $DB -v ON_ERROR_STOP=1 -f $ROOT/supabase/tests/organization.test.sql"
 "${PSQL[@]}" "psql -q -d $DB -v ON_ERROR_STOP=1 -f $ROOT/supabase/tests/scientific.test.sql"
 "${PSQL[@]}" "psql -q -d $DB -v ON_ERROR_STOP=1 -f $ROOT/supabase/tests/testing.test.sql"
+"${PSQL[@]}" "psql -q -d $DB -v ON_ERROR_STOP=1 -f $ROOT/supabase/tests/indicators.test.sql"
 
 "${PSQL[@]}" "psql -q -c 'drop database $DB;'"

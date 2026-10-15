@@ -8,12 +8,16 @@
  *  - `testing`   repositorio (listarActivas, registrar)
  *  - `motor`     ScientificService (calcularPuntajes/evaluar)
  *  - `registro`  TestRegistry
+ *  - `alRegistrar` ({empresaId, operadorId, fecha}) tras guardar (recálculo de indicadores)
  *  - `guardar`   (payload) => Promise — por defecto `testing.registrar`; el
  *                Offline Engine (Módulo 9) lo sustituye por una cola con reintento.
  */
 
 import { puntuar } from '../statistics/score.js';
 import { ScientificError, CODIGOS_CIENTIFICOS } from '../statistics/scientific-error.js';
+import { createLogger } from './logger.js';
+
+const logger = createLogger('evaluacion');
 
 export const TURNOS_DEFECTO = Object.freeze(['Diurno', 'Nocturno']);
 
@@ -43,12 +47,13 @@ export class EvaluacionService {
    * @param {{testing: object, motor: object, registro: import('../tests/test-registry.js').TestRegistry,
    *   guardar?: (payload: object) => Promise<object>, generarId?: () => string, dispositivoId?: string|null}} deps
    */
-  constructor({ testing, motor, registro, guardar, generarId = () => crypto.randomUUID(), dispositivoId = null }) {
+  constructor({ testing, motor, registro, guardar, alRegistrar = null, generarId = () => crypto.randomUUID(), dispositivoId = null }) {
     if (!testing || !motor || !registro) throw new TypeError('EvaluacionService requiere testing, motor y registro.');
     this._testing = testing;
     this._motor = motor;
     this._registro = registro;
     this._guardar = guardar ?? ((payload) => testing.registrar(payload));
+    this._alRegistrar = alRegistrar;
     this._generarId = generarId;
     this._dispositivoId = dispositivoId;
   }
@@ -148,8 +153,18 @@ export class EvaluacionService {
    * @param {object} payload
    * @returns {Promise<{evaluacion_id: string, duplicada: boolean}>}
    */
-  guardar(payload) {
-    return this._guardar(payload);
+  async guardar(payload) {
+    const respuesta = await this._guardar(payload);
+    // Los indicadores son DERIVADOS: si su recálculo falla, la evaluación ya está
+    // guardada y el fallo no debe reportarse al operador como fallo de guardado.
+    if (this._alRegistrar && !respuesta?.encolada) {
+      try {
+        await this._alRegistrar({ empresaId: payload.empresa_id, operadorId: payload.operador_id, fecha: payload.fecha });
+      } catch (error) {
+        logger.warn('No se pudieron recalcular los indicadores', { error: String(error) });
+      }
+    }
+    return respuesta;
   }
 }
 

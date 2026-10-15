@@ -17,13 +17,14 @@ import { CatalogosRepository } from './repositories/catalogos-repository.js';
 import { OperadoresRepository } from './repositories/operadores-repository.js';
 import { IcoConfiguracionesRepository, BaremosRepository } from './repositories/scientific-repository.js';
 import { TestingRepository } from './repositories/testing-repository.js';
+import { IndicadoresRepository } from './repositories/indicadores-repository.js';
 
-/** @type {Promise<{usuarios: UsuariosRepository, empresas: EmpresasRepository, catalogos: CatalogosRepository, operadores: OperadoresRepository, ico: IcoConfiguracionesRepository, baremos: BaremosRepository, testing: TestingRepository}> | null} */
+/** @type {Promise<{usuarios: UsuariosRepository, empresas: EmpresasRepository, catalogos: CatalogosRepository, operadores: OperadoresRepository, ico: IcoConfiguracionesRepository, baremos: BaremosRepository, testing: TestingRepository, indicadores: IndicadoresRepository}> | null} */
 let databasePromise = null;
 
 /**
  * Instancia única de la capa de datos, con repositorios ya conectados.
- * @returns {Promise<{usuarios: UsuariosRepository, empresas: EmpresasRepository, catalogos: CatalogosRepository, operadores: OperadoresRepository, ico: IcoConfiguracionesRepository, baremos: BaremosRepository, testing: TestingRepository}>}
+ * @returns {Promise<{usuarios: UsuariosRepository, empresas: EmpresasRepository, catalogos: CatalogosRepository, operadores: OperadoresRepository, ico: IcoConfiguracionesRepository, baremos: BaremosRepository, testing: TestingRepository, indicadores: IndicadoresRepository}>}
  */
 export async function getDatabase() {
   if (!databasePromise) {
@@ -36,6 +37,7 @@ export async function getDatabase() {
         ico: new IcoConfiguracionesRepository(client),
         baremos: new BaremosRepository(client),
         testing: new TestingRepository(client),
+        indicadores: new IndicadoresRepository(client),
       }))
       .catch((error) => {
         databasePromise = null; // permite reintento si la inicialización falló

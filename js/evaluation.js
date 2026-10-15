@@ -14,6 +14,7 @@ import { campo } from './ui/forms.js';
 import { getDatabase } from './database.js';
 import { getScientificServices } from './scientific.js';
 import { EvaluacionService, turnosDeEmpresa } from '../services/evaluacion-service.js';
+import { IndicadoresService } from '../services/indicadores-service.js';
 import { testRegistry } from '../tests/index.js';
 import { mostrarTutorial } from '../tests/tutorial.js';
 import { PERMISOS } from '../services/permissions-catalog.js';
@@ -43,10 +44,19 @@ let dependenciasPromise = null;
 function dependencias() {
   if (!dependenciasPromise) {
     dependenciasPromise = Promise.all([getDatabase(), getScientificServices()])
-      .then(([db, { motor }]) => ({
-        db,
-        servicio: new EvaluacionService({ testing: db.testing, motor, registro: testRegistry, dispositivoId: dispositivoId() }),
-      }))
+      .then(([db, { motor }]) => {
+        const indicadores = new IndicadoresService({ indicadores: db.indicadores });
+        return {
+          db,
+          servicio: new EvaluacionService({
+            testing: db.testing,
+            motor,
+            registro: testRegistry,
+            dispositivoId: dispositivoId(),
+            alRegistrar: (datos) => indicadores.recalcularTrasEvaluacion(datos),
+          }),
+        };
+      })
       .catch((error) => {
         dependenciasPromise = null;
         throw error;

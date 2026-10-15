@@ -33,7 +33,7 @@ Abrir `http://localhost:8000`.
 
 ```bash
 node --test spec/*.test.mjs        # unitarias: auth, marca, servicios de Organization, menú (sin red ni DOM)
-bash supabase/tests/run-local.sh   # migraciones 0001–0011 (x2, idempotencia) + RLS, Organization, Scientific y Testing con aserciones, en Postgres local
+bash supabase/tests/run-local.sh   # migraciones 0001–0013 (x2, idempotencia) + RLS, Organization, Scientific, Testing e Indicators con aserciones, en Postgres local
 node spec/e2e/organization.e2e.mjs # navegador
 node spec/e2e/testing.e2e.mjs      # evaluación completa (4 pruebas) en navegador real (Chromium) con Supabase simulado; requiere `playwright`
 ```

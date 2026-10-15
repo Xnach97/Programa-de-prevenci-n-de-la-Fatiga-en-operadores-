@@ -81,14 +81,14 @@ test('reacción: esperas en rango, anticipos como errores, sin ensayos válidos'
 });
 
 // ---------------------------------------------------------------- servicio
-const version = (id, funcion, parametros) => ({ id, version: 1, funcion_puntuacion: funcion, parametros, estado: 'experimental' });
+const version = (id, funcion, parametros) => ({ id, numero_version: 1, funcion_puntuacion: funcion, parametros, estado: 'experimental' });
 const PRUEBAS = [
-  { id: 'p1', codigo: 'reaccion_simple', nombre: 'R', categoria: 'velocidad', activa: true,
+  { id: 'p1', codigo: 'reaccion_simple', nombre: 'R', categoria: 'velocidad', estado: 'activa',
     version_actual: version('v1', 'compuesta_tiempo_errores', { tiempo_mejor_ms: 200, tiempo_peor_ms: 500, errores_maximo: 5, peso_tiempo: 0.7 }) },
-  { id: 'p2', codigo: 'memoria_secuencias', nombre: 'M', categoria: 'memoria', activa: true,
+  { id: 'p2', codigo: 'memoria_secuencias', nombre: 'M', categoria: 'memoria', estado: 'activa',
     version_actual: version('v2', 'lineal_mayor_mejor', { minimo: 0, maximo: 6 }) },
-  { id: 'p3', codigo: 'prueba_desconocida', nombre: 'X', categoria: 'atencion', activa: true, version_actual: version('v3', 'lineal_mayor_mejor', {}) },
-  { id: 'p4', codigo: 'stroop_adaptado', nombre: 'S', categoria: 'inhibicion', activa: true, version_actual: null },
+  { id: 'p3', codigo: 'prueba_desconocida', nombre: 'X', categoria: 'atencion', estado: 'activa', version_actual: version('v3', 'lineal_mayor_mejor', {}) },
+  { id: 'p4', codigo: 'stroop_adaptado', nombre: 'S', categoria: 'inhibicion', estado: 'activa', version_actual: null },
 ];
 
 function crearServicio({ evaluar, guardar } = {}) {
@@ -165,4 +165,24 @@ test('turnos: por defecto, strings y objetos', () => {
   assert.deepEqual(turnosDeEmpresa(null), ['Diurno', 'Nocturno']);
   assert.deepEqual(turnosDeEmpresa({ turnos: [] }), ['Diurno', 'Nocturno']);
   assert.deepEqual(turnosDeEmpresa({ turnos: ['Mañana', { nombre: ' Tarde ' }, { x: 1 }] }), ['Mañana', 'Tarde']);
+});
+
+test('servicio: dispara el recálculo de indicadores tras guardar; su fallo no invalida el guardado', async () => {
+  const llamadas = [];
+  const base = { testing: { listarActivas: async () => PRUEBAS }, motor: { evaluar: async () => ({}) }, registro: testRegistry };
+  const ok = new EvaluacionService({ ...base, guardar: async () => ({ duplicada: false }), alRegistrar: async (d) => { llamadas.push(d); } });
+  const payload = { evaluacion_id: 'x', empresa_id: EMP, operador_id: OP, fecha: '2026-10-15T15:00:00.000Z' };
+  await ok.guardar(payload);
+  assert.deepEqual(llamadas, [{ empresaId: EMP, operadorId: OP, fecha: payload.fecha }]);
+
+  const roto = new EvaluacionService({ ...base, guardar: async () => ({ duplicada: false }), alRegistrar: async () => { throw new Error('boom'); } });
+  assert.deepEqual(await roto.guardar(payload), { duplicada: false });
+
+  const encolada = new EvaluacionService({ ...base, guardar: async () => ({ encolada: true }), alRegistrar: async (d) => { llamadas.push(d); } });
+  await encolada.guardar(payload);
+  assert.equal(llamadas.length, 1, 'una evaluación aún no sincronizada no recalcula');
+
+  const falla = new EvaluacionService({ ...base, guardar: async () => { throw new Error('red'); }, alRegistrar: async (d) => { llamadas.push(d); } });
+  await assert.rejects(() => falla.guardar(payload), /red/);
+  assert.equal(llamadas.length, 1);
 });

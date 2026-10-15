@@ -39,12 +39,12 @@ const paginas = [];
 function semilla(db) {
   const A = 'c1000000-0000-4000-8000-00000000000a';
   const tiempo = { tiempo_mejor_ms: 30000, tiempo_peor_ms: 180000, errores_maximo: 10, peso_tiempo: 0.5 };
-  const v = (id, funcion, parametros) => ({ id, version: 1, funcion_puntuacion: funcion, parametros, estado: 'experimental' });
+  const v = (id, funcion, parametros) => ({ id, numero_version: 1, funcion_puntuacion: funcion, parametros, estado: 'experimental' });
   db.pruebas.push(
-    { id: 'p1', codigo: 'atencion_cancelacion', nombre: 'Atención', categoria: 'atencion', activa: true, version_actual: v('v1', 'compuesta_tiempo_errores', { celdas: 42, minimo_objetivos: 8, ...tiempo }) },
-    { id: 'p2', codigo: 'stroop_adaptado', nombre: 'Stroop', categoria: 'inhibicion', activa: true, version_actual: v('v2', 'compuesta_tiempo_errores', { items: 3, retardo_feedback_ms: 40, ...tiempo }) },
-    { id: 'p3', codigo: 'memoria_secuencias', nombre: 'Memoria', categoria: 'memoria', activa: true, version_actual: v('v3', 'lineal_mayor_mejor', { rondas: 2, minimo: 0, maximo: 2 }) },
-    { id: 'p4', codigo: 'reaccion_simple', nombre: 'Reacción', categoria: 'velocidad', activa: true, version_actual: v('v4', 'compuesta_tiempo_errores', { ensayos: 2, espera_min_ms: 100, espera_max_ms: 200, tiempo_mejor_ms: 200, tiempo_peor_ms: 500, errores_maximo: 5, peso_tiempo: 0.7 }) },
+    { id: 'p1', codigo: 'atencion_cancelacion', nombre: 'Atención', categoria: 'atencion', estado: 'activa', version_actual: v('v1', 'compuesta_tiempo_errores', { celdas: 42, minimo_objetivos: 8, ...tiempo }) },
+    { id: 'p2', codigo: 'stroop_adaptado', nombre: 'Stroop', categoria: 'inhibicion', estado: 'activa', version_actual: v('v2', 'compuesta_tiempo_errores', { items: 3, retardo_feedback_ms: 40, ...tiempo }) },
+    { id: 'p3', codigo: 'memoria_secuencias', nombre: 'Memoria', categoria: 'memoria', estado: 'activa', version_actual: v('v3', 'lineal_mayor_mejor', { rondas: 2, minimo: 0, maximo: 2 }) },
+    { id: 'p4', codigo: 'reaccion_simple', nombre: 'Reacción', categoria: 'velocidad', estado: 'activa', version_actual: v('v4', 'compuesta_tiempo_errores', { ensayos: 2, espera_min_ms: 100, espera_max_ms: 200, tiempo_mejor_ms: 200, tiempo_peor_ms: 500, errores_maximo: 5, peso_tiempo: 0.7 }) },
   );
   db.configuracion_empresa[0].baremo_modalidad = 'institucional';
   db.configuracion_empresa[0].pruebas_activas = [];
@@ -131,6 +131,17 @@ try {
   assert.equal(guardadas[0].baremo_snapshot_id, 'bar1');
   assert.ok(guardadas[0].resultados.every((r) => r.puntaje_normalizado >= 0 && r.puntaje_normalizado <= 100));
   paso('4 pruebas completas, ICO clasificado y evaluación guardada con trazabilidad');
+
+  // Indicadores derivados: se recalculan tras guardar (ventana diaria y de 30 días).
+  await A.waitForFunction(() => window.__fakeDb.indicadores_valores.some((x) => x.indicador_id === 'def-ico_empresa'));
+  const ind = await A.evaluate(() => window.__fakeDb.indicadores_valores.map((x) => ({ i: x.indicador_id.replace('def-', ''), p: x.periodo, v: x.valor })));
+  const ventanasPublicadas = new Set(ind.map((x) => x.p));
+  assert.equal(ventanasPublicadas.size, 2);
+  const icoTrab = ind.filter((x) => x.i === 'ico_trabajador');
+  assert.equal(icoTrab.length, 2);
+  assert.ok(icoTrab.every((x) => x.v === guardadas[0].ico_valor));
+  assert.ok(ind.some((x) => x.i === 'ico_empresa') && ind.some((x) => x.i === 'indice_fatiga'));
+  paso('indicadores por operador y por empresa recalculados tras la evaluación');
 
   await A.click('button:text("Nueva evaluación")');
   await A.waitForSelector('button:text("Comenzar evaluación")');

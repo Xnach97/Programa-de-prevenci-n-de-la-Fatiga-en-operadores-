@@ -19,7 +19,8 @@ const db = {
     { empresa_id: EMPRESA_A, marca: { color_primario: '#ff0000', logo_url: 'https://cdn.example.co/a.png' } },
     { empresa_id: EMPRESA_B, marca: { color_primario: 'red;background:url(x)', logo_url: "https://x.co/a')" } },
   ],
-  pruebas: [], ico_configuraciones: [], baremos: [], evaluaciones: [], resultados_pruebas: [],
+  pruebas: [], ico_configuraciones: [], baremos: [], evaluaciones: [], resultados_pruebas: [], indicadores_valores: [],
+  indicadores_definiciones: ['ico_trabajador','ico_area','ico_cargo','ico_empresa','indice_atencion','indice_fatiga','indice_fatiga_empresa','indice_riesgo','indice_riesgo_area','indice_riesgo_empresa'].map((codigo) => ({ id: 'def-' + codigo, codigo, nombre: codigo, ambito: 'x', formula_ref: 'x' })),
   areas: [], procesos: [], centros_trabajo: [], cargos: [], lineas_operacionales: [], operadores: [],
 };
 const uuid = () => crypto.randomUUID();
@@ -38,6 +39,8 @@ class Query {
   gte(c, v) { this.filtros.push([c, v, 'gte']); return this; }
   lte(c, v) { this.filtros.push([c, v, 'lte']); return this; }
   not(c, op, v) { this.filtros.push([c, v, 'not']); return this; }
+  lt(c, v) { this.filtros.push([c, v, 'lt']); return this; }
+  in(c, vs) { this.filtros.push([c, vs, 'in']); return this; }
   limit() { return this; }
   range(a, b) { this.rango = [a, b]; return this; }
   single() { this.unico = 'single'; return this; }
@@ -49,6 +52,8 @@ class Query {
     for (const [c, v, modo] of this.filtros) {
       if (modo === 'gte') filas = filas.filter((f) => f[c] >= v);
       else if (modo === 'lte') filas = filas.filter((f) => f[c] <= v);
+      else if (modo === 'lt') filas = filas.filter((f) => f[c] < v);
+      else if (modo === 'in') filas = filas.filter((f) => v.includes(f[c]));
       else if (modo === 'not') filas = filas.filter((f) => f[c] !== null && f[c] !== undefined);
       else filas = filas.filter((f) => f[c] === v);
     }
@@ -110,11 +115,27 @@ export function createClient() {
     },
     from: (tabla) => new Query(tabla),
     rpc: async (nombre, args) => {
+      if (nombre === 'publicar_indicadores') {
+        for (const v of args.p_valores) {
+          const def = db.indicadores_definiciones.find((d) => d.codigo === v.codigo);
+          const periodo = '[' + v.desde + ',' + v.hasta + ')';
+          const previo = db.indicadores_valores.find((x) => x.indicador_id === def.id && x.ambito_id === v.ambito_id && x.periodo === periodo);
+          if (previo) Object.assign(previo, { valor: v.valor, detalle: v.detalle });
+          else db.indicadores_valores.push({ empresa_id: args.p_empresa, indicador_id: def.id, ambito_id: v.ambito_id, periodo, valor: v.valor, detalle: v.detalle || {}, calculado_en: new Date().toISOString() });
+        }
+        return { data: args.p_valores.length, error: null };
+      }
       if (nombre !== 'registrar_evaluacion') return { data: null, error: { code: 'PGRST202', message: 'rpc desconocida' } };
       if (window.__E2E_RPC_FALLA__ > 0) { window.__E2E_RPC_FALLA__ -= 1; return { data: null, error: { code: '08006', message: 'sim red' } }; }
       const p = args.p;
       const duplicada = db.evaluaciones.some((e) => e.id === p.evaluacion_id);
-      if (!duplicada) db.evaluaciones.push({ id: p.evaluacion_id, ...p });
+      if (!duplicada) {
+        const categorias = Object.fromEntries(db.pruebas.map((x) => [x.version_actual.id, x.categoria]));
+        db.evaluaciones.push({
+          id: p.evaluacion_id, ...p, estado: 'completa',
+          resultados: p.resultados.map((r) => ({ ...r, es_valido_para_analisis: true, prueba_version: { prueba: { categoria: categorias[r.prueba_version_id] } } })),
+        });
+      }
       return { data: { evaluacion_id: p.evaluacion_id, duplicada }, error: null };
     },
   };

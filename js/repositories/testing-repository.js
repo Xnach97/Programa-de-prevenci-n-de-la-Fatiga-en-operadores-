@@ -8,7 +8,7 @@
 import { RepositoryError } from './repository-error.js';
 
 const COLUMNAS_PRUEBA =
-  'id, codigo, nombre, categoria, activa, version_actual:pruebas_versiones!fk_version_actual(id, version, parametros, funcion_puntuacion, estado)';
+  'id, codigo, nombre, categoria, estado, version_actual:pruebas_versiones!fk_version_actual(id, numero_version, parametros, funcion_puntuacion, estado)';
 
 export class TestingRepository {
   /** @param {import('@supabase/supabase-js').SupabaseClient} supabaseClient */
@@ -22,7 +22,7 @@ export class TestingRepository {
    * @returns {Promise<object[]>}
    */
   async listarActivas() {
-    const { data, error } = await this._client.from('pruebas').select(COLUMNAS_PRUEBA).eq('activa', true).order('codigo');
+    const { data, error } = await this._client.from('pruebas').select(COLUMNAS_PRUEBA).eq('estado', 'activa').order('codigo');
     if (error) throw new RepositoryError('pruebas.listarActivas', error);
     return data ?? [];
   }
