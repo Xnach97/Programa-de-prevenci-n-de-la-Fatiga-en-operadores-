@@ -15,13 +15,14 @@ import { UsuariosRepository } from './repositories/usuarios-repository.js';
 import { EmpresasRepository } from './repositories/empresas-repository.js';
 import { CatalogosRepository } from './repositories/catalogos-repository.js';
 import { OperadoresRepository } from './repositories/operadores-repository.js';
+import { IcoConfiguracionesRepository, BaremosRepository } from './repositories/scientific-repository.js';
 
-/** @type {Promise<{usuarios: UsuariosRepository, empresas: EmpresasRepository, catalogos: CatalogosRepository, operadores: OperadoresRepository}> | null} */
+/** @type {Promise<{usuarios: UsuariosRepository, empresas: EmpresasRepository, catalogos: CatalogosRepository, operadores: OperadoresRepository, ico: IcoConfiguracionesRepository, baremos: BaremosRepository}> | null} */
 let databasePromise = null;
 
 /**
  * Instancia única de la capa de datos, con repositorios ya conectados.
- * @returns {Promise<{usuarios: UsuariosRepository, empresas: EmpresasRepository, catalogos: CatalogosRepository, operadores: OperadoresRepository}>}
+ * @returns {Promise<{usuarios: UsuariosRepository, empresas: EmpresasRepository, catalogos: CatalogosRepository, operadores: OperadoresRepository, ico: IcoConfiguracionesRepository, baremos: BaremosRepository}>}
  */
 export async function getDatabase() {
   if (!databasePromise) {
@@ -31,6 +32,8 @@ export async function getDatabase() {
         empresas: new EmpresasRepository(client),
         catalogos: new CatalogosRepository(client),
         operadores: new OperadoresRepository(client),
+        ico: new IcoConfiguracionesRepository(client),
+        baremos: new BaremosRepository(client),
       }))
       .catch((error) => {
         databasePromise = null; // permite reintento si la inicialización falló

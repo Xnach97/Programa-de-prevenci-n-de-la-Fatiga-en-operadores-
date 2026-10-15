@@ -20,7 +20,7 @@ Abrir `http://localhost:8000`.
 - [x] Módulo 1 — Core Platform
 - [x] Módulo 2 — Authentication
 - [x] Módulo 3 — Organization (catálogos, operadores, menú, marca de empresa)
-- [ ] Módulo 4 — Scientific Engine
+- [x] Módulo 4 — Scientific Engine (estadística, score, ICO, baremos, versionado)
 - [ ] Módulo 5 — Testing Engine
 - [ ] Módulo 6 — Indicators Engine
 - [ ] Módulo 7 — Rules Engine
@@ -33,7 +33,7 @@ Abrir `http://localhost:8000`.
 
 ```bash
 node --test spec/*.test.mjs        # unitarias: auth, marca, servicios de Organization, menú (sin red ni DOM)
-bash supabase/tests/run-local.sh   # migraciones 0001–0006 (x2, idempotencia) + RLS y Organization con aserciones, en Postgres local
+bash supabase/tests/run-local.sh   # migraciones 0001–0008 (x2, idempotencia) + RLS, Organization y Scientific con aserciones, en Postgres local
 node spec/e2e/organization.e2e.mjs # navegador real (Chromium) con Supabase simulado; requiere `playwright`
 ```
 
