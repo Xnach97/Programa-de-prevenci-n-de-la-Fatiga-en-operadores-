@@ -26,7 +26,10 @@ export function getScientificServices({ obtenerHistorialIco } = {}) {
             const configuracion = await db.empresas.obtenerConfiguracion(empresaId);
             return configuracion?.baremo_modalidad ?? 'dinamico';
           },
-          obtenerHistorialIco,
+          obtenerHistorialIco:
+            obtenerHistorialIco ??
+            (({ empresaId, fecha, ventanaDias }) =>
+              db.testing.historialIco(empresaId, new Date(fecha.getTime() - ventanaDias * 86400000), fecha)),
         }),
         configuracion: new ConfiguracionCientificaService({ ico: db.ico, baremos: db.baremos }),
       }))

@@ -61,7 +61,8 @@
       "back": "Volver",
       "save": "Guardar"
     },
-    "loading": "Cargando…"
+    "loading": "Cargando…",
+    "prueba": "Prueba"
   },
   "organization": {
     "menu": {
@@ -139,6 +140,80 @@
       "anterior": "Anterior",
       "siguiente": "Siguiente",
       "paginaDe": "Página {{actual}} de {{total}} ({{filas}} operadores)"
+    }
+  },
+  "testing": {
+    "menu": "Evaluación",
+    "titulo": "Evaluación cognitiva",
+    "sinPermiso": "No tiene permiso para registrar evaluaciones.",
+    "sinPruebas": "La empresa no tiene pruebas activas disponibles.",
+    "sinOperador": "Su cuenta no está vinculada a un operador. Busque al operador por cédula.",
+    "operador": "Operador",
+    "cedula": "Cédula del operador",
+    "buscar": "Buscar",
+    "noEncontrado": "No se encontró un operador activo con esa cédula.",
+    "turno": "Turno",
+    "turnoDiurno": "Diurno",
+    "turnoNocturno": "Nocturno",
+    "comenzar": "Comenzar evaluación",
+    "prueba": "Prueba {{actual}} de {{total}}",
+    "guardando": "Guardando resultados…",
+    "guardado": "Evaluación guardada correctamente.",
+    "pendiente": "Sin conexión: la evaluación quedó pendiente de envío.",
+    "errorGuardar": "No fue posible guardar la evaluación. Intente de nuevo.",
+    "reintentar": "Reintentar guardado",
+    "nueva": "Nueva evaluación",
+    "resultado": {
+      "titulo": "Resultado de la evaluación",
+      "ico": "Índice de capacidad operativa (ICO)",
+      "nivel": "Clasificación",
+      "sinIco": "No se pudo calcular el ICO con las pruebas realizadas.",
+      "puntaje": "Puntaje",
+      "tiempo": "Tiempo",
+      "errores": "Errores",
+      "calibracion": "Resultados basados en parámetros provisionales de calibración.",
+      "sinConfiguracion": "La empresa no tiene pesos de ICO o baremo vigentes: la evaluación se guardó sin ICO ni clasificación."
+    },
+    "niveles": {
+      "excelente": "Excelente",
+      "aceptable": "Aceptable",
+      "requiere_atencion": "Requiere atención"
+    },
+    "tutorial": {
+      "entendido": "Entendido",
+      "aviso": "Lea las instrucciones antes de comenzar. Esta prueba no es un diagnóstico médico."
+    },
+    "atencion": {
+      "titulo": "Atención: cancelación de símbolos",
+      "objetivo": "Marque todos los símbolos:",
+      "finalizar": "Finalizar",
+      "tutorial1": "Verá una cuadrícula de símbolos. Toque o haga clic en todos los símbolos objetivo que se indican.",
+      "tutorial2": "Evite marcar símbolos distintos. Pulse Finalizar cuando termine o espere a que acabe el tiempo."
+    },
+    "stroop": {
+      "titulo": "Inhibición: colores y palabras",
+      "consigna": "Seleccione el COLOR de la tinta, no lo que dice la palabra.",
+      "palabraAria": "Palabra mostrada",
+      "correcto": "Correcto",
+      "incorrecto": "Incorrecto (era {{color}})",
+      "tutorial1": "Aparecerá una palabra de color. Debe elegir el color con que está escrita, no el nombre que dice.",
+      "tutorial2": "Responda lo más rápido que pueda sin equivocarse."
+    },
+    "memoria": {
+      "titulo": "Memoria de secuencias",
+      "repite": "Repita la secuencia",
+      "observa": "Observe la secuencia",
+      "ronda": "Ronda {{n}} · {{largo}} pasos",
+      "tutorial1": "Se iluminarán casillas en un orden. Memorícelo.",
+      "tutorial2": "Luego toque las casillas en el mismo orden. Cada ronda añade un paso."
+    },
+    "reaccion": {
+      "titulo": "Tiempo de reacción",
+      "espera": "Espere… toque cuando cambie a verde",
+      "ya": "¡Ahora!",
+      "anticipo": "Se anticipó. Espere la señal.",
+      "tutorial1": "Espere a que el recuadro cambie a verde.",
+      "tutorial2": "En cuanto cambie, toque lo más rápido posible. Si toca antes, cuenta como error."
     }
   }
 }

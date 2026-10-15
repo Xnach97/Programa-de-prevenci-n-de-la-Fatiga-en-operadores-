@@ -1,0 +1,38 @@
+/* Módulo 5 — Testing Engine. Solo tokens (tokens.css); sin colores fijos. */
+.test-panel { max-width: 44rem; margin: 0 auto; display: grid; gap: var(--espacio-4, 1rem); }
+.test-panel h2 { margin: 0; }
+.test-tutorial__aviso { color: var(--color-texto-secundario, inherit); }
+.test-tutorial__pasos { padding-left: 1.25rem; display: grid; gap: .5rem; }
+.test-timer, .test-progress, .eval-progreso { font-variant-numeric: tabular-nums; font-weight: 600; }
+.test-feedback { min-height: 1.5rem; font-weight: 600; }
+.test-objetivo__simbolo { font-size: 2rem; margin-left: .5rem; }
+
+.sym-grid { display: grid; grid-template-columns: repeat(7, minmax(2.75rem, 1fr)); gap: .4rem; }
+.sym-btn { min-height: 2.75rem; font-size: 1.5rem; border: 2px solid var(--color-borde, currentColor); border-radius: .5rem; background: transparent; color: inherit; cursor: pointer; }
+.sym-btn[data-estado="acierto"] { border-color: var(--color-exito, currentColor); background: color-mix(in srgb, var(--color-exito, transparent) 20%, transparent); }
+.sym-btn[data-estado="error"] { border-color: var(--color-critico, currentColor); }
+
+.stroop-word { font-size: 3rem; font-weight: 800; text-align: center; padding: 1.5rem 0; }
+.stroop-opts { display: grid; grid-template-columns: repeat(2, 1fr); gap: .5rem; }
+.stroop-btn { min-height: 3rem; font-size: 1.1rem; border-radius: .5rem; border: 2px solid var(--color-borde, currentColor); background: transparent; color: inherit; cursor: pointer; }
+
+.mem-grid { display: grid; grid-template-columns: repeat(3, minmax(4rem, 1fr)); gap: .5rem; max-width: 20rem; margin: 0 auto; }
+.mem-cell { aspect-ratio: 1; border-radius: .75rem; border: 2px solid var(--color-borde, currentColor); background: transparent; color: inherit; cursor: pointer; }
+.mem-cell.activo { background: var(--color-primario, currentColor); }
+.mem-cell[data-estado="ok"] { border-color: var(--color-exito, currentColor); }
+.mem-cell[data-estado="error"] { border-color: var(--color-critico, currentColor); }
+.test-feedback[data-ok="true"] { color: var(--color-exito, inherit); }
+.test-feedback[data-ok="false"] { color: var(--color-critico, inherit); }
+
+.reaction-area { min-height: 14rem; font-size: 1.5rem; font-weight: 700; border-radius: 1rem; border: 3px solid var(--color-borde, currentColor); background: transparent; color: inherit; cursor: pointer; }
+.reaction-area[data-estado="ya"] { background: var(--color-exito, currentColor); color: var(--color-fondo); }
+.reaction-area[data-estado="error"] { border-color: var(--color-critico, currentColor); }
+
+.eval-resumen { display: grid; gap: .75rem; }
+.eval-resumen__ico { font-size: 2.5rem; font-weight: 800; }
+.eval-nivel[data-nivel="excelente"] { color: var(--color-exito, inherit); }
+.eval-nivel[data-nivel="requiere_atencion"] { color: var(--color-critico, inherit); }
+.eval-tabla { width: 100%; border-collapse: collapse; }
+.eval-tabla th, .eval-tabla td { text-align: left; padding: .4rem .5rem; border-bottom: 1px solid var(--color-borde, currentColor); }
+@media (max-width: 480px) { .sym-grid { grid-template-columns: repeat(6, 1fr); } }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }

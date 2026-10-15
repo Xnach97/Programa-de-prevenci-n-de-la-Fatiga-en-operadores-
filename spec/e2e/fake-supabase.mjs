@@ -12,18 +12,20 @@ export const FAKE_SUPABASE_SOURCE = `
 const EMPRESA_A = 'c1000000-0000-4000-8000-00000000000a';
 const EMPRESA_B = 'c1000000-0000-4000-8000-00000000000b';
 const USUARIO = 'a1000000-0000-4000-8000-000000000001';
-const PERMISOS = ['catalogos.ver','catalogos.editar','operadores.ver','operadores.administrar'];
+const PERMISOS = window.__E2E_PERMISOS__ || ['catalogos.ver','catalogos.editar','operadores.ver','operadores.administrar'];
 const db = {
   usuarios: [{ id: USUARIO, empresa_id: EMPRESA_A, nombre_completo: 'Ana Admin', email: 'a@x.co', estado: 'activo' }],
   configuracion_empresa: [
     { empresa_id: EMPRESA_A, marca: { color_primario: '#ff0000', logo_url: 'https://cdn.example.co/a.png' } },
     { empresa_id: EMPRESA_B, marca: { color_primario: 'red;background:url(x)', logo_url: "https://x.co/a')" } },
   ],
+  pruebas: [], ico_configuraciones: [], baremos: [], evaluaciones: [], resultados_pruebas: [],
   areas: [], procesos: [], centros_trabajo: [], cargos: [], lineas_operacionales: [], operadores: [],
 };
 const uuid = () => crypto.randomUUID();
 const lc = (s) => String(s).trim().toLowerCase();
 window.__fakeDb = db;
+if (window.__E2E_SEED__) window.__E2E_SEED__(db);
 
 class Query {
   constructor(tabla) { this.tabla = tabla; this.op = 'select'; this.filtros = []; this.orFiltro = null; this.rango = null; this.payload = null; this.devuelve = false; this.unico = null; this.contar = false; }
@@ -33,6 +35,10 @@ class Query {
   eq(c, v) { this.filtros.push([c, v]); return this; }
   or(expr) { this.orFiltro = expr; return this; }
   order() { return this; }
+  gte(c, v) { this.filtros.push([c, v, 'gte']); return this; }
+  lte(c, v) { this.filtros.push([c, v, 'lte']); return this; }
+  not(c, op, v) { this.filtros.push([c, v, 'not']); return this; }
+  limit() { return this; }
   range(a, b) { this.rango = [a, b]; return this; }
   single() { this.unico = 'single'; return this; }
   maybeSingle() { this.unico = 'maybe'; return this; }
@@ -40,8 +46,16 @@ class Query {
 
   filas() {
     let filas = db[this.tabla] || [];
-    for (const [c, v] of this.filtros) filas = filas.filter((f) => f[c] === v);
-    if (this.orFiltro) {
+    for (const [c, v, modo] of this.filtros) {
+      if (modo === 'gte') filas = filas.filter((f) => f[c] >= v);
+      else if (modo === 'lte') filas = filas.filter((f) => f[c] <= v);
+      else if (modo === 'not') filas = filas.filter((f) => f[c] !== null && f[c] !== undefined);
+      else filas = filas.filter((f) => f[c] === v);
+    }
+    if (this.orFiltro && this.orFiltro.includes('empresa_id.eq.')) {
+      const id = this.orFiltro.match(/empresa_id\.eq\.([0-9a-f-]+)/)[1];
+      filas = filas.filter((f) => f.empresa_id === id || f.empresa_id === null);
+    } else if (this.orFiltro) {
       const terminos = [...this.orFiltro.matchAll(/ilike\\.%(.*?)%/g)].map((m) => lc(m[1]));
       const t = terminos[0] || '';
       filas = filas.filter((f) => ['cedula','nombre','apellido'].some((k) => f[k] && lc(f[k]).includes(t)));
@@ -95,6 +109,14 @@ export function createClient() {
       signOut: async () => { sesion = null; return { error: null }; },
     },
     from: (tabla) => new Query(tabla),
+    rpc: async (nombre, args) => {
+      if (nombre !== 'registrar_evaluacion') return { data: null, error: { code: 'PGRST202', message: 'rpc desconocida' } };
+      if (window.__E2E_RPC_FALLA__ > 0) { window.__E2E_RPC_FALLA__ -= 1; return { data: null, error: { code: '08006', message: 'sim red' } }; }
+      const p = args.p;
+      const duplicada = db.evaluaciones.some((e) => e.id === p.evaluacion_id);
+      if (!duplicada) db.evaluaciones.push({ id: p.evaluacion_id, ...p });
+      return { data: { evaluacion_id: p.evaluacion_id, duplicada }, error: null };
+    },
   };
 }
 `;

@@ -31,6 +31,7 @@ import { router } from './navigation.js';
 import { createStore } from './state-store.js';
 import { initAuthModule } from './auth.js';
 import { initOrganizationModule } from './organization.js';
+import { initEvaluationModule } from './evaluation-module.js';
 
 const logger = createLogger('app');
 
@@ -179,6 +180,7 @@ export async function bootstrap() {
     registerCoreRoutes();
     const authService = await initAuthModule({ router });
     initOrganizationModule({ router, authService });
+    initEvaluationModule({ router, authService });
     await router.start(APP_CONFIG.dom.appViewSelector);
 
     await registerServiceWorker();

@@ -8,7 +8,7 @@
 import { RepositoryError } from './repository-error.js';
 
 const COLUMNAS_LISTA =
-  'id, empresa_id, cedula, nombre, apellido, estado, turno_habitual, cargo_id, area_id, centro_trabajo_id, linea_operacional_id, ' +
+  'id, empresa_id, usuario_id, cedula, nombre, apellido, estado, turno_habitual, cargo_id, area_id, centro_trabajo_id, linea_operacional_id, ' +
   'cargo:cargos(nombre), area:areas(nombre), centro_trabajo:centros_trabajo(nombre), linea_operacional:lineas_operacionales(nombre)';
 
 export const TAMANO_PAGINA_DEFECTO = 25;
@@ -30,6 +30,8 @@ export function sanitizarTerminoBusqueda(termino) {
     .trim()
     .slice(0, 60);
 }
+
+const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 export class OperadoresRepository {
   /** @param {import('@supabase/supabase-js').SupabaseClient} supabaseClient */
@@ -76,6 +78,44 @@ export class OperadoresRepository {
   async obtener(id) {
     const { data, error } = await this._client.from('operadores').select(COLUMNAS_LISTA).eq('id', id).maybeSingle();
     if (error) throw new RepositoryError('operadores.obtener', error);
+    return data;
+  }
+
+  /**
+   * Operador vinculado a una cuenta de usuario (el propio operador).
+   * @param {string} usuarioId
+   * @returns {Promise<object|null>}
+   */
+  async obtenerPorUsuario(usuarioId) {
+    if (typeof usuarioId !== 'string' || !UUID.test(usuarioId)) throw new TypeError('usuarioId debe ser un UUID.');
+    const { data, error } = await this._client
+      .from('operadores')
+      .select(COLUMNAS_LISTA)
+      .eq('usuario_id', usuarioId)
+      .eq('estado', 'activo')
+      .maybeSingle();
+    if (error) throw new RepositoryError('operadores.obtenerPorUsuario', error);
+    return data;
+  }
+
+  /**
+   * Operador ACTIVO por cédula exacta dentro de la empresa (modo quiosco).
+   * @param {string} empresaId
+   * @param {string} cedula
+   * @returns {Promise<object|null>}
+   */
+  async obtenerActivoPorCedula(empresaId, cedula) {
+    if (typeof empresaId !== 'string' || !UUID.test(empresaId)) throw new TypeError('empresaId debe ser un UUID.');
+    const limpia = typeof cedula === 'string' ? cedula.trim().slice(0, 40) : '';
+    if (!limpia) return null;
+    const { data, error } = await this._client
+      .from('operadores')
+      .select(COLUMNAS_LISTA)
+      .eq('empresa_id', empresaId)
+      .eq('cedula', limpia)
+      .eq('estado', 'activo')
+      .maybeSingle();
+    if (error) throw new RepositoryError('operadores.obtenerActivoPorCedula', error);
     return data;
   }
 
